@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
 }
 
 def apikeyPropertiesFile = rootProject.file("api.properties")
@@ -77,6 +78,7 @@ dependencies {
     implementation "com.google.dagger:dagger-android:$dagger"
     implementation "com.google.dagger:dagger-android-support:$dagger"
     annotationProcessor "com.google.dagger:dagger-android-processor:$dagger"
+    kapt "com.google.dagger:dagger-android-processor:$dagger"
 
     // rxjava3
     implementation "io.reactivex.rxjava2:rxjava:$rxJava"

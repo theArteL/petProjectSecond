@@ -1,13 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.artelsv.petprojectsecond.ui.movie_list.MovieListViewModel" />
 
+        <import type="android.view.View"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.loading ? View.GONE : View.VISIBLE}">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_popular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/movies_popular"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/default_start_margin"
+                    android:layout_marginEnd="@dimen/default_end_margin"
+                    android:layout_marginTop="@dimen/default_top_margin"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_movies_popular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_popular"
+                    tools:listitem="@layout/item_movie"
+                    tools:itemCount="1"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_now_playing"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/movies_new"
+                    app:layout_constraintTop_toBottomOf="@id/rv_movies_popular"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/default_start_margin"
+                    android:layout_marginEnd="@dimen/default_end_margin" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_movies_now_playing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/default_horizontal_margin"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_now_playing"
+                    tools:listitem="@layout/item_movie" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
 </layout>
