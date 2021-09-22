@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
+    id 'kotlin-parcelize'
 }
 
 def apikeyPropertiesFile = rootProject.file("api.properties")
@@ -77,10 +77,9 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger"
     implementation "com.google.dagger:dagger-android:$dagger"
     implementation "com.google.dagger:dagger-android-support:$dagger"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger"
     kapt "com.google.dagger:dagger-android-processor:$dagger"
 
-    // rxjava3
+    // rxjava2
     implementation "io.reactivex.rxjava2:rxjava:$rxJava"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
 
@@ -91,4 +90,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
+
+    // viewBinding delegate
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.0-beta02'
 }

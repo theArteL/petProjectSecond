@@ -1,11 +1,7 @@
 package com.artelsv.petprojectsecond.di.factory
 
-import androidx.annotation.NonNull
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import dagger.Provides
-import java.lang.Exception
-import java.lang.RuntimeException
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton

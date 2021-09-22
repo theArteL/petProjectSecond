@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.artelsv.petprojectsecond.di.ViewModelKey
 import com.artelsv.petprojectsecond.di.factory.ViewModelFactory
-import com.artelsv.petprojectsecond.ui.movie_detail.MovieDetailViewModel
-import com.artelsv.petprojectsecond.ui.movie_list.MovieListViewModel
+import com.artelsv.petprojectsecond.ui.moviedetail.MovieDetailViewModel
+import com.artelsv.petprojectsecond.ui.movielist.MovieListViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

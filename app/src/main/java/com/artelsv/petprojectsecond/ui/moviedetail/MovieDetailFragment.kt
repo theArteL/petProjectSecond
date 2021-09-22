@@ -1,16 +1,17 @@
-package com.artelsv.petprojectsecond.ui.movie_detail
+package com.artelsv.petprojectsecond.ui.moviedetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.Toast
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.artelsv.petprojectsecond.databinding.FragmentMovieDetailBinding
 import com.artelsv.petprojectsecond.di.factory.ViewModelFactory
-import com.artelsv.petprojectsecond.domain.model.Movie
-import com.artelsv.petprojectsecond.ui.movie_list.MovieListViewModel
+import com.artelsv.petprojectsecond.ui.Screens
+import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -22,16 +23,20 @@ class MovieDetailFragment : DaggerFragment() {
     @Inject
     lateinit var viewModel: MovieDetailViewModel
 
+    @Inject
+    lateinit var router: Router
+
+    private val binding: FragmentMovieDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentMovieDetailBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         arguments?.let {
-            viewModel.setMovieValue(it[Movie::class.simpleName] as Movie)
+            viewModel.setMovieValue(it[MOVIE_ID] as Int)
         }
 
         setObservers(binding)
@@ -45,12 +50,22 @@ class MovieDetailFragment : DaggerFragment() {
                 binding.ivPoster.load(viewModel.getImageUrl(it))
             }
         })
+
+        viewModel.error.observe(viewLifecycleOwner, {
+            if (it != null && it) {
+                Toast.makeText(requireContext(), ERROR, Toast.LENGTH_LONG).show()
+                router.backTo(Screens.movieList())
+            }
+        })
     }
 
     companion object {
-        fun newInstance(movie: Movie) = MovieDetailFragment().apply {
+        private const val MOVIE_ID = "movieId"
+        private const val ERROR = "Ошибка, повторите попытку" // пока тут
+
+        fun newInstance(movieId: Int) = MovieDetailFragment().apply {
             arguments = Bundle().apply {
-                putParcelable(Movie::class.simpleName, movie)
+                putInt(MOVIE_ID, movieId)
             }
         }
     }

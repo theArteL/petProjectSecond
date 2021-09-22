@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.ui.movie_list
+package com.artelsv.petprojectsecond.ui.movielist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

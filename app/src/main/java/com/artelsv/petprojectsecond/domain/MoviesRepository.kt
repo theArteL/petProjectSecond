@@ -1,12 +1,12 @@
 package com.artelsv.petprojectsecond.domain
 
-import com.artelsv.petprojectsecond.data.network.model.MovieDetailResponse
-import com.artelsv.petprojectsecond.data.network.model.MovieResponse
+import com.artelsv.petprojectsecond.domain.model.Movie
+import com.artelsv.petprojectsecond.domain.model.MovieDetail
 import io.reactivex.Single
 
 interface MoviesRepository {
 
-    fun getPopularMovies() : Single<MovieResponse>
-    fun getNowPlayingMovies() : Single<MovieResponse>
-    fun getMovieDetails(movieId: Int) : Single<MovieDetailResponse>
+    fun getPopularMovies() : Single<List<Movie>>
+    fun getNowPlayingMovies() : Single<List<Movie>>
+    fun getMovieDetails(movieId: Int) : Single<MovieDetail>
 }

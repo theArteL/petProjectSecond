@@ -12,4 +12,7 @@
 
     <string name="movies_popular">Popular</string>
     <string name="movies_new">New</string>
+
+    <string name="movies_list_error_title">Упс... Попробуй снова</string>
+    <string name="movies_list_error_button">Снова?</string>
 </resources>

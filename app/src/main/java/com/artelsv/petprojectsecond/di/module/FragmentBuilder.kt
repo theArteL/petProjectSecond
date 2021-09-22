@@ -1,7 +1,7 @@
 package com.artelsv.petprojectsecond.di.module
 
-import com.artelsv.petprojectsecond.ui.movie_detail.MovieDetailFragment
-import com.artelsv.petprojectsecond.ui.movie_list.MovieListFragment
+import com.artelsv.petprojectsecond.ui.moviedetail.MovieDetailFragment
+import com.artelsv.petprojectsecond.ui.movielist.MovieListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

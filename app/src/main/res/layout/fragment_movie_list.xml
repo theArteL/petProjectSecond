@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.artelsv.petprojectsecond.ui.movie_list.MovieListViewModel" />
+            type="com.artelsv.petprojectsecond.ui.movielist.MovieListViewModel" />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
     </data>
 
     <FrameLayout
@@ -28,32 +29,32 @@
                     android:id="@+id/tv_popular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_start_margin"
+                    android:layout_marginTop="@dimen/default_top_margin"
+                    android:layout_marginEnd="@dimen/default_end_margin"
                     android:text="@string/movies_popular"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="@dimen/default_start_margin"
-                    android:layout_marginEnd="@dimen/default_end_margin"
-                    android:layout_marginTop="@dimen/default_top_margin"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_movies_popular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/tv_popular"
-                    tools:listitem="@layout/item_movie"
-                    tools:itemCount="1"/>
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_movie" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_now_playing"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_start_margin"
+                    android:layout_marginEnd="@dimen/default_end_margin"
                     android:text="@string/movies_new"
-                    app:layout_constraintTop_toBottomOf="@id/rv_movies_popular"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="@dimen/default_start_margin"
-                    android:layout_marginEnd="@dimen/default_end_margin" />
+                    app:layout_constraintTop_toBottomOf="@id/rv_movies_popular" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_movies_now_playing"
@@ -71,8 +72,34 @@
             android:id="@+id/pb_loading"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.error ? View.VISIBLE : View.GONE}">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/movies_list_error_title"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btn_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/default_top_margin"
+                android:text="@string/movies_list_error_button" />
+
+        </LinearLayout>
 
     </FrameLayout>
 </layout>

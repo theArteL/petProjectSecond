@@ -1,11 +1,7 @@
 package com.artelsv.petprojectsecond.domain.model
 
-import android.os.Parcelable
-import com.artelsv.petprojectsecond.R
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
 data class Movie(
     val adult: Boolean,
     @SerializedName("backdrop_path") val backdropPath: String,
@@ -35,5 +31,5 @@ data class Movie(
 //    val status: String,
 //    val tagline: String,
 
-    val movieType: MovieType = MovieType.POPULAR
-) : Parcelable
+    val movieType: MovieType = MovieType.NOW_PLAYING
+)

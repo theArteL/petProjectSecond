@@ -1,12 +1,9 @@
 package com.artelsv.petprojectsecond.di.component
 
-import android.app.Application
 import com.artelsv.petprojectsecond.App
 import com.artelsv.petprojectsecond.di.module.*
-import com.artelsv.petprojectsecond.ui.MainActivity
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
