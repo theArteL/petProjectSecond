@@ -15,11 +15,6 @@ import javax.inject.Inject
 class MoviesRepositoryImpl @Inject constructor(val movieDao: MovieDao, private val moviesService: MoviesService) :
     MoviesRepository {
 
-    /**
-     * TODO попробуй использовтаь [kotlin.Result]
-     * вот тут можешь глянуть как https://blog.mindorks.com/using-retrofit-with-kotlin-coroutines-in-android
-     */
-
     override fun getPopularMovies(): Single<List<Movie>> {
         return moviesService.getPopularMovies().map {
             addMoviesToDb(it, MovieType.POPULAR)

@@ -6,12 +6,17 @@ import com.artelsv.petprojectsecond.base.BaseViewModel
 import com.artelsv.petprojectsecond.domain.MoviesRepository
 import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieType
+import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
+import com.artelsv.petprojectsecond.domain.usecases.GetPopularMoviesUseCase
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class MovieListViewModel @Inject constructor(private val moviesRepository: MoviesRepository) : BaseViewModel() {
+class MovieListViewModel @Inject constructor(
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase
+) : BaseViewModel() {
 
     private val mPopularMovies = MutableLiveData<List<Movie>?>(listOf())
     val popularMovies: LiveData<List<Movie>?> = mPopularMovies
@@ -26,8 +31,8 @@ class MovieListViewModel @Inject constructor(private val moviesRepository: Movie
     }
 
     fun getMovies() {
-        val popularSingle = moviesRepository.getPopularMovies()
-        val newSingle = moviesRepository.getNowPlayingMovies()
+        val popularSingle = getPopularMoviesUseCase.invoke()
+        val newSingle = getNowPlayingMoviesUseCase.invoke()
 //        val newSingle = Single.error<List<Movie>>(Throwable("a"))
 
         val dis = Single.zip(newSingle, popularSingle, { new, popular ->

@@ -11,6 +11,7 @@ import com.artelsv.petprojectsecond.data.database.dao.MovieDao
 import com.artelsv.petprojectsecond.data.network.MoviesService
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.domain.MoviesRepository
+import com.artelsv.petprojectsecond.domain.usecases.*
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
@@ -42,4 +43,14 @@ class AppModule {
     @Provides
     fun providesMoviesRepository(moviesDao: MovieDao, moviesService: MoviesService): MoviesRepository = MoviesRepositoryImpl(moviesDao, moviesService)
 
+    // usesCases
+
+    @Provides
+    fun provideGetPopularMoviesUseCase(moviesRepository: MoviesRepository): GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(moviesRepository)
+
+    @Provides
+    fun provideGetNowPlayingMoviesUseCase(moviesRepository: MoviesRepository): GetNowPlayingMoviesUseCase = GetNowPlayingMoviesUseCaseImpl(moviesRepository)
+
+    @Provides
+    fun provideGetMovieDetailsUseCase(moviesRepository: MoviesRepository): GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(moviesRepository)
 }
