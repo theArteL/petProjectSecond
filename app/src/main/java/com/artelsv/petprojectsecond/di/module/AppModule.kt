@@ -8,16 +8,16 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.artelsv.petprojectsecond.App
 import com.artelsv.petprojectsecond.data.database.MoviesDatabase
 import com.artelsv.petprojectsecond.data.database.dao.MovieDao
-import com.artelsv.petprojectsecond.data.network.MoviesService
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.domain.MoviesRepository
 import com.artelsv.petprojectsecond.domain.usecases.*
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_NAME
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Module(includes = [ViewModelModule::class])
+@Module(includes = [ViewModelModule::class, AppModule.RepositoryBinds::class, AppModule.UseCasesBinds::class])
 class AppModule {
 
     @Provides
@@ -36,21 +36,25 @@ class AppModule {
         })
         .build()
 
-    // binds
     @Provides
-    fun provideMoviesDao(db: MoviesDatabase) = db.getMovieDao()
+    fun bindMoviesDao(db: MoviesDatabase): MovieDao = db.getMovieDao()
 
-    @Provides
-    fun providesMoviesRepository(moviesDao: MovieDao, moviesService: MoviesService): MoviesRepository = MoviesRepositoryImpl(moviesDao, moviesService)
+    @Module
+    abstract class UseCasesBinds {
 
-    // usesCases
+        @Binds
+        abstract fun bindGetPopularMoviesUseCase(getPopularMoviesUseCaseImpl: GetPopularMoviesUseCaseImpl): GetPopularMoviesUseCase
 
-    @Provides
-    fun provideGetPopularMoviesUseCase(moviesRepository: MoviesRepository): GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(moviesRepository)
+        @Binds
+        abstract fun bindGetNowPlayingMoviesUseCase(getNowPlayingMoviesUseCaseImpl: GetNowPlayingMoviesUseCaseImpl): GetNowPlayingMoviesUseCase
 
-    @Provides
-    fun provideGetNowPlayingMoviesUseCase(moviesRepository: MoviesRepository): GetNowPlayingMoviesUseCase = GetNowPlayingMoviesUseCaseImpl(moviesRepository)
+        @Binds
+        abstract fun bindGetMovieDetailsUseCase(getMovieDetailsUseCaseImpl: GetMovieDetailsUseCaseImpl): GetMovieDetailsUseCase
+    }
 
-    @Provides
-    fun provideGetMovieDetailsUseCase(moviesRepository: MoviesRepository): GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(moviesRepository)
+    @Module
+    abstract class RepositoryBinds {
+        @Binds
+        abstract fun bindMoviesRepository(moviesRepositoryImpl: MoviesRepositoryImpl): MoviesRepository
+    }
 }
