@@ -69,6 +69,7 @@ class MovieDetailFragment : DaggerFragment() {
         binding.tvVote.setTextColor(binding.root.resources.getColor(viewModel.getVoteColor(movie), binding.root.resources.newTheme()))
 
         binding.tvTitle.text = viewModel.getMovieName(resources)
+        binding.tvGenres.text = viewModel.getGenresAsString(resources)
     }
 
     companion object {

@@ -86,6 +86,10 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
+    fun getGenresAsString(resources: Resources): String = mMovie.value!!.genres.joinToString(separator = resources.getString(R.string.movie_detail_separator)) {
+        it.name
+    }
+
     private fun handleSuccess() {
         loading.postValue(false)
         error.postValue(false)
