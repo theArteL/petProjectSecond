@@ -1,6 +1,7 @@
 package com.artelsv.petprojectsecond.ui.moviedetail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.artelsv.petprojectsecond.databinding.FragmentMovieDetailBinding
 import com.artelsv.petprojectsecond.di.factory.ViewModelFactory
+import com.artelsv.petprojectsecond.domain.model.MovieDetail
 import com.artelsv.petprojectsecond.ui.Screens
 import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
@@ -39,15 +41,15 @@ class MovieDetailFragment : DaggerFragment() {
             viewModel.setMovieValue(it[MOVIE_ID] as Int)
         }
 
-        setObservers(binding)
+        setObservers()
 
         return binding.root
     }
 
-    private fun setObservers(binding: FragmentMovieDetailBinding) {
+    private fun setObservers() {
         viewModel.movie.observe(viewLifecycleOwner, {
             if (it != null) {
-                binding.ivPoster.load(viewModel.getImageUrl(it))
+                setData(it)
             }
         })
 
@@ -57,6 +59,16 @@ class MovieDetailFragment : DaggerFragment() {
                 router.backTo(Screens.movieList())
             }
         })
+    }
+
+    private fun setData(movie: MovieDetail) {
+
+        binding.ivPoster.load(viewModel.getImageUrl(movie))
+
+        binding.tvVote.text = viewModel.getVoteAsString(movie)
+        binding.tvVote.setTextColor(binding.root.resources.getColor(viewModel.getVoteColor(movie), binding.root.resources.newTheme()))
+
+        binding.tvTitle.text = viewModel.getMovieName(resources)
     }
 
     companion object {
