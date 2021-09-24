@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.ActivityMainBinding
 import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import dagger.android.AndroidInjection
 import javax.inject.Inject
@@ -15,6 +16,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var navHolder: NavigatorHolder
+
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -35,4 +39,5 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         navHolder.removeNavigator()
     }
+
 }

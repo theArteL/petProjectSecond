@@ -1,7 +1,6 @@
 package com.artelsv.petprojectsecond.ui.moviedetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +49,6 @@ class MovieDetailFragment : DaggerFragment() {
         viewModel.movie.observe(viewLifecycleOwner, {
             if (it != null) {
                 setData(it)
-                it.tagline.isNullOrEmpty()
             }
         })
 

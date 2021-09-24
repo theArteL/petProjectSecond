@@ -7,11 +7,10 @@ import com.artelsv.petprojectsecond.data.mappers.MovieMapper
 import com.artelsv.petprojectsecond.data.network.MoviesService
 import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
 import com.artelsv.petprojectsecond.domain.MoviesRepository
+import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieDetail
 import com.artelsv.petprojectsecond.domain.model.MovieType
-import com.artelsv.petprojectsecond.data.network.model.releasedate.DateReleaseResultsResponse
-import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
 import io.reactivex.Single
 import javax.inject.Inject
 

@@ -1,9 +1,8 @@
 package com.artelsv.petprojectsecond.domain
 
+import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieDetail
-import com.artelsv.petprojectsecond.data.network.model.releasedate.DateReleaseResultsResponse
-import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
 import io.reactivex.Single
 
 interface MoviesRepository {

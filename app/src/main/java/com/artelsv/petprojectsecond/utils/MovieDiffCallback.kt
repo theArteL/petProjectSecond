@@ -20,9 +20,6 @@ open class MovieDiffCallback(
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].originalTitle == newList[newItemPosition].originalTitle &&
-                oldList[oldItemPosition].originalLanguage == newList[newItemPosition].originalTitle &&
-                oldList[oldItemPosition].budget == newList[newItemPosition].budget &&
-                oldList[oldItemPosition].overview == newList[newItemPosition].overview
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

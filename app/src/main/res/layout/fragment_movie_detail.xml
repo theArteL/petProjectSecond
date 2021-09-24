@@ -9,7 +9,8 @@
             type="com.artelsv.petprojectsecond.ui.moviedetail.MovieDetailViewModel" />
 
         <import type="android.view.View" />
-        <import type="com.artelsv.petprojectsecond.utils.EmptyChecker"/>
+
+        <import type="com.artelsv.petprojectsecond.utils.EmptyChecker" />
     </data>
 
     <FrameLayout
@@ -48,9 +49,9 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_title"
+                    style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="@style/TextAppearance.AppCompat.Title"
                     android:layout_marginHorizontal="@dimen/default_horizontal_margin"
                     android:layout_marginTop="@dimen/default_top_margin"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -59,9 +60,9 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_genres"
+                    style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_marginHorizontal="@dimen/default_horizontal_margin"
                     android:layout_marginTop="@dimen/default_top_margin"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -70,11 +71,11 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_tagline"
+                    style="@style/TextAppearance.AppCompat.Body2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/default_horizontal_margin"
                     android:layout_marginTop="@dimen/default_top_margin"
-                    style="@style/TextAppearance.AppCompat.Body2"
                     android:text="@{viewModel.movie.tagline}"
                     android:visibility="@{EmptyChecker.INSTANCE.isStringEmpty(viewModel.movie.tagline) ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -83,11 +84,11 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_overview_title"
+                    style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/default_horizontal_margin"
                     android:layout_marginTop="@dimen/default_top_margin"
-                    style="@style/TextAppearance.AppCompat.Title"
                     android:text="@string/movie_detail_title_overview"
                     android:visibility="@{EmptyChecker.INSTANCE.isStringEmpty(viewModel.movie.overview) ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -96,12 +97,12 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_overview"
+                    style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/default_horizontal_margin"
                     android:layout_marginTop="@dimen/default_top_margin"
                     android:text="@{viewModel.movie.overview}"
-                    style="@style/TextAppearance.AppCompat.Body1"
                     android:visibility="@{EmptyChecker.INSTANCE.isStringEmpty(viewModel.movie.overview) ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

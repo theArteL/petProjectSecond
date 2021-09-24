@@ -22,7 +22,7 @@ class MovieListViewModel @Inject constructor(
     private val mNowPlayingMovies = MutableLiveData<List<Movie>?>(listOf())
     val nowPlayingMovies: LiveData<List<Movie>?> = mNowPlayingMovies
 
-    val loading = MutableLiveData(false)
+    val loading = MutableLiveData(true)
     val error = MutableLiveData(false)
 
     init {
@@ -48,7 +48,6 @@ class MovieListViewModel @Inject constructor(
             .subscribeOn(Schedulers.io()) // TODO вот эти две штуки особо выжные, они отвечают за то, в каком потоке будет происходить обработка данных
             .observeOn(AndroidSchedulers.mainThread())  // TODO обзательно посомтри вот это https://proandroiddev.com/understanding-rxjava-subscribeon-and-observeon-744b0c6a41ea
             .doOnSubscribe {
-                loading.postValue(true)
                 error.postValue(false)
             }
             .subscribe({
