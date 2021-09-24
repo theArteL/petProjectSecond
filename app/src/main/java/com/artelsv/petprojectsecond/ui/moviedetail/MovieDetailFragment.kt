@@ -50,6 +50,7 @@ class MovieDetailFragment : DaggerFragment() {
         viewModel.movie.observe(viewLifecycleOwner, {
             if (it != null) {
                 setData(it)
+                it.tagline.isNullOrEmpty()
             }
         })
 

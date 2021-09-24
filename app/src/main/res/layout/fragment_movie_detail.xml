@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.artelsv.petprojectsecond.ui.moviedetail.MovieDetailViewModel" />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
+        <import type="com.artelsv.petprojectsecond.utils.EmptyChecker"/>
     </data>
 
     <FrameLayout
@@ -29,51 +31,81 @@
                     android:layout_height="0dp"
                     android:scaleType="centerCrop"
                     app:layout_constraintDimensionRatio="H, 16:9"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_vote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:background="@drawable/background_vote"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/iv_poster"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_marginHorizontal="@dimen/default_horizontal_margin"
                     android:layout_marginTop="@dimen/default_top_margin"
-                    android:layout_marginHorizontal="@dimen/default_horizontal_margin"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_poster" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_genres"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tv_title"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_marginHorizontal="@dimen/default_horizontal_margin"
                     android:layout_marginTop="@dimen/default_top_margin"
-                    android:layout_marginHorizontal="@dimen/default_horizontal_margin"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_tagline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/default_horizontal_margin"
+                    android:layout_marginTop="@dimen/default_top_margin"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:text="@{viewModel.movie.tagline}"
+                    android:visibility="@{EmptyChecker.INSTANCE.isStringEmpty(viewModel.movie.tagline) ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_genres" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_overview_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/default_horizontal_margin"
+                    android:layout_marginTop="@dimen/default_top_margin"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:text="@string/movie_detail_title_overview"
+                    android:visibility="@{EmptyChecker.INSTANCE.isStringEmpty(viewModel.movie.overview) ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_tagline" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_overview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tv_genres"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="@{viewModel.movie.overview}"
+                    android:layout_marginHorizontal="@dimen/default_horizontal_margin"
                     android:layout_marginTop="@dimen/default_top_margin"
-                    android:layout_marginHorizontal="@dimen/default_horizontal_margin"/>
+                    android:text="@{viewModel.movie.overview}"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:visibility="@{EmptyChecker.INSTANCE.isStringEmpty(viewModel.movie.overview) ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_overview_title" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -83,8 +115,8 @@
             android:id="@+id/pb_loading"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}" />
 
     </FrameLayout>
 </layout>
