@@ -22,6 +22,7 @@
     <string name="movie_detail_separator">\u00A0&#8226;\u00A0</string>
     <string name="movie_detail_title_overview">Обзор</string>
 
+    <string name="menu_no">Без сортировки</string>
     <string name="menu_acs">По убыванию рейтинга</string>
     <string name="menu_desc">По возрастанию рейтинга</string>
 </resources>

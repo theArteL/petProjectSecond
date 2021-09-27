@@ -30,26 +30,41 @@ class MovieListFragment : DaggerFragment() {
     lateinit var router: Router
 
     private val binding: FragmentMovieListBinding by viewBinding(createMethod = CreateMethod.INFLATE)
-//
-//    lateinit var binding: FragmentMovieListBinding
+
+    // вынес адаптеры сюда
+    private val nowPlayingAdapter: MovieAdapter = MovieAdapter {
+        router.navigateTo(Screens.movieDetail(it.id))
+    }
+
+    private val popularAdapter: MovieAdapter = MovieAdapter {
+        router.navigateTo(Screens.movieDetail(it.id))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        binding = FragmentMovieListBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        setObservers()
         setMoviesNowPlayingRv()
         setMoviesPopularRv()
+        setSortPopup()
         setListeners()
+        setObservers()
 
+        return binding.root
+    }
+
+    private fun setSortPopup() {
         val popupMenu = PopupMenu(requireContext(), binding.tvSort)
         popupMenu.inflate(R.menu.menu_sort)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
+                R.id.menu_no -> {
+                    viewModel.getMovies(MovieSortType.NO)
+                    true
+                }
                 R.id.menu_asc -> {
                     viewModel.getMovies(MovieSortType.ASC)
                     true
@@ -65,8 +80,6 @@ class MovieListFragment : DaggerFragment() {
         binding.tvSort.setOnClickListener {
             popupMenu.show()
         }
-
-        return binding.root
     }
 
     private fun setListeners() {
@@ -78,21 +91,19 @@ class MovieListFragment : DaggerFragment() {
     private fun setObservers() {
         viewModel.popularMovies.observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
-                (binding.rvMoviesPopular.adapter as MovieAdapter).data = it
+                popularAdapter.data = it
             }
         })
 
         viewModel.nowPlayingMovies.observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
-                (binding.rvMoviesNowPlaying.adapter as MovieAdapter).data = it
+                nowPlayingAdapter.data = it
             }
         })
     }
 
     private fun setMoviesNowPlayingRv() {
-        binding.rvMoviesNowPlaying.adapter = MovieAdapter {
-            router.navigateTo(Screens.movieDetail(it.id))
-        }
+        binding.rvMoviesNowPlaying.adapter = nowPlayingAdapter
 
         binding.rvMoviesNowPlaying.layoutManager = LinearLayoutManager(requireContext())
 
@@ -100,9 +111,7 @@ class MovieListFragment : DaggerFragment() {
     }
 
     private fun setMoviesPopularRv() {
-        binding.rvMoviesPopular.adapter = MovieAdapter {
-            router.navigateTo(Screens.movieDetail(it.id))
-        }
+        binding.rvMoviesPopular.adapter = popularAdapter
 
         binding.rvMoviesPopular.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
