@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.base.BaseViewModel
 import com.artelsv.petprojectsecond.domain.model.Movie
+import com.artelsv.petprojectsecond.domain.model.MovieSortType
 import com.artelsv.petprojectsecond.domain.model.MovieType
 import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetPopularMoviesUseCase
@@ -29,8 +30,8 @@ class MovieListViewModel @Inject constructor(
         getMovies()
     }
 
-    fun getMovies(sortType: MovieSortType = MovieSortType.ASC) {
-        val popularSingle = getPopularMoviesUseCase.invoke(sortType)
+    fun getMovies(sortType: MovieSortType = MovieSortType.NO) {
+        val popularSingle = getPopularMoviesUseCase.invoke(MovieSortType.NO)
         val newSingle = getNowPlayingMoviesUseCase.invoke(sortType)
 //        val newSingle = Single.error<List<Movie>>(Throwable("a"))
 
@@ -69,10 +70,4 @@ class MovieListViewModel @Inject constructor(
 
         compositeDisposable.add(dis)
     }
-}
-
-// пока тут
-enum class MovieSortType {
-    ASC,
-    DESC
 }
