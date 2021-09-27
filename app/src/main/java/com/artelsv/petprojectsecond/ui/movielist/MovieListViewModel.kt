@@ -29,9 +29,9 @@ class MovieListViewModel @Inject constructor(
         getMovies()
     }
 
-    fun getMovies() {
-        val popularSingle = getPopularMoviesUseCase.invoke()
-        val newSingle = getNowPlayingMoviesUseCase.invoke()
+    fun getMovies(sortType: MovieSortType = MovieSortType.ASC) {
+        val popularSingle = getPopularMoviesUseCase.invoke(sortType)
+        val newSingle = getNowPlayingMoviesUseCase.invoke(sortType)
 //        val newSingle = Single.error<List<Movie>>(Throwable("a"))
 
         val dis = Single.zip(newSingle, popularSingle, { new, popular ->
@@ -69,4 +69,10 @@ class MovieListViewModel @Inject constructor(
 
         compositeDisposable.add(dis)
     }
+}
+
+// пока тут
+enum class MovieSortType {
+    ASC,
+    DESC
 }

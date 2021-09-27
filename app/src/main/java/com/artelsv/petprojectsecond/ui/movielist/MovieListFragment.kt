@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -40,6 +41,26 @@ class MovieListFragment : DaggerFragment() {
         setMoviesNowPlayingRv()
         setMoviesPopularRv()
         setListeners()
+
+        val popupMenu = PopupMenu(requireContext(), binding.tvSort)
+        popupMenu.inflate(R.menu.menu_sort)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_asc -> {
+                    viewModel.getMovies(MovieSortType.ASC)
+                    true
+                }
+                R.id.menu_desc -> {
+                    viewModel.getMovies(MovieSortType.DESC)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.tvSort.setOnClickListener {
+            popupMenu.show()
+        }
 
         return binding.root
     }

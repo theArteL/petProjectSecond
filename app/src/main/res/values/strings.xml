@@ -15,9 +15,13 @@
 
     <string name="movies_list_error_title">Упс… Попробуй снова</string>
     <string name="movies_list_error_button">Снова?</string>
+    <string name="movies_list_sort">Sort</string>
 
     <string name="movie_name_pattern">%1$s (%2$s)</string>
 
     <string name="movie_detail_separator">\u00A0&#8226;\u00A0</string>
     <string name="movie_detail_title_overview">Обзор</string>
+
+    <string name="menu_acs">По убыванию рейтинга</string>
+    <string name="menu_desc">По возрастанию рейтинга</string>
 </resources>
