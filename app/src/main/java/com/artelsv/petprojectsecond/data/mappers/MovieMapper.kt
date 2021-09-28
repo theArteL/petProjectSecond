@@ -30,8 +30,8 @@ object MovieMapper {
         )
     }
 
-    fun toMovie(movie: MovieResponse, type: MovieType) : Movie {
-        return Movie(
+    fun toMovieEntity(movie: Movie, type: MovieType) : MovieEntity {
+        return MovieEntity(
             adult = movie.adult,
             backdropPath = movie.backdropPath,
             budget = movie.budget,
@@ -50,6 +50,29 @@ object MovieMapper {
             voteAverage = movie.voteAverage,
             voteCount = movie.voteCount,
             movieType = type
+        )
+    }
+
+    fun toMovie(movie: MovieResponse, type: MovieType? = null) : Movie {
+        return Movie(
+            adult = movie.adult,
+            backdropPath = movie.backdropPath,
+            budget = movie.budget,
+            genreIds = movie.genreIds,
+            id = movie.id,
+            originalLanguage = movie.originalLanguage,
+            originalTitle = movie.originalTitle,
+            overview = movie.overview,
+            popularity = movie.popularity,
+            posterPath = movie.posterPath,
+            releaseDate = movie.releaseDate,
+            revenue = movie.revenue,
+            runtime = movie.runtime,
+            title = movie.title,
+            video = movie.video,
+            voteAverage = movie.voteAverage,
+            voteCount = movie.voteCount,
+            movieType = type ?: MovieType.NOW_PLAYING
         )
     }
 

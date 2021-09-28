@@ -1,11 +1,9 @@
 package com.artelsv.petprojectsecond.data.repository
 
-import com.artelsv.petprojectsecond.data.database.dao.MovieDao
+import com.artelsv.petprojectsecond.data.datasource.MovieDataSource
 import com.artelsv.petprojectsecond.data.mappers.MovieDateResultMapper
 import com.artelsv.petprojectsecond.data.mappers.MovieDetailMapper
 import com.artelsv.petprojectsecond.data.mappers.MovieMapper
-import com.artelsv.petprojectsecond.data.network.MoviesService
-import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
 import com.artelsv.petprojectsecond.domain.MoviesRepository
 import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.Movie
@@ -14,34 +12,38 @@ import com.artelsv.petprojectsecond.domain.model.MovieType
 import io.reactivex.Single
 import javax.inject.Inject
 
-class MoviesRepositoryImpl @Inject constructor(val movieDao: MovieDao, private val moviesService: MoviesService) :
-    MoviesRepository {
+class MoviesRepositoryImpl @Inject constructor(
+    private val localDataSource: MovieDataSource,
+    private val remoteDataSource: MovieDataSource
+) : MoviesRepository {
 
     override fun getPopularMovies(): Single<List<Movie>> {
-        return moviesService.getPopularMovies().map {
-            addMoviesToDb(it, MovieType.POPULAR)
+        return remoteDataSource.getPopularMovies().map {
+            localDataSource.addMoviesToDb(it, MovieType.POPULAR)
+        }.onErrorResumeNext {
+            localDataSource.getPopularMovies()
         }
     }
 
     override fun getNowPlayingMovies(): Single<List<Movie>> {
-        return moviesService.getNowPlayingMovies().map {
-            addMoviesToDb(it, MovieType.NOW_PLAYING)
+        return remoteDataSource.getNowPlayingMovies().map {
+            localDataSource.addMoviesToDb(it, MovieType.NOW_PLAYING)
+        }.onErrorResumeNext {
+            localDataSource.getNowPlayingMovies()
         }
     }
 
     override fun getMovieDateRelease(movieId: Int): Single<List<DateReleaseResult>> {
-        return moviesService.getMovieReleaseDates(movieId).map {
-            it.results.map(MovieDateResultMapper::toDateReleaseResult)
-        }
+        return remoteDataSource.getMovieDateRelease(movieId)
+            .onErrorResumeNext {
+                localDataSource.getMovieDateRelease(movieId)
+            }
     }
 
     override fun getMovieDetails(movieId: Int): Single<MovieDetail> {
-        return moviesService.getMovieDetail(movieId).map(MovieDetailMapper::toMovieDetail)
-    }
-
-    private fun addMoviesToDb(data: MovieListResponse, type: MovieType) : List<Movie> {
-        movieDao.addMovies(data.results.map { MovieMapper.toMovieEntity(it, type) })
-
-        return data.results.map { MovieMapper.toMovie(it, type) }
+        return remoteDataSource.getMovieDetails(movieId)
+            .onErrorResumeNext {
+                localDataSource.getMovieDetails(movieId)
+            }
     }
 }

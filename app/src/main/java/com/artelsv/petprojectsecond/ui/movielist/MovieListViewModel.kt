@@ -2,7 +2,7 @@ package com.artelsv.petprojectsecond.ui.movielist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.artelsv.petprojectsecond.base.BaseViewModel
+import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieSortType
 import com.artelsv.petprojectsecond.domain.model.MovieType

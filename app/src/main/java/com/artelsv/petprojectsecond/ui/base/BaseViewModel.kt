@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.base
+package com.artelsv.petprojectsecond.ui.base
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

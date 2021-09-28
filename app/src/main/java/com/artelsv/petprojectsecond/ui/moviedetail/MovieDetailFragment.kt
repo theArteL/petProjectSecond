@@ -9,7 +9,6 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.artelsv.petprojectsecond.databinding.FragmentMovieDetailBinding
-import com.artelsv.petprojectsecond.di.factory.ViewModelFactory
 import com.artelsv.petprojectsecond.domain.model.MovieDetail
 import com.artelsv.petprojectsecond.ui.Screens
 import com.github.terrakok.cicerone.Router
@@ -17,9 +16,6 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class MovieDetailFragment : DaggerFragment() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
     lateinit var viewModel: MovieDetailViewModel
@@ -36,13 +32,21 @@ class MovieDetailFragment : DaggerFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
+        return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         arguments?.let {
             viewModel.setMovieValue(it[MOVIE_ID] as Int)
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setObservers()
-
-        return binding.root
     }
 
     private fun setObservers() {

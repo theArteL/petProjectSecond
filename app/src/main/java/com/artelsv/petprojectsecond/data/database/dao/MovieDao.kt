@@ -3,6 +3,8 @@ package com.artelsv.petprojectsecond.data.database.dao
 import androidx.room.*
 import androidx.room.OnConflictStrategy.IGNORE
 import com.artelsv.petprojectsecond.data.entity.MovieEntity
+import com.artelsv.petprojectsecond.domain.model.MovieType
+import io.reactivex.Single
 
 @Dao
 interface MovieDao {
@@ -26,4 +28,7 @@ interface MovieDao {
 
     @Query("SELECT * FROM movies ORDER BY movies.voteAverage ASC")
     fun getAllMoviesSortedByVote(): List<MovieEntity>
+
+    @Query("SELECT * FROM movies WHERE movies.movieType == :movieType")
+    fun getAllMoviesByType(movieType: MovieType): Single<List<MovieEntity>>
 }

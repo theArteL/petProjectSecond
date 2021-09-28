@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.R
-import com.artelsv.petprojectsecond.base.BaseViewModel
+import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.MovieDetail
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase

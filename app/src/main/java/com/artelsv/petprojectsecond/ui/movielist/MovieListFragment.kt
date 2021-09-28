@@ -10,7 +10,6 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.FragmentMovieListBinding
-import com.artelsv.petprojectsecond.di.factory.ViewModelFactory
 import com.artelsv.petprojectsecond.domain.model.MovieSortType
 import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
@@ -21,9 +20,6 @@ import javax.inject.Inject
 class MovieListFragment : DaggerFragment() {
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    @Inject
     lateinit var viewModel: MovieListViewModel
 
     @Inject
@@ -31,7 +27,6 @@ class MovieListFragment : DaggerFragment() {
 
     private val binding: FragmentMovieListBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
-    // вынес адаптеры сюда
     private val nowPlayingAdapter: MovieAdapter = MovieAdapter {
         router.navigateTo(Screens.movieDetail(it.id))
     }
@@ -47,13 +42,17 @@ class MovieListFragment : DaggerFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         setMoviesNowPlayingRv()
         setMoviesPopularRv()
         setSortPopup()
         setListeners()
         setObservers()
-
-        return binding.root
     }
 
     private fun setSortPopup() {
@@ -103,18 +102,18 @@ class MovieListFragment : DaggerFragment() {
     }
 
     private fun setMoviesNowPlayingRv() {
-        binding.rvMoviesNowPlaying.adapter = nowPlayingAdapter
-
-        binding.rvMoviesNowPlaying.layoutManager = LinearLayoutManager(requireContext())
-
-        binding.rvMoviesNowPlaying.addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt(), horizontal = false))
+        binding.rvMoviesNowPlaying.apply {
+            adapter = nowPlayingAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt(), horizontal = false))
+        }
     }
 
     private fun setMoviesPopularRv() {
-        binding.rvMoviesPopular.adapter = popularAdapter
-
-        binding.rvMoviesPopular.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        binding.rvMoviesPopular.addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt()))
+        binding.rvMoviesPopular.apply {
+            adapter = popularAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt()))
+        }
     }
 }
