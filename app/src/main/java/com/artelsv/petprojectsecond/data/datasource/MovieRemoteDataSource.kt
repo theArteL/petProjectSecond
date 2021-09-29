@@ -18,7 +18,7 @@ class MovieRemoteDataSource @Inject constructor(private val moviesService: Movie
 
     override fun getPopularMovies(): Single<List<Movie>> = moviesService.getPopularMovies().map { it.results.map(MovieMapper::toMovie) }
 
-    override fun getNowPlayingMovies(): Single<List<Movie>> = moviesService.getNowPlayingMovies().map { it.results.map(MovieMapper::toMovie) }
+    override fun getNowPlayingMovies(): Single<List<Movie>> = moviesService.getNowPlayingMovies(1).map { it.results.map(MovieMapper::toMovie) }
 
     override fun getMovieDateRelease(movieId: Int): Single<List<DateReleaseResult>> = moviesService.getMovieReleaseDates(movieId).map { it.results.map(MovieDateResultMapper::toDateReleaseResult) }
 

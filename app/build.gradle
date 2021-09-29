@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
+    def lifecycleVersion = "2.4.0-alpha01"
     def dagger = "2.38.1"
     def rxJava = "2.2.21"
     def rxAndroid = "2.0.1"

@@ -2,20 +2,31 @@ package com.artelsv.petprojectsecond.ui.movielist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.rxjava2.cachedIn
+import androidx.paging.rxjava2.flowable
+import com.artelsv.petprojectsecond.data.datasource.MoviePagingSource
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieSortType
 import com.artelsv.petprojectsecond.domain.model.MovieType
 import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetPopularMoviesUseCase
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class MovieListViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase
+    private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
+    private val moviePagingSource: MoviePagingSource.Factory
 ) : BaseViewModel() {
 
     private val mPopularMovies = MutableLiveData<List<Movie>?>(listOf())
@@ -23,11 +34,17 @@ class MovieListViewModel @Inject constructor(
     private val mNowPlayingMovies = MutableLiveData<List<Movie>?>(listOf())
     val nowPlayingMovies: LiveData<List<Movie>?> = mNowPlayingMovies
 
-    val loading = MutableLiveData(true)
+    val loading = MutableLiveData(false)
     val error = MutableLiveData(false)
 
+    @ExperimentalCoroutinesApi
+    val pagingData: Flowable<PagingData<Movie>> = Pager(
+        config = PagingConfig(20),
+        pagingSourceFactory = { moviePagingSource.create(true) }
+    ).flowable
+
     init {
-        getMovies()
+//        getMovies()
     }
 
     fun getMovies(sortType: MovieSortType = MovieSortType.NO) {
@@ -56,7 +73,7 @@ class MovieListViewModel @Inject constructor(
                  * У меня тут 2 категории разные, и они в разных лайвдате лежат, не придумал способа лучше для разделения (опираюсь на тудушку выше, что работа должна проиходить здесь)
                  **/
                 for (item in it) {
-                    when(item.first) {
+                    when (item.first) {
                         MovieType.POPULAR -> mPopularMovies.postValue(item.second)
                         MovieType.NOW_PLAYING -> mNowPlayingMovies.postValue(item.second)
                     }

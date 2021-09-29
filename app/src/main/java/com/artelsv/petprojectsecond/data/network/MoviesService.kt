@@ -6,14 +6,15 @@ import com.artelsv.petprojectsecond.data.network.model.releasedate.DateReleaseLi
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface MoviesService {
 
     @GET("movie/popular?page=1")
     fun getPopularMovies() : Single<MovieListResponse>
 
-    @GET("movie/now_playing?page=1")
-    fun getNowPlayingMovies() : Single<MovieListResponse>
+    @GET("movie/now_playing")
+    fun getNowPlayingMovies(@Query("page") Page: Int) : Single<MovieListResponse>
 
     @GET("movie/{id}")
     fun getMovieDetail(@Path("id") movieId: Int) : Single<MovieDetailResponse>
