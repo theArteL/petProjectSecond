@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.ActivityMainBinding
+import com.github.terrakok.cicerone.Back
+import com.github.terrakok.cicerone.Command
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
@@ -38,6 +40,12 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         navHolder.removeNavigator()
+    }
+
+    override fun onBackPressed() {
+//        super.onBackPressed()
+        appNavigator.applyCommands(arrayOf(Back()))
+
     }
 
 }

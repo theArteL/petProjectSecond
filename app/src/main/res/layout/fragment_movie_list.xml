@@ -15,75 +15,68 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.artelsv.petprojectsecond.data.customview.SmartNestedScrollView
-            android:id="@+id/nsv_scroll"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.loading ? View.GONE : View.VISIBLE}"
-            android:fillViewport="true">
+            android:visibility="gone">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_popular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_start_margin"
+                android:layout_marginTop="@dimen/default_top_margin"
+                android:layout_marginEnd="@dimen/default_end_margin"
+                android:text="@string/movies_popular"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_movies_popular"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tv_popular"
+                android:nestedScrollingEnabled="true"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tv_popular"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_start_margin"
-                    android:layout_marginTop="@dimen/default_top_margin"
-                    android:layout_marginEnd="@dimen/default_end_margin"
-                    android:text="@string/movies_popular"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_now_playing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_start_margin"
+                android:layout_marginEnd="@dimen/default_end_margin"
+                android:text="@string/movies_new"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_movies_popular" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_movies_popular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_popular"
-                    android:nestedScrollingEnabled="true"/>
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:id="@+id/tv_sort"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="@dimen/default_end_margin"-->
+<!--                android:text="@string/movies_list_sort"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/tv_now_playing"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@id/tv_now_playing" />-->
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tv_now_playing"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_start_margin"
-                    android:layout_marginEnd="@dimen/default_end_margin"
-                    android:text="@string/movies_new"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_movies_popular" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_movies_now_playing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/default_horizontal_margin"
+                app:layout_constraintTop_toBottomOf="@+id/tv_now_playing"
+                android:nestedScrollingEnabled="true"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tv_sort"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/default_end_margin"
-                    android:text="@string/movies_list_sort"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_now_playing"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_now_playing" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_movies_now_playing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/default_horizontal_margin"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_now_playing"
-                    android:nestedScrollingEnabled="true"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.artelsv.petprojectsecond.data.customview.SmartNestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
             android:id="@+id/pb_loading"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}" />
+            android:visibility="visible"/>
 
         <LinearLayout
             android:layout_width="match_parent"

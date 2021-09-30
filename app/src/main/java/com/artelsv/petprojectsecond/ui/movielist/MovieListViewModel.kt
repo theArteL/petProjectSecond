@@ -1,6 +1,5 @@
 package com.artelsv.petprojectsecond.ui.movielist
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import com.artelsv.petprojectsecond.domain.model.Movie
@@ -17,12 +16,13 @@ class MovieListViewModel @Inject constructor(
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase
 ) : BaseViewModel() {
 
-    private val mPopularMovies = MutableLiveData<List<Movie>?>(listOf())
-    val popularMovies: LiveData<List<Movie>?> = mPopularMovies
-    private val mNowPlayingMovies = MutableLiveData<List<Movie>?>(listOf())
-    val nowPlayingMovies: LiveData<List<Movie>?> = mNowPlayingMovies
+//    private val mPopularMovies = MutableLiveData<List<Movie>?>(listOf())
+//    val popularMovies: LiveData<List<Movie>?> = mPopularMovies
+//    private val mNowPlayingMovies = MutableLiveData<List<Movie>?>(listOf())
+//    val nowPlayingMovies: LiveData<List<Movie>?> = mNowPlayingMovies
 
-    val loading = MutableLiveData(false)
+    val loadingPopular = MutableLiveData(false)
+    val loadingNowPlaying = MutableLiveData(false)
     val error = MutableLiveData(false)
 
     @ExperimentalCoroutinesApi
@@ -33,6 +33,13 @@ class MovieListViewModel @Inject constructor(
     @ExperimentalCoroutinesApi
     val popularPagingData: Flowable<PagingData<Movie>> by lazy {
         getPopularMoviesUseCase.invoke(MovieSortType.NO)
+    }
+
+    fun progressCheck() = loadingPopular.value == true && loadingNowPlaying.value == true
+
+    fun resetLoading() {
+        loadingNowPlaying.postValue(false)
+        loadingPopular.postValue(false)
     }
 
 //    fun getNowPlayingMovies(sortType: MovieSortType) {

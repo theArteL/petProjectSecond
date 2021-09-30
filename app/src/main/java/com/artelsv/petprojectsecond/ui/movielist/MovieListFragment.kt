@@ -1,10 +1,12 @@
 package com.artelsv.petprojectsecond.ui.movielist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -64,29 +66,29 @@ class MovieListFragment : DaggerFragment() {
     }
 
     private fun setSortPopup() {
-        val popupMenu = PopupMenu(requireContext(), binding.tvSort)
-        popupMenu.inflate(R.menu.menu_sort)
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.menu_no -> {
+//        val popupMenu = PopupMenu(requireContext(), binding.tvSort)
+//        popupMenu.inflate(R.menu.menu_sort)
+//        popupMenu.setOnMenuItemClickListener {
+//            when (it.itemId) {
+//                R.id.menu_no -> {
 //                    viewModel.getNowPlayingMovies(MovieSortType.NO)
-                    true
-                }
-                R.id.menu_asc -> {
+//                    true
+//                }
+//                R.id.menu_asc -> {
 //                    viewModel.getNowPlayingMovies(MovieSortType.ASC)
-                    true
-                }
-                R.id.menu_desc -> {
+//                    true
+//                }
+//                R.id.menu_desc -> {
 //                    viewModel.getNowPlayingMovies(MovieSortType.DESC)
-                    true
-                }
-                else -> false
-            }
-        }
-
-        binding.tvSort.setOnClickListener {
-            popupMenu.show()
-        }
+//                    true
+//                }
+//                else -> false
+//            }
+//        }
+//
+//        binding.tvSort.setOnClickListener {
+//            popupMenu.show()
+//        }
     }
 
     private fun setListeners() {
@@ -113,10 +115,32 @@ class MovieListFragment : DaggerFragment() {
                 popularAdapter.submitData(lifecycle, it)
             }
         )
+
+        viewModel.loadingNowPlaying.observe(viewLifecycleOwner, {
+            if (viewModel.progressCheck()) loadDone()
+        })
+
+        viewModel.loadingPopular.observe(viewLifecycleOwner, {
+            if (viewModel.progressCheck()) loadDone()
+        })
+    }
+
+    private fun loadDone() {
+        if (binding.pbLoading.visibility != View.GONE) binding.pbLoading.visibility = View.GONE
+        if (binding.clMain.visibility != View.VISIBLE) binding.clMain.visibility = View.VISIBLE
     }
 
     private fun setMoviesNowPlayingRv() {
         binding.rvMoviesNowPlaying.apply {
+            nowPlayingAdapter.withLoadStateHeaderAndFooter(
+                header = MovieLoaderStateAdapter(),
+                footer = MovieLoaderStateAdapter()
+            )
+
+            nowPlayingAdapter.addLoadStateListener { state ->
+                viewModel.loadingNowPlaying.postValue(state.refresh != LoadState.Loading)
+            }
+
             adapter = nowPlayingAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt(), horizontal = false))
@@ -125,9 +149,17 @@ class MovieListFragment : DaggerFragment() {
 
     private fun setMoviesPopularRv() {
         binding.rvMoviesPopular.apply {
+            popularAdapter.withLoadStateHeaderAndFooter(
+                header = MovieLoaderStateAdapter(),
+                footer = MovieLoaderStateAdapter()
+            )
+
+            popularAdapter.addLoadStateListener { state ->
+                viewModel.loadingPopular.postValue(state.refresh != LoadState.Loading)
+            }
+
             adapter = popularAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//            layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt()))
         }
     }
