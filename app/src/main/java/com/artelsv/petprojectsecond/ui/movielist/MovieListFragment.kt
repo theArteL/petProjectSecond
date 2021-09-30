@@ -1,7 +1,6 @@
 package com.artelsv.petprojectsecond.ui.movielist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,18 +10,15 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.FragmentMovieListBinding
-import com.artelsv.petprojectsecond.domain.model.MovieSortType
 import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
 import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class MovieListFragment : DaggerFragment() {
 
     @Inject
@@ -33,15 +29,19 @@ class MovieListFragment : DaggerFragment() {
 
     private val binding: FragmentMovieListBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
+    private val compositeDisposable = CompositeDisposable()
+
     private val nowPlayingAdapter: MovieAdapter = MovieAdapter {
         it?.let {
             router.navigateTo(Screens.movieDetail(it.id))
         }
     }
 
-//    private val popularAdapter: MovieAdapter = MovieAdapter {
-//        router.navigateTo(Screens.movieDetail(it.id))
-//    }
+    private val popularAdapter: MovieAdapter = MovieAdapter {
+        it?.let {
+            router.navigateTo(Screens.movieDetail(it.id))
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,15 +69,15 @@ class MovieListFragment : DaggerFragment() {
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_no -> {
-                    viewModel.getMovies(MovieSortType.NO)
+//                    viewModel.getNowPlayingMovies(MovieSortType.NO)
                     true
                 }
                 R.id.menu_asc -> {
-                    viewModel.getMovies(MovieSortType.ASC)
+//                    viewModel.getNowPlayingMovies(MovieSortType.ASC)
                     true
                 }
                 R.id.menu_desc -> {
-                    viewModel.getMovies(MovieSortType.DESC)
+//                    viewModel.getNowPlayingMovies(MovieSortType.DESC)
                     true
                 }
                 else -> false
@@ -91,43 +91,44 @@ class MovieListFragment : DaggerFragment() {
 
     private fun setListeners() {
         binding.btnError.setOnClickListener {
-            viewModel.getMovies()
+//            viewModel.getNowPlayingMovies(MovieSortType.NO)
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        compositeDisposable.dispose()
+    }
+
     private fun setObservers() {
-        viewModel.popularMovies.observe(viewLifecycleOwner, {
-            if (!it.isNullOrEmpty()) {
-//                popularAdapter.submitData(it)
-//                popularAdapter.data = it
+        compositeDisposable.add(
+            viewModel.nowPlayingPagingData.subscribe {
+                nowPlayingAdapter.submitData(lifecycle, it)
             }
-        })
+        )
 
-        val dis = viewModel.pagingData.subscribe {
-            nowPlayingAdapter.submitData(lifecycle, it)
-        }
-
-//        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, {
-//            if (!it.isNullOrEmpty()) {
-//                nowPlayingAdapter.data = it
-//            }
-//        })
+        compositeDisposable.add(
+            viewModel.popularPagingData.subscribe {
+                popularAdapter.submitData(lifecycle, it)
+            }
+        )
     }
 
     private fun setMoviesNowPlayingRv() {
         binding.rvMoviesNowPlaying.apply {
             adapter = nowPlayingAdapter
             layoutManager = LinearLayoutManager(requireContext())
-//            setHasFixedSize(true)
             addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt(), horizontal = false))
         }
     }
 
     private fun setMoviesPopularRv() {
         binding.rvMoviesPopular.apply {
-//            adapter = popularAdapter
-//            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//            addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt()))
+            adapter = popularAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt()))
         }
     }
 }

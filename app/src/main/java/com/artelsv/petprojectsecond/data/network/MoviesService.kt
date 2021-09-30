@@ -10,8 +10,8 @@ import retrofit2.http.Query
 
 interface MoviesService {
 
-    @GET("movie/popular?page=1")
-    fun getPopularMovies() : Single<MovieListResponse>
+    @GET("movie/popular")
+    fun getPopularMovies(@Query("page") Page: Int) : Single<MovieListResponse>
 
     @GET("movie/now_playing")
     fun getNowPlayingMovies(@Query("page") Page: Int) : Single<MovieListResponse>

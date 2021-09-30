@@ -10,7 +10,6 @@ import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.ItemMovieBinding
 import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.utils.Constants.BASE_IMAGE_URL
-import com.artelsv.petprojectsecond.utils.MovieDiffCallback
 
 class MovieAdapter(
     private val clickListener: (clickData: Movie?) -> Unit
@@ -82,10 +81,10 @@ class MovieAdapter(
 private object MovieDiffItemCallback : DiffUtil.ItemCallback<Movie>() {
 
     override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-        return oldItem == newItem
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-        return oldItem.title == newItem.title
+        return oldItem == newItem
     }
 }

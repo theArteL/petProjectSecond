@@ -7,16 +7,15 @@ import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieDetail
 import com.artelsv.petprojectsecond.domain.model.MovieType
 import io.reactivex.Single
-import io.reactivex.SingleOnSubscribe
 import javax.inject.Inject
 
 class MovieLocalDataSource @Inject constructor(private val movieDao: MovieDao) : MovieDataSource {
 
-    override fun getPopularMovies(): Single<List<Movie>> {
+    override fun getPopularMovies(page: Int): Single<List<Movie>> { // добавить логику для обработки страницы через локульную бд
         return movieDao.getAllMoviesByType(MovieType.POPULAR).map { it.map(MovieMapper::toMovie) }
     }
 
-    override fun getNowPlayingMovies(): Single<List<Movie>> {
+    override fun getNowPlayingMovies(page: Int): Single<List<Movie>> {
         return movieDao.getAllMoviesByType(MovieType.NOW_PLAYING).map { it.map(MovieMapper::toMovie) }
     }
 

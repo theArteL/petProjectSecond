@@ -1,14 +1,14 @@
 package com.artelsv.petprojectsecond.domain
 
-import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
-import com.artelsv.petprojectsecond.domain.model.Movie
-import com.artelsv.petprojectsecond.domain.model.MovieDetail
+import androidx.paging.PagingData
+import com.artelsv.petprojectsecond.domain.model.*
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 interface MoviesRepository {
 
-    fun getPopularMovies() : Single<List<Movie>>
-    fun getNowPlayingMovies() : Single<List<Movie>>
+    fun getPopularMovies(movieSortType: MovieSortType) : Flowable<PagingData<Movie>>
+    fun getNowPlayingMovies(movieSortType: MovieSortType) : Flowable<PagingData<Movie>>
     fun getMovieDateRelease(movieId: Int) : Single<List<DateReleaseResult>>
     fun getMovieDetails(movieId: Int) : Single<MovieDetail>
 }

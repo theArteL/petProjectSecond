@@ -8,10 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.artelsv.petprojectsecond.App
 import com.artelsv.petprojectsecond.data.database.MoviesDatabase
 import com.artelsv.petprojectsecond.data.database.dao.MovieDao
-import com.artelsv.petprojectsecond.data.datasource.MovieDataSource
-import com.artelsv.petprojectsecond.data.datasource.MovieLocalDataSource
-import com.artelsv.petprojectsecond.data.datasource.MovieRemoteDataSource
-import com.artelsv.petprojectsecond.data.network.MoviesService
+import com.artelsv.petprojectsecond.data.datasource.*
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.domain.MoviesRepository
 import com.artelsv.petprojectsecond.domain.usecases.*
@@ -19,6 +16,7 @@ import com.artelsv.petprojectsecond.utils.Constants.DATABASE_NAME
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -44,11 +42,14 @@ class AppModule {
     @Provides
     fun bindMoviesDao(db: MoviesDatabase): MovieDao = db.getMovieDao()
 
+    @ExperimentalCoroutinesApi
     @Provides
     fun bindMoviesRepository(
         @Named("movieLocalDataSource") localDataSource: MovieDataSource,
-        @Named("movieRemoteDataSource") remoteDataSource: MovieDataSource
-    ): MoviesRepository = MoviesRepositoryImpl(localDataSource, remoteDataSource)
+        @Named("movieRemoteDataSource") remoteDataSource: MovieDataSource,
+        nowPlayingMoviePagingSource: NowPlayingMoviePagingSource.Factory,
+        popularMoviePagingSource: PopularMoviePagingSource.Factory
+    ): MoviesRepository = MoviesRepositoryImpl(localDataSource, remoteDataSource, nowPlayingMoviePagingSource, popularMoviePagingSource)
 
     @Module
     abstract class DataSourcesBinds {
