@@ -29,15 +29,16 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providesRoomDatabase(app: Context): MoviesDatabase = Room.databaseBuilder(app, MoviesDatabase::class.java, DATABASE_NAME)
-        .fallbackToDestructiveMigration()
-        .addCallback(object : RoomDatabase.Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                Log.d("RoomDatabase", "onCreate")
-            }
-        })
-        .build()
+    fun providesRoomDatabase(app: Context): MoviesDatabase =
+        Room.databaseBuilder(app, MoviesDatabase::class.java, DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .addCallback(object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+                    Log.d("RoomDatabase", "onCreate")
+                }
+            })
+            .build()
 
     @Provides
     fun bindMoviesDao(db: MoviesDatabase): MovieDao = db.getMovieDao()
@@ -49,7 +50,12 @@ class AppModule {
         @Named("movieRemoteDataSource") remoteDataSource: MovieDataSource,
         nowPlayingMoviePagingSource: NowPlayingMoviePagingSource.Factory,
         popularMoviePagingSource: PopularMoviePagingSource.Factory
-    ): MoviesRepository = MoviesRepositoryImpl(localDataSource, remoteDataSource, nowPlayingMoviePagingSource, popularMoviePagingSource)
+    ): MoviesRepository = MoviesRepositoryImpl(
+        localDataSource,
+        remoteDataSource,
+        nowPlayingMoviePagingSource,
+        popularMoviePagingSource
+    )
 
     @Module
     abstract class DataSourcesBinds {

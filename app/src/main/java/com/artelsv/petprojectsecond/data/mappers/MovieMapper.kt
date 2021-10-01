@@ -7,7 +7,7 @@ import com.artelsv.petprojectsecond.domain.model.MovieType
 
 object MovieMapper {
 
-    fun toMovieEntity(movie: MovieResponse, type: MovieType) : MovieEntity {
+    fun toMovieEntity(movie: MovieResponse, type: MovieType): MovieEntity {
         return MovieEntity(
             adult = movie.adult,
             backdropPath = movie.backdropPath,
@@ -30,7 +30,7 @@ object MovieMapper {
         )
     }
 
-    fun toMovieEntity(movie: Movie, type: MovieType) : MovieEntity {
+    fun toMovieEntity(movie: Movie, type: MovieType): MovieEntity {
         return MovieEntity(
             adult = movie.adult,
             backdropPath = movie.backdropPath,
@@ -53,7 +53,7 @@ object MovieMapper {
         )
     }
 
-    fun toMovie(movie: MovieResponse, type: MovieType? = null) : Movie {
+    fun toMovie(movie: MovieResponse, type: MovieType? = null): Movie {
         return Movie(
             adult = movie.adult,
             backdropPath = movie.backdropPath,
@@ -76,7 +76,7 @@ object MovieMapper {
         )
     }
 
-    fun toMovie(movie: MovieEntity, type: MovieType? = null) : Movie {
+    fun toMovie(movie: MovieEntity, type: MovieType? = null): Movie {
         return Movie(
             adult = movie.adult,
             backdropPath = movie.backdropPath,

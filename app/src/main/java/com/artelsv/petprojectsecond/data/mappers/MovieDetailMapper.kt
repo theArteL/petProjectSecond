@@ -4,7 +4,7 @@ import com.artelsv.petprojectsecond.data.network.model.*
 import com.artelsv.petprojectsecond.domain.model.*
 
 object MovieDetailMapper {
-    fun toMovieDetail(movie: MovieDetailResponse) : MovieDetail {
+    fun toMovieDetail(movie: MovieDetailResponse): MovieDetail {
         return MovieDetail(
             adult = movie.adult,
             backdropPath = movie.backdropPath,

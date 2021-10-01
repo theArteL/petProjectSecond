@@ -141,7 +141,13 @@ class MovieListFragment : DaggerFragment() {
 
             adapter = nowPlayingAdapter
             layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt(), horizontal = false))
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    requireContext().resources.getDimension(
+                        R.dimen.viewpager_current_item_horizontal_margin
+                    ).toInt(), horizontal = false
+                )
+            )
         }
     }
 
@@ -157,8 +163,15 @@ class MovieListFragment : DaggerFragment() {
             }
 
             adapter = popularAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(HorizontalMarginItemDecoration(requireContext().resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin).toInt()))
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    requireContext().resources.getDimension(
+                        R.dimen.viewpager_current_item_horizontal_margin
+                    ).toInt()
+                )
+            )
         }
     }
 }

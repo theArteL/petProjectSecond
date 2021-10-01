@@ -27,10 +27,18 @@ interface MovieDao {
     fun getAllMovies(): List<MovieEntity>
 
     @Query("SELECT * FROM movies WHERE movies.movieType == :movieType ORDER BY movies.voteAverage ASC LIMIT :pageSize OFFSET :page * :pageSize")
-    fun getAllMoviesSortedByVote(movieType: MovieType, page: Int, pageSize: Int = PAGE_SIZE): Single<List<MovieEntity>>
+    fun getAllMoviesSortedByVote(
+        movieType: MovieType,
+        page: Int,
+        pageSize: Int = PAGE_SIZE
+    ): Single<List<MovieEntity>>
 
     @Query("SELECT * FROM movies WHERE movies.movieType == :movieType LIMIT :pageSize OFFSET :page * :pageSize")
-    fun getAllMoviesByPage(movieType: MovieType, page: Int, pageSize: Int = PAGE_SIZE): Single<List<MovieEntity>>
+    fun getAllMoviesByPage(
+        movieType: MovieType,
+        page: Int,
+        pageSize: Int = PAGE_SIZE
+    ): Single<List<MovieEntity>>
 
     @Query("SELECT * FROM movies WHERE movies.movieType == :movieType")
     fun getAllMoviesByType(movieType: MovieType): Single<List<MovieEntity>>

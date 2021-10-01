@@ -9,11 +9,11 @@ import retrofit2.http.POST
 
 interface UserService {
     @GET("/authentication/token/new")
-    fun createRequestToken() : Single<RequestTokenResponse>
+    fun createRequestToken(): Single<RequestTokenResponse>
 
     @POST("authentication/session/new")
-    fun createSession(@Body body: HashMap<*, *>) : Single<SessionResponse>
+    fun createSession(@Body body: HashMap<*, *>): Single<SessionResponse>
 
     @POST("authentication/token/validate_with_login")
-    fun createSessionWithUser(@Body body: HashMap<*, *>) : Single<SessionResponse>
+    fun createSessionWithUser(@Body body: HashMap<*, *>): Single<SessionResponse>
 }

@@ -15,27 +15,11 @@ class MovieAdapter(
     private val clickListener: (clickData: Movie?) -> Unit
 ) : PagingDataAdapter<Movie, MovieAdapter.ViewHolder>(MovieDiffItemCallback) {
 
-//    var data = listOf<Movie>()
-//        set(value) {
-//            val diffCallback = MovieDiffCallback(field, value)
-//            val diffResult = DiffUtil.calculateDiff(diffCallback)
-//            diffResult.dispatchUpdatesTo(this)
-//
-//            field = value
-//        }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        val item = data[position]
-
-        holder.bind(getItem(position), clickListener)
-    }
-
-    // у меня слов нету, я так долго сидел и не мог понять шо не так. А я всего лишь забыл удалить строчку ниже. Мда... Оставлю на память
-//    override fun getItemCount() = data.size
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position), clickListener)
 
     class ViewHolder private constructor(
         private val binding: ItemMovieBinding
@@ -48,7 +32,12 @@ class MovieAdapter(
 
             binding.tvVote.text = getVoteAsString(item)
             binding.ivBackground.load(getImageUrl(item))
-            binding.tvVote.setTextColor(binding.root.resources.getColor(getVoteColor(item), binding.root.resources.newTheme()))
+            binding.tvVote.setTextColor(
+                binding.root.resources.getColor(
+                    getVoteColor(item),
+                    binding.root.resources.newTheme()
+                )
+            )
 
             binding.mcvMovie.setOnClickListener {
                 onClickListener(item)
@@ -59,7 +48,7 @@ class MovieAdapter(
 
         private fun getVoteAsString(item: Movie?) = item?.voteAverage.toString()
 
-        private fun getVoteColor(item: Movie?) = when(item?.voteAverage ?: 0.0) {
+        private fun getVoteColor(item: Movie?) = when (item?.voteAverage ?: 0.0) {
             in 0.0..5.0 -> R.color.red
             in 5.1..7.0 -> R.color.yellow
             in 7.1..10.0 -> R.color.green

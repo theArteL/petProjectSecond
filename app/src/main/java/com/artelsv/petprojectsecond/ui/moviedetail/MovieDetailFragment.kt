@@ -13,8 +13,10 @@ import com.artelsv.petprojectsecond.domain.model.MovieDetail
 import com.artelsv.petprojectsecond.ui.Screens
 import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class MovieDetailFragment : DaggerFragment() {
 
     @Inject
@@ -69,7 +71,12 @@ class MovieDetailFragment : DaggerFragment() {
         binding.ivPoster.load(viewModel.getImageUrl(movie))
 
         binding.tvVote.text = viewModel.getVoteAsString(movie)
-        binding.tvVote.setTextColor(binding.root.resources.getColor(viewModel.getVoteColor(movie), binding.root.resources.newTheme()))
+        binding.tvVote.setTextColor(
+            binding.root.resources.getColor(
+                viewModel.getVoteColor(movie),
+                binding.root.resources.newTheme()
+            )
+        )
 
         binding.tvTitle.text = viewModel.getMovieName(resources)
         binding.tvGenres.text = viewModel.getGenresAsString(resources)

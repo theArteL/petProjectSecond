@@ -8,7 +8,7 @@ import com.artelsv.petprojectsecond.data.entity.MovieEntity
 
 @Database(entities = [MovieEntity::class], version = 8)
 @TypeConverters(DataConverter::class)
-abstract class MoviesDatabase : RoomDatabase(){
+abstract class MoviesDatabase : RoomDatabase() {
 
     abstract fun getMovieDao(): MovieDao
 }

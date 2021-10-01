@@ -6,7 +6,7 @@ import com.artelsv.petprojectsecond.domain.model.*
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_MOVIE_TABLE
 
 @Entity(tableName = DATABASE_MOVIE_TABLE)
-data class MovieEntity (
+data class MovieEntity(
     @PrimaryKey
     val id: Int,
     val adult: Boolean,

@@ -42,9 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-//        super.onBackPressed()
         appNavigator.applyCommands(arrayOf(Back()))
-
     }
 
 }

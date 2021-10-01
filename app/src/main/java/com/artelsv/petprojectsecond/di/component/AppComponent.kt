@@ -29,5 +29,4 @@ interface AppComponent : AndroidInjector<App> {
     }
 
     override fun inject(app: App)
-//    fun inject(activity: MainActivity)
 }

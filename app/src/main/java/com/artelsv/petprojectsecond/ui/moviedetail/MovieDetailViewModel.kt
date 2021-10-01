@@ -21,7 +21,7 @@ import javax.inject.Inject
 class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getMovieDateReleaseUseCase: GetMovieDateReleaseUseCase
-    ) : BaseViewModel() {
+) : BaseViewModel() {
     private val mMovie = MutableLiveData<MovieDetail>(null)
     val movie: LiveData<MovieDetail> = mMovie
 
@@ -31,24 +31,27 @@ class MovieDetailViewModel @Inject constructor(
     val error = MutableLiveData(false)
 
     fun setMovieValue(movieId: Int) {
-        val dis = getMovieDetailsUseCase.invoke(movieId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-            getReleaseDate(it)
-        }, {
-            handleError(it)
-        })
+        val dis = getMovieDetailsUseCase.invoke(movieId).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({
+                getReleaseDate(it)
+            }, {
+                handleError(it)
+            })
 
         compositeDisposable.add(dis)
     }
 
     private fun getReleaseDate(movieDetail: MovieDetail, iso: String = DEFAULT_ISO) {
-        val dis = getMovieDateReleaseUseCase.invoke(movieDetail.id, iso).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-            mDateRelease.postValue(it)
-            mMovie.postValue(movieDetail)
+        val dis =
+            getMovieDateReleaseUseCase.invoke(movieDetail.id, iso).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe({
+                    mDateRelease.postValue(it)
+                    mMovie.postValue(movieDetail)
 
-            handleSuccess()
-        }, {
-            handleError(it)
-        })
+                    handleSuccess()
+                }, {
+                    handleError(it)
+                })
 
         compositeDisposable.add(dis)
     }
@@ -58,7 +61,7 @@ class MovieDetailViewModel @Inject constructor(
 
     fun getVoteAsString(item: MovieDetail) = item.voteAverage.toString()
 
-    fun getVoteColor(item: MovieDetail) = when(item.voteAverage) {
+    fun getVoteColor(item: MovieDetail) = when (item.voteAverage) {
         in 0.0..5.0 -> R.color.red
         in 5.1..7.0 -> R.color.yellow
         in 7.1..10.0 -> R.color.green
@@ -67,8 +70,8 @@ class MovieDetailViewModel @Inject constructor(
 
     @SuppressLint("SimpleDateFormat")
     fun getMovieName(resources: Resources): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        val outputFormat = SimpleDateFormat("yyyy")
+        val inputFormat = SimpleDateFormat(DATE_FORMAT)
+        val outputFormat = SimpleDateFormat(DATE_YEAR)
         var date: Date? = null
 
         mDateRelease.value?.let {
@@ -86,9 +89,10 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    fun getGenresAsString(resources: Resources): String = mMovie.value!!.genres.joinToString(separator = resources.getString(R.string.movie_detail_separator)) {
-        it.name
-    }
+    fun getGenresAsString(resources: Resources): String =
+        mMovie.value!!.genres.joinToString(separator = resources.getString(R.string.movie_detail_separator)) {
+            it.name
+        }
 
     private fun handleSuccess() {
         loading.postValue(false)
@@ -104,5 +108,7 @@ class MovieDetailViewModel @Inject constructor(
 
     companion object {
         private const val DEFAULT_ISO = "RU"
+        private const val DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        private const val DATE_YEAR = "yyyy"
     }
 }

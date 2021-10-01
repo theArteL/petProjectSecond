@@ -8,9 +8,9 @@ import io.reactivex.Single
 
 interface MovieDataSource {
 
-    fun getPopularMovies(page: Int) : Single<List<Movie>>
-    fun getNowPlayingMovies(page: Int) : Single<List<Movie>>
-    fun getMovieDateRelease(movieId: Int) : Single<List<DateReleaseResult>>
-    fun getMovieDetails(movieId: Int) : Single<MovieDetail>
+    fun getPopularMovies(page: Int): Single<List<Movie>>
+    fun getNowPlayingMovies(page: Int): Single<List<Movie>>
+    fun getMovieDateRelease(movieId: Int): Single<List<DateReleaseResult>>
+    fun getMovieDetails(movieId: Int): Single<MovieDetail>
     fun addMoviesToDb(data: List<Movie>, type: MovieType): List<Movie>
 }
