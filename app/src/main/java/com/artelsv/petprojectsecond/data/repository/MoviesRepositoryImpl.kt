@@ -28,14 +28,14 @@ class MoviesRepositoryImpl @Inject constructor(
     override fun getPopularMovies(movieSortType: MovieSortType): Flowable<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(20),
-            pagingSourceFactory = { popularMoviePagingSource.create(movieSortType) }
+            pagingSourceFactory = { popularMoviePagingSource.create() }
         ).flowable
     }
 
     override fun getNowPlayingMovies(movieSortType: MovieSortType): Flowable<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(20),
-            pagingSourceFactory = { nowPlayingMoviePagingSource.create(movieSortType) }
+            pagingSourceFactory = { nowPlayingMoviePagingSource.create() }
         ).flowable
     }
 

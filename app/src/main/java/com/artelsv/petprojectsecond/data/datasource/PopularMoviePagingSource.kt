@@ -3,19 +3,17 @@ package com.artelsv.petprojectsecond.data.datasource
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxPagingSource
 import com.artelsv.petprojectsecond.domain.model.Movie
-import com.artelsv.petprojectsecond.domain.model.MovieSortType
 import com.artelsv.petprojectsecond.domain.model.MovieType
-import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Named
 
 class PopularMoviePagingSource @AssistedInject constructor(
-    private val movieLocalDataSource: MovieLocalDataSource,
-    private val movieRemoteDataSource: MovieRemoteDataSource,
-    @Assisted("sort") private val sort: MovieSortType
+    @Named("movieLocalDataSource") private val movieLocalDataSource: MovieDataSource,
+    @Named("movieRemoteDataSource") private val movieRemoteDataSource: MovieDataSource
 ) : RxPagingSource<Int, Movie>() {
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
@@ -33,36 +31,24 @@ class PopularMoviePagingSource @AssistedInject constructor(
         }.onErrorResumeNext { movieLocalDataSource.getPopularMovies(page) }
 
         return response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map {
-            toLoadResult(it, page, sort)
+            toLoadResult(it, page)
         }.onErrorReturn {
             LoadResult.Error(it)
         }
     }
 
-    private fun toLoadResult(data: List<Movie>, position: Int, movieSortType: MovieSortType): LoadResult<Int, Movie> {
-        return when(movieSortType) {
-            MovieSortType.NO -> LoadResult.Page(
-                data = data,
-                prevKey = if (position == 1) null else position - 1,
-                nextKey = if (position < MAX_PAGE_NUMBER) position + 1 else null
-            )
-            MovieSortType.ASC -> LoadResult.Page(
-                data = data.sortedBy { it.voteAverage },
-                prevKey = if (position == 1) null else position - 1,
-                nextKey = if (position < MAX_PAGE_NUMBER) position + 1 else null
-            )
-            MovieSortType.DESC -> LoadResult.Page(
-                data = data.sortedByDescending { it.voteAverage },
-                prevKey = if (position == 1) null else position - 1,
-                nextKey = if (position < MAX_PAGE_NUMBER) position + 1 else null
-            )
-        }
+    private fun toLoadResult(data: List<Movie>, position: Int): LoadResult<Int, Movie> {
+        return LoadResult.Page(
+            data = data,
+            prevKey = if (position == 1) null else position - 1,
+            nextKey = if (position < MAX_PAGE_NUMBER) position + 1 else null
+        )
     }
 
     @AssistedFactory
     interface Factory {
 
-        fun create(@Assisted("sort") sort: MovieSortType): PopularMoviePagingSource
+        fun create(): PopularMoviePagingSource
     }
 
     companion object {
