@@ -4,6 +4,7 @@ import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxPagingSource
 import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieSortType
+import com.artelsv.petprojectsecond.domain.model.MovieType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -27,7 +28,9 @@ class PopularMoviePagingSource @AssistedInject constructor(
     override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, Movie>> {
         val page = params.key ?: INITIAL_PAGE_NUMBER
 
-        val response = movieRemoteDataSource.getPopularMovies(page).onErrorResumeNext { movieLocalDataSource.getPopularMovies(page) }
+        val response = movieRemoteDataSource.getPopularMovies(page).map {
+            movieLocalDataSource.addMoviesToDb(it, MovieType.NOW_PLAYING)
+        }.onErrorResumeNext { movieLocalDataSource.getPopularMovies(page) }
 
         return response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map {
             toLoadResult(it, page, sort)

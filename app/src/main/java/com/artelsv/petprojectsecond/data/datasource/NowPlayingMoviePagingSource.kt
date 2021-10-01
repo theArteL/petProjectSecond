@@ -4,16 +4,18 @@ import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxPagingSource
 import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieSortType
+import com.artelsv.petprojectsecond.domain.model.MovieType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Named
 
 class NowPlayingMoviePagingSource @AssistedInject constructor(
-    private val movieLocalDataSource: MovieLocalDataSource,
-    private val movieRemoteDataSource: MovieRemoteDataSource,
+    @Named("movieLocalDataSource") private val movieLocalDataSource: MovieDataSource,
+    @Named("movieRemoteDataSource") private val movieRemoteDataSource: MovieDataSource,
     @Assisted("sort") private val sort: MovieSortType
 ) : RxPagingSource<Int, Movie>() {
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
@@ -27,7 +29,9 @@ class NowPlayingMoviePagingSource @AssistedInject constructor(
     override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, Movie>> {
         val page = params.key ?: INITIAL_PAGE_NUMBER
 
-        val response = movieRemoteDataSource.getNowPlayingMovies(page).onErrorResumeNext { movieLocalDataSource.getNowPlayingMovies(page) }
+        val response = movieRemoteDataSource.getNowPlayingMovies(page).map {
+            movieLocalDataSource.addMoviesToDb(it, MovieType.NOW_PLAYING)
+        }.onErrorResumeNext { movieLocalDataSource.getNowPlayingMovies(page) }
 
         return response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map {
             toLoadResult(it, page, sort)
@@ -37,7 +41,7 @@ class NowPlayingMoviePagingSource @AssistedInject constructor(
     }
 
     private fun toLoadResult(data: List<Movie>, position: Int, movieSortType: MovieSortType): LoadResult<Int, Movie> {
-        return when(movieSortType) {
+        return when(movieSortType) { // сортирует по страницам :(
             MovieSortType.NO -> LoadResult.Page(
                 data = data,
                 prevKey = if (position == 1) null else position - 1,

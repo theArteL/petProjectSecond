@@ -12,11 +12,11 @@ import javax.inject.Inject
 class MovieLocalDataSource @Inject constructor(private val movieDao: MovieDao) : MovieDataSource {
 
     override fun getPopularMovies(page: Int): Single<List<Movie>> { // добавить логику для обработки страницы через локульную бд
-        return movieDao.getAllMoviesByType(MovieType.POPULAR).map { it.map(MovieMapper::toMovie) }
+        return movieDao.getAllMoviesByPage(MovieType.POPULAR, page).map { it.map(MovieMapper::toMovie) }
     }
 
     override fun getNowPlayingMovies(page: Int): Single<List<Movie>> {
-        return movieDao.getAllMoviesByType(MovieType.NOW_PLAYING).map { it.map(MovieMapper::toMovie) }
+        return movieDao.getAllMoviesByPage(MovieType.NOW_PLAYING, page).map { it.map(MovieMapper::toMovie) }
     }
 
     override fun getMovieDateRelease(movieId: Int): Single<List<DateReleaseResult>> {
