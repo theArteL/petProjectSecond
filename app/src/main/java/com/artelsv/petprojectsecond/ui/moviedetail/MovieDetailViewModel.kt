@@ -26,6 +26,7 @@ class MovieDetailViewModel @Inject constructor(
     val movie: LiveData<MovieDetail> = mMovie
 
     private val mDateRelease = MutableLiveData<DateReleaseResult>(null)
+    val dateRelease: LiveData<DateReleaseResult> = mDateRelease
 
     val loading = MutableLiveData(true)
     val error = MutableLiveData(false)
