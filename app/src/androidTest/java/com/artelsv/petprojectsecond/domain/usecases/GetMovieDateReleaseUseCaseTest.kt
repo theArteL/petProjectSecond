@@ -23,10 +23,24 @@ class GetMovieDateReleaseUseCaseTest {
 
     @Test
     fun invoke() {
-        for (i in 0..100) {
-            getMovieDateReleaseUseCase.invoke(i, if (i % 2 == 0) "US" else "RU").map {
-                assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
-            }
+        getMovieDateReleaseUseCase.invoke(-100, "RU").map {
+            assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
+        }
+
+        getMovieDateReleaseUseCase.invoke(0, "ADIAS").map {
+            assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
+        }
+
+        getMovieDateReleaseUseCase.invoke(100, "US").map {
+            assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
+        }
+
+        getMovieDateReleaseUseCase.invoke(Integer.MAX_VALUE, "").map {
+            assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
+        }
+
+        getMovieDateReleaseUseCase.invoke(Integer.MIN_VALUE, "\uD83D\uDE0B\uD83D\uDE0B\uD83D\uDE0B").map {
+            assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
     }
 }

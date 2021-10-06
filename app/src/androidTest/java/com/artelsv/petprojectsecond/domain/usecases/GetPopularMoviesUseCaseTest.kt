@@ -30,5 +30,13 @@ class GetPopularMoviesUseCaseTest {
         getPopularMoviesUseCase.invoke(MovieSortType.NO).isEmpty.map {
             assertEquals(false, it)
         }
+
+        getPopularMoviesUseCase.invoke(MovieSortType.ASC).isEmpty.map {
+            assertEquals(false, it)
+        }
+
+        getPopularMoviesUseCase.invoke(MovieSortType.DESC).isEmpty.map {
+            assertEquals(false, it)
+        }
     }
 }

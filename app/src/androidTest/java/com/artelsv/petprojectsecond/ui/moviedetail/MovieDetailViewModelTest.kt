@@ -91,7 +91,7 @@ class MovieDetailViewModelTest : TestCase() {
 
     @Test
     fun getVoteColor() {
-        for (i in 1..200) {
+        for (i in -200..200) {
 
             assertEquals(when {
                 i % 2 == 0 -> R.color.red

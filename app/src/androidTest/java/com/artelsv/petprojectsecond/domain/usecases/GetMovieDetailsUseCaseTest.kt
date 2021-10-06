@@ -25,10 +25,24 @@ class GetMovieDetailsUseCaseTest {
 
     @Test
     fun invoke() {
-        for (i in 0..100) {
-            getMovieDetailsUseCase.invoke(i).map {
-                assertEquals(true, it != null)
-            }
+        getMovieDetailsUseCase.invoke(-100).map {
+            assertEquals(true, it != null)
+        }
+
+        getMovieDetailsUseCase.invoke(100).map {
+            assertEquals(true, it != null)
+        }
+
+        getMovieDetailsUseCase.invoke(0).map {
+            assertEquals(true, it != null)
+        }
+
+        getMovieDetailsUseCase.invoke(Integer.MAX_VALUE).map {
+            assertEquals(true, it != null)
+        }
+
+        getMovieDetailsUseCase.invoke(Integer.MIN_VALUE).map {
+            assertEquals(true, it != null)
         }
     }
 }

@@ -29,5 +29,13 @@ class GetNowPlayingMoviesUseCaseTest {
         getNowPlayingMoviesUseCase.invoke(MovieSortType.NO).isEmpty.map {
             assertEquals(false, it)
         }
+
+        getNowPlayingMoviesUseCase.invoke(MovieSortType.ASC).isEmpty.map {
+            assertEquals(false, it)
+        }
+
+        getNowPlayingMoviesUseCase.invoke(MovieSortType.DESC).isEmpty.map {
+            assertEquals(false, it)
+        }
     }
 }
