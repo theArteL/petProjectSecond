@@ -44,9 +44,7 @@ class MovieLoaderStateAdapter : LoadStateAdapter<MovieLoaderStateAdapter.ItemVie
         private val binding: ItemProgressBinding
     ) : ItemViewHolder(binding.root) {
 
-        override fun bind(loadState: LoadState) {
-            // Do nothing
-        }
+        override fun bind(loadState: LoadState) = Unit
 
         companion object {
 

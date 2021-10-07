@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.icu.text.SimpleDateFormat
 import android.util.Log
+import androidx.annotation.IdRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.R
@@ -12,7 +13,7 @@ import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.MovieDetail
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
-import com.artelsv.petprojectsecond.utils.Constants.BASE_IMAGE_URL
+import com.artelsv.petprojectsecond.utils.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
@@ -31,43 +32,51 @@ class MovieDetailViewModel @Inject constructor(
     val loading = MutableLiveData(true)
     val error = MutableLiveData(false)
 
-    fun setMovieValue(movieId: Int) {
-        val dis = getMovieDetailsUseCase.invoke(movieId).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe({
-                getReleaseDate(it)
-            }, {
-                handleError(it)
-            })
-
-        compositeDisposable.add(dis)
+    // TODO: 07.10.2021 цепочка вызовов rx'a в таком виде не читаема, пиши их метод под методом
+    fun getMovieDetail(movieId: Int) {
+        compositeDisposable.add(
+            getMovieDetailsUseCase
+                .invoke(movieId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    // TODO: 07.10.2021 перепиши с использование flatMap вызова отдельного метода
+                    getReleaseDate(it)
+                }, {
+                    handleError(it)
+                })
+        )
     }
 
     private fun getReleaseDate(movieDetail: MovieDetail, iso: String = DEFAULT_ISO) {
-        val dis =
-            getMovieDateReleaseUseCase.invoke(movieDetail.id, iso).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe({
+        compositeDisposable.add(
+            getMovieDateReleaseUseCase
+                .invoke(movieDetail.id, iso)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
                     mDateRelease.postValue(it)
                     mMovie.postValue(movieDetail)
+
+                    imageUrl.postValue(Constants.BASE_IMAGE_URL + movieDetail.backdropPath)
+                    voteAsString.postValue(movieDetail.voteAverage.toString())
+                    voteColor.postValue(when (movieDetail.voteAverage) {
+                        in 0.0..5.0 -> R.color.red
+                        in 5.1..7.0 -> R.color.yellow
+                        in 7.1..10.0 -> R.color.green
+                        else -> R.color.red
+                    })
 
                     handleSuccess()
                 }, {
                     handleError(it)
                 })
-
-        compositeDisposable.add(dis)
+        )
     }
 
-
-    fun getImageUrl(item: MovieDetail) = BASE_IMAGE_URL + item.backdropPath
-
-    fun getVoteAsString(item: MovieDetail) = item.voteAverage.toString()
-
-    fun getVoteColor(item: MovieDetail) = when (item.voteAverage) {
-        in 0.0..5.0 -> R.color.red
-        in 5.1..7.0 -> R.color.yellow
-        in 7.1..10.0 -> R.color.green
-        else -> R.color.red
-    }
+    val imageUrl: MutableLiveData<String> = MutableLiveData("")
+    val voteAsString: MutableLiveData<String> = MutableLiveData("")
+    val voteColor: MutableLiveData<Int> = MutableLiveData(0)
 
     @SuppressLint("SimpleDateFormat")
     fun getMovieName(resources: Resources): String {

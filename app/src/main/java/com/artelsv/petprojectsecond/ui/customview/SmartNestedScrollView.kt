@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.data.customview
+package com.artelsv.petprojectsecond.ui.customview
 
 import android.content.Context
 import android.util.AttributeSet
@@ -9,6 +9,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
+// TODO: 07.10.2021 перенеси в ui весь этот package (customview), в data должно лежать только то, что связано с данными, ну или если не надо то удали)
 open class SmartNestedScrollView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : NestedScrollView(context, attrs, defStyleAttr) {

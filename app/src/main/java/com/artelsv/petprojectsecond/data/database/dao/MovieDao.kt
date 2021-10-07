@@ -8,6 +8,7 @@ import io.reactivex.Single
 
 @Dao
 interface MovieDao {
+
     @Insert
     fun addMovie(movie: MovieEntity)
 

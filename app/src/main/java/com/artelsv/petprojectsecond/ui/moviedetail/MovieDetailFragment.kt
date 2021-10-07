@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.os.bundleOf
+import androidx.databinding.BindingAdapter
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
@@ -41,7 +44,7 @@ class MovieDetailFragment : DaggerFragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            viewModel.setMovieValue(it[MOVIE_ID] as Int)
+            viewModel.getMovieDetail(it[MOVIE_ID] as Int)
         }
     }
 
@@ -53,13 +56,13 @@ class MovieDetailFragment : DaggerFragment() {
 
     private fun setObservers() {
         viewModel.movie.observe(viewLifecycleOwner, {
-            if (it != null) {
+            it?.let {
                 setData(it)
             }
         })
 
         viewModel.error.observe(viewLifecycleOwner, {
-            if (it != null && it) {
+            if (it) {
                 Toast.makeText(requireContext(), ERROR, Toast.LENGTH_LONG).show()
                 router.backTo(Screens.movieList())
             }
@@ -68,15 +71,15 @@ class MovieDetailFragment : DaggerFragment() {
 
     private fun setData(movie: MovieDetail) {
 
-        binding.ivPoster.load(viewModel.getImageUrl(movie))
+//        binding.ivPoster.load(viewModel.getImageUrl(movie))
 
-        binding.tvVote.text = viewModel.getVoteAsString(movie)
-        binding.tvVote.setTextColor(
-            binding.root.resources.getColor(
-                viewModel.getVoteColor(movie),
-                binding.root.resources.newTheme()
-            )
-        )
+//        binding.tvVote.text = viewModel.getVoteAsString(movie)
+//        binding.tvVote.setTextColor(
+//            binding.root.resources.getColor(
+//                viewModel.getVoteColor(movie),
+//                binding.root.resources.newTheme()
+//            )
+//        )
 
         binding.tvTitle.text = viewModel.getMovieName(resources)
         binding.tvGenres.text = viewModel.getGenresAsString(resources)
@@ -87,9 +90,14 @@ class MovieDetailFragment : DaggerFragment() {
         private const val ERROR = "Ошибка, повторите попытку" // пока тут
 
         fun newInstance(movieId: Int) = MovieDetailFragment().apply {
-            arguments = Bundle().apply {
-                putInt(MOVIE_ID, movieId)
-            }
+            arguments = bundleOf(
+                MOVIE_ID to movieId
+            )
         }
     }
+}
+
+@BindingAdapter("imageUrl")
+fun loadImage(view: AppCompatImageView, url: String) {
+    view.load(url)
 }

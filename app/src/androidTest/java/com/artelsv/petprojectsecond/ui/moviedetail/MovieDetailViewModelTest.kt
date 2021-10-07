@@ -6,9 +6,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.domain.model.*
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
-import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDateReleaseUseCaseImpl
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
-import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDetailsUseCaseImpl
 import com.artelsv.petprojectsecond.getOrAwaitValue
 import io.mockk.every
 import io.mockk.mockk
@@ -59,17 +59,17 @@ class MovieDetailViewModelTest : TestCase() {
 
     @Test
     fun setMovieValue() {
-        movieDetailViewModel.setMovieValue(-1)
+        movieDetailViewModel.getMovieDetail(-1)
 
         assertEquals(false, movieDetailViewModel.dateRelease.getOrAwaitValue() != null)
         assertEquals(false, movieDetailViewModel.movie.getOrAwaitValue() != null)
 
-        movieDetailViewModel.setMovieValue(0)
+        movieDetailViewModel.getMovieDetail(0)
 
         assertEquals(false, movieDetailViewModel.dateRelease.getOrAwaitValue() != null)
         assertEquals(false, movieDetailViewModel.movie.getOrAwaitValue() != null)
 
-        movieDetailViewModel.setMovieValue(1)
+        movieDetailViewModel.getMovieDetail(1)
 
         assertEquals(false, movieDetailViewModel.dateRelease.getOrAwaitValue() != null)
         assertEquals(false, movieDetailViewModel.movie.getOrAwaitValue() != null)
@@ -109,7 +109,7 @@ class MovieDetailViewModelTest : TestCase() {
 
     @Test
     fun getMovieName() {
-        movieDetailViewModel.setMovieValue(0)
+        movieDetailViewModel.getMovieDetail(0)
 
         for (i in 1..200) {
             assertEquals(false, movieDetailViewModel.getMovieName(res).isEmpty())
@@ -118,7 +118,7 @@ class MovieDetailViewModelTest : TestCase() {
 
     @Test
     fun getGenresAsString() {
-        movieDetailViewModel.setMovieValue(1)
+        movieDetailViewModel.getMovieDetail(1)
 
         if (movieDetailViewModel.dateRelease.getOrAwaitValue() != null && movieDetailViewModel.movie.getOrAwaitValue() != null) {
             for (i in 1..200) {

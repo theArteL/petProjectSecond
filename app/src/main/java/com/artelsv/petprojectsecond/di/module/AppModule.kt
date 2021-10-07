@@ -12,6 +12,10 @@ import com.artelsv.petprojectsecond.data.datasource.*
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.domain.MoviesRepository
 import com.artelsv.petprojectsecond.domain.usecases.*
+import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDateReleaseUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDetailsUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.GetNowPlayingMoviesUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.GetPopularMoviesUseCaseImpl
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_NAME
 import dagger.Binds
 import dagger.Module
