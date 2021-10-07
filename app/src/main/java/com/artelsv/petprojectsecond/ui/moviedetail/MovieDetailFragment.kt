@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.IdRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.os.bundleOf
 import androidx.databinding.BindingAdapter
@@ -15,6 +16,7 @@ import com.artelsv.petprojectsecond.databinding.FragmentMovieDetailBinding
 import com.artelsv.petprojectsecond.domain.model.MovieDetail
 import com.artelsv.petprojectsecond.ui.Screens
 import com.github.terrakok.cicerone.Router
+import com.google.android.material.textview.MaterialTextView
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -55,34 +57,12 @@ class MovieDetailFragment : DaggerFragment() {
     }
 
     private fun setObservers() {
-        viewModel.movie.observe(viewLifecycleOwner, {
-            it?.let {
-                setData(it)
-            }
-        })
-
         viewModel.error.observe(viewLifecycleOwner, {
             if (it) {
                 Toast.makeText(requireContext(), ERROR, Toast.LENGTH_LONG).show()
                 router.backTo(Screens.movieList())
             }
         })
-    }
-
-    private fun setData(movie: MovieDetail) {
-
-//        binding.ivPoster.load(viewModel.getImageUrl(movie))
-
-//        binding.tvVote.text = viewModel.getVoteAsString(movie)
-//        binding.tvVote.setTextColor(
-//            binding.root.resources.getColor(
-//                viewModel.getVoteColor(movie),
-//                binding.root.resources.newTheme()
-//            )
-//        )
-
-        binding.tvTitle.text = viewModel.getMovieName(resources)
-        binding.tvGenres.text = viewModel.getGenresAsString(resources)
     }
 
     companion object {
@@ -95,9 +75,4 @@ class MovieDetailFragment : DaggerFragment() {
             )
         }
     }
-}
-
-@BindingAdapter("imageUrl")
-fun loadImage(view: AppCompatImageView, url: String) {
-    view.load(url)
 }
