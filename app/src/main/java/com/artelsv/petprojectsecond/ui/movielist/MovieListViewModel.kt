@@ -22,14 +22,6 @@ class MovieListViewModel @Inject constructor(
     val loadingNowPlaying = MutableLiveData(false)
     val error = MutableLiveData(false)
 
-    private val nowPlayingPagingData: Flowable<PagingData<Movie>> by lazy {
-        getNowPlayingMoviesUseCase.invoke(MovieSortType.NO)
-    }
-
-    private val popularPagingData: Flowable<PagingData<Movie>> by lazy {
-        getPopularMoviesUseCase.invoke(MovieSortType.NO)
-    }
-
     private val mNowPlayingPagingLiveData = MutableLiveData<PagingData<Movie>>(null)
     val nowPlayingPagingLiveData: LiveData<PagingData<Movie>> = mNowPlayingPagingLiveData
 
@@ -41,6 +33,14 @@ class MovieListViewModel @Inject constructor(
     }
 
     private fun setup() {
+        val nowPlayingPagingData: Flowable<PagingData<Movie>> by lazy {
+            getNowPlayingMoviesUseCase.invoke(MovieSortType.NO)
+        }
+
+        val popularPagingData: Flowable<PagingData<Movie>> by lazy {
+            getPopularMoviesUseCase.invoke(MovieSortType.NO)
+        }
+
         compositeDisposable.add(
             nowPlayingPagingData.subscribe {
                 mNowPlayingPagingLiveData.postValue(it)
