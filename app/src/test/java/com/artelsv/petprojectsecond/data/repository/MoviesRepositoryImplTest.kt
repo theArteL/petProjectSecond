@@ -41,40 +41,52 @@ class MoviesRepositoryImplTest {
     }
 
     @Test
-    fun getPopularMovies() {
+    fun getPopularMovies_MovieSortTypeNo_false() {
         moviesRepository.getPopularMovies(MovieSortType.NO).isEmpty.map {
             assertEquals(false, it)
         }
+    }
 
+    @Test
+    fun getPopularMovies_MovieSortTypeASC_false() {
         moviesRepository.getPopularMovies(MovieSortType.ASC).isEmpty.map {
             assertEquals(false, it)
         }
+    }
 
+    @Test
+    fun getPopularMovies_MovieSortTypeDESC_false() {
         moviesRepository.getPopularMovies(MovieSortType.DESC).isEmpty.map {
             assertEquals(false, it)
         }
     }
 
     @Test
-    fun getNowPlayingMovies() {
+    fun getNowPlayingMovies_MovieSortTypeNO_false() {
         moviesRepository.getNowPlayingMovies(MovieSortType.NO).isEmpty.map {
             assertEquals(false, it)
         }
+    }
 
+    @Test
+    fun getNowPlayingMovies_MovieSortTypeASC_false() {
         moviesRepository.getNowPlayingMovies(MovieSortType.ASC).isEmpty.map {
             assertEquals(false, it)
         }
+    }
 
+    @Test
+    fun getNowPlayingMovies_MovieSortTypeDESC_false() {
         moviesRepository.getNowPlayingMovies(MovieSortType.DESC).isEmpty.map {
             assertEquals(false, it)
         }
     }
 
     @Test
-    fun getMovieDateRelease() {
-        for (i in 0..1000) {
-            moviesRepository.getMovieDateRelease(i).map { data ->
-                assert(!data.isNullOrEmpty())
+    fun getMovieDateRelease_() {
+        for (i in -10..10) {
+            moviesRepository.getMovieDateRelease(i).map {
+                assertEquals(false, it.isNullOrEmpty())
             }
         }
     }

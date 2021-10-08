@@ -1,7 +1,6 @@
 package com.artelsv.petprojectsecond.di.module
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -11,7 +10,10 @@ import com.artelsv.petprojectsecond.data.database.dao.MovieDao
 import com.artelsv.petprojectsecond.data.datasource.*
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.domain.MoviesRepository
-import com.artelsv.petprojectsecond.domain.usecases.*
+import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
+import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
+import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
+import com.artelsv.petprojectsecond.domain.usecases.GetPopularMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDateReleaseUseCaseImpl
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDetailsUseCaseImpl
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetNowPlayingMoviesUseCaseImpl
@@ -21,6 +23,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -39,7 +42,7 @@ class AppModule {
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    Log.d("RoomDatabase", "onCreate")
+                    Timber.tag("RoomDatabase").d("onCreate")
                 }
             })
             .build()

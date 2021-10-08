@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
@@ -102,17 +103,17 @@ class MovieListFragment : DaggerFragment() {
     }
 
     private fun setObservers() {
-        compositeDisposable.add(
-            viewModel.nowPlayingPagingData.subscribe {
+        viewModel.nowPlayingPagingLiveData.observe(viewLifecycleOwner, {
+            it?.let {
                 nowPlayingAdapter.submitData(lifecycle, it)
             }
-        )
+        })
 
-        compositeDisposable.add(
-            viewModel.popularPagingData.subscribe {
+        viewModel.popularPagingLiveData.observe(viewLifecycleOwner, {
+            it?.let {
                 popularAdapter.submitData(lifecycle, it)
             }
-        )
+        })
 
         viewModel.loadingNowPlaying.observe(viewLifecycleOwner, {
             if (viewModel.progressCheck()) loadDone()
@@ -124,8 +125,8 @@ class MovieListFragment : DaggerFragment() {
     }
 
     private fun loadDone() {
-        if (binding.pbLoading.visibility != View.GONE) binding.pbLoading.visibility = View.GONE
-        if (binding.clMain.visibility != View.VISIBLE) binding.clMain.visibility = View.VISIBLE
+        if (binding.pbLoading.isVisible) binding.pbLoading.visibility = View.GONE
+        if (!binding.clMain.isVisible) binding.clMain.visibility = View.VISIBLE
     }
 
     private fun setMoviesNowPlayingRv() {

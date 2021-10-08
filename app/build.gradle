@@ -113,4 +113,6 @@ dependencies {
     // paging
     implementation "androidx.paging:paging-runtime-ktx:$paging"
     implementation "androidx.paging:paging-rxjava2-ktx:$paging"
+
+    implementation 'com.jakewharton.timber:timber:5.0.1'
 }

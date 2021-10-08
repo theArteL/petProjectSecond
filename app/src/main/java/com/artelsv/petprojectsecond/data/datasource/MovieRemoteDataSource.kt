@@ -9,6 +9,7 @@ import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieDetail
 import com.artelsv.petprojectsecond.domain.model.MovieType
 import io.reactivex.Single
+import timber.log.Timber
 import javax.inject.Inject
 
 class MovieRemoteDataSource @Inject constructor(private val moviesService: MoviesService) : MovieDataSource {
@@ -27,6 +28,7 @@ class MovieRemoteDataSource @Inject constructor(private val moviesService: Movie
         moviesService.getMovieDetail(movieId).map(MovieDetailMapper::toMovieDetail)
 
     override fun addMoviesToDb(data: List<Movie>, type: MovieType): List<Movie> {
+        Timber.tag(this.javaClass.simpleName).w("addMoviesToDb not impl, but called")
         return listOf() // выглядит как костыль, но пусть будет так
     }
 }

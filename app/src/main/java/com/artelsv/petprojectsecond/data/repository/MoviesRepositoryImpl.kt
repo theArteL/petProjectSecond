@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.flowable
+import com.artelsv.petprojectsecond.data.database.dao.MovieDao.Companion.PAGE_SIZE
 import com.artelsv.petprojectsecond.data.datasource.MovieDataSource
 import com.artelsv.petprojectsecond.data.datasource.NowPlayingMoviePagingSource
 import com.artelsv.petprojectsecond.data.datasource.PopularMoviePagingSource
@@ -27,14 +28,14 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override fun getPopularMovies(movieSortType: MovieSortType): Flowable<PagingData<Movie>> {
         return Pager(
-            config = PagingConfig(20),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { popularMoviePagingSource.create() }
         ).flowable
     }
 
     override fun getNowPlayingMovies(movieSortType: MovieSortType): Flowable<PagingData<Movie>> {
         return Pager(
-            config = PagingConfig(20),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { nowPlayingMoviePagingSource.create() }
         ).flowable
     }

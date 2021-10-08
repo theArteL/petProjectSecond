@@ -2,14 +2,14 @@ package com.artelsv.petprojectsecond.ui.moviedetail
 
 import android.view.View
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.*
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.PerformException
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
+import androidx.test.espresso.IdlingResource.ResourceCallback
+import androidx.test.espresso.action.ViewActions.actionWithAssertions
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.util.HumanReadables
 import androidx.test.espresso.util.TreeIterables
@@ -19,30 +19,13 @@ import com.artelsv.petprojectsecond.ui.movielist.MovieAdapter
 import com.artelsv.petprojectsecond.ui.movielist.MovieListFragment
 import junit.framework.TestCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.greaterThan
+import org.hamcrest.StringDescription
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.TimeoutException
-import androidx.test.espresso.IdlingResource.ResourceCallback
-
-import androidx.test.espresso.IdlingResource
-
-import androidx.test.espresso.IdlingRegistry
-
-import org.hamcrest.StringDescription
-
-import androidx.test.espresso.action.ViewActions.actionWithAssertions
-
-import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-
-import androidx.test.espresso.matcher.BoundedMatcher
-import org.hamcrest.Description
-import org.hamcrest.Matchers.anything
-import org.hamcrest.Matchers.greaterThan
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
-import java.util.concurrent.TimeUnit
 
 
 @ExperimentalCoroutinesApi
@@ -55,7 +38,7 @@ class MovieListToMovieDetailFragmentBackTest : TestCase() {
         onView(withId(R.id.rv_movies_now_playing))
             .perform(
                 waitUntil(hasItemCount(greaterThan(0))),
-                actionOnItemAtPosition<MovieAdapter.ViewHolder>(0, click()));
+                actionOnItemAtPosition<MovieAdapter.ViewHolder>(0, click()))
 
 //        onView(isRoot()).perform(waitId(R.id.fl_main_container, TimeUnit.SECONDS.toMillis(15))).check(ViewAssertions.matches(isDisplayed()))
 
@@ -144,7 +127,7 @@ private class LayoutChangeCallback(private val matcher: Matcher<View>) :
     }
 }
 
-fun waitId(viewId: Int, millis: Long): ViewAction? {
+fun waitId(viewId: Int, millis: Long): ViewAction {
     return object : ViewAction {
         override fun getConstraints(): Matcher<View> {
             return isRoot()

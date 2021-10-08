@@ -16,6 +16,7 @@ import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.utils.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -122,7 +123,7 @@ class MovieDetailViewModel @Inject constructor(
         loading.postValue(false)
         error.postValue(true)
 
-        Log.e(this.toString(), throwable.message.toString())
+        Timber.tag(this.toString()).e(throwable.message.toString())
     }
 
     companion object {
