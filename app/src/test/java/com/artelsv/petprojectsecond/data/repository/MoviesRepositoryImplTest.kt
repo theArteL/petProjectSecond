@@ -5,6 +5,7 @@ import com.artelsv.petprojectsecond.domain.MoviesRepository
 import com.artelsv.petprojectsecond.domain.model.*
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import io.reactivex.Flowable
 import io.reactivex.Single
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,9 +36,13 @@ class MoviesRepositoryImplTest {
         every { this@mockk.getNowPlayingMovies(MovieSortType.ASC) } returns Flowable.just(PagingData.from(listOf(movieNowPlaying, movieNowPlaying)))
         every { this@mockk.getNowPlayingMovies(MovieSortType.DESC) } returns Flowable.just(PagingData.from(listOf(movieNowPlaying, movieNowPlaying)))
 
-        every { this@mockk.getMovieDateRelease(allAny()) } returns Single.just(listOf(dateReleaseResultList, dateReleaseResultList))
+        every { this@mockk.getMovieDateRelease(-1) } returns Single.just(listOf(dateReleaseResultList.copy(iso = "-1")))
+        every { this@mockk.getMovieDateRelease(0) } returns Single.just(listOf(dateReleaseResultList.copy(iso = "0")))
+        every { this@mockk.getMovieDateRelease(1) } returns Single.just(listOf(dateReleaseResultList.copy(iso = "1")))
 
-        every { this@mockk.getMovieDetails(allAny()) } returns Single.just(movieDetail)
+        every { this@mockk.getMovieDetails(-1) } returns Single.just(movieDetail.copy(id = -1))
+        every { this@mockk.getMovieDetails(0) } returns Single.just(movieDetail.copy(id = 0))
+        every { this@mockk.getMovieDetails(1) } returns Single.just(movieDetail.copy(id = 1))
     }
 
     @Test
@@ -83,20 +88,50 @@ class MoviesRepositoryImplTest {
     }
 
     @Test
-    fun getMovieDateRelease_() {
-        for (i in -10..10) {
-            moviesRepository.getMovieDateRelease(i).map {
-                assertEquals(false, it.isNullOrEmpty())
-            }
+    fun getMovieDateRelease_NegativeId_True() {
+        moviesRepository.getMovieDateRelease(-1).map {
+            assertEquals(true, it.isNotEmpty() && it.first().iso == "-1")
+            verify(exactly = 1) { moviesRepository.getMovieDateRelease(-1) }
         }
     }
 
     @Test
-    fun getMovieDetails() {
-        for (i in 0..1000) {
-            moviesRepository.getMovieDetails(i).map { data ->
-                assert(data.id > 0 && data.title != "")
-            }
+    fun getMovieDateRelease_ZeroId_True() {
+        moviesRepository.getMovieDateRelease(0).map {
+            assertEquals(true, it.isNotEmpty() && it.first().iso == "0")
+            verify(exactly = 1) { moviesRepository.getMovieDateRelease(0) }
+        }
+    }
+
+    @Test
+    fun getMovieDateRelease_PositiveId_True() {
+        moviesRepository.getMovieDateRelease(1).map {
+            assertEquals(true, it.isNotEmpty() && it.first().iso == "1")
+            verify(exactly = 1) { moviesRepository.getMovieDateRelease(1) }
+        }
+    }
+
+    @Test
+    fun getMovieDetail_NegativeId_True() {
+        moviesRepository.getMovieDetails(-1).map {
+            assertEquals(true, it.id == -1)
+            verify(exactly = 1) { moviesRepository.getMovieDetails(-1) }
+        }
+    }
+
+    @Test
+    fun getMovieDetail_ZeroId_True() {
+        moviesRepository.getMovieDetails(0).map {
+            assertEquals(true, it.id == 0)
+            verify(exactly = 1) { moviesRepository.getMovieDetails(0) }
+        }
+    }
+
+    @Test
+    fun getMovieDetail_PositiveId_True() {
+        moviesRepository.getMovieDetails(1).map {
+            assertEquals(true, it.id == 1)
+            verify(exactly = 1) { moviesRepository.getMovieDetails(1) }
         }
     }
 }
