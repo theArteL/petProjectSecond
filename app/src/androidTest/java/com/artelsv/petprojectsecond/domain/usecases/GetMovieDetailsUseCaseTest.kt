@@ -19,31 +19,47 @@ class GetMovieDetailsUseCaseTest {
     private val movieDetail = MovieDetail(false, "", 0, listOf(1, 2), 0, "Russian", "MovieTitle", "MovieOverview", 5.0, "", "11.11.2011", 0, 0, "MovieTitle", false, 5.0, 1000, listOf(genre, genre), "", "", listOf(company, company), listOf(country, country), listOf(language, language), "Ok", "")
 
     private val movieRepository = mockk<MoviesRepositoryImpl> {
-        every { this@mockk.getMovieDetails(allAny()) } returns Single.just(movieDetail)
+        every { this@mockk.getMovieDetails(-100) } returns Single.just(movieDetail.copy(id = -100))
+        every { this@mockk.getMovieDetails(0) } returns Single.just(movieDetail.copy(id = 0))
+        every { this@mockk.getMovieDetails(100) } returns Single.just(movieDetail.copy(id = 100))
+        every { this@mockk.getMovieDetails(Integer.MAX_VALUE) } returns Single.just(movieDetail.copy(id = Integer.MAX_VALUE))
+        every { this@mockk.getMovieDetails(Integer.MIN_VALUE) } returns Single.just(movieDetail.copy(id = Integer.MIN_VALUE))
     }
 
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(movieRepository)
 
     @Test
-    fun invoke() {
+    fun invoke_NegativeMovieId_True() {
         getMovieDetailsUseCase.invoke(-100).map {
-            assertEquals(true, it != null)
+            assertEquals(true, it.id == -100)
         }
+    }
 
+    @Test
+    fun invoke_PositiveMovieId_True() {
         getMovieDetailsUseCase.invoke(100).map {
-            assertEquals(true, it != null)
+            assertEquals(true, it.id == 100)
         }
+    }
 
+    @Test
+    fun invoke_ZeroMovieId_True() {
         getMovieDetailsUseCase.invoke(0).map {
-            assertEquals(true, it != null)
+            assertEquals(true, it.id == 0)
         }
+    }
 
+    @Test
+    fun invoke_MaxIntegerMovieId_True() {
         getMovieDetailsUseCase.invoke(Integer.MAX_VALUE).map {
-            assertEquals(true, it != null)
+            assertEquals(true, it.id == Integer.MAX_VALUE)
         }
+    }
 
+    @Test
+    fun invoke_MinIntegerMovieId_True() {
         getMovieDetailsUseCase.invoke(Integer.MIN_VALUE).map {
-            assertEquals(true, it != null)
+            assertEquals(true, it.id == Integer.MIN_VALUE)
         }
     }
 }

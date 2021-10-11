@@ -27,15 +27,21 @@ class GetPopularMoviesUseCaseTest {
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(moviesRepository)
 
     @Test
-    fun invoke() {
+    fun invoke_SortTypeNo_False() {
         getPopularMoviesUseCase.invoke(MovieSortType.NO).isEmpty.map {
             assertEquals(false, it)
         }
+    }
 
+    @Test
+    fun invoke_SortTypeAsc_False() {
         getPopularMoviesUseCase.invoke(MovieSortType.ASC).isEmpty.map {
             assertEquals(false, it)
         }
+    }
 
+    @Test
+    fun invoke_SortTypeDesc_False() {
         getPopularMoviesUseCase.invoke(MovieSortType.DESC).isEmpty.map {
             assertEquals(false, it)
         }

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.icu.text.SimpleDateFormat
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.R
@@ -14,6 +13,7 @@ import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.utils.Constants
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -40,16 +40,18 @@ class MovieDetailViewModel @Inject constructor(
                 .invoke(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    // TODO: 07.10.2021 перепиши с использование flatMap вызова отдельного метода
+                .flatMap {
                     getReleaseDate(it)
+                }
+                .subscribe({
+                    handleSuccess()
                 }, {
                     handleError(it)
                 })
         )
     }
 
-    private fun getReleaseDate(movieDetail: MovieDetail, iso: String = DEFAULT_ISO) {
+    private fun getReleaseDate(movieDetail: MovieDetail, iso: String = DEFAULT_ISO) : Single<MovieDetail> {
         compositeDisposable.add(
             getMovieDateReleaseUseCase
                 .invoke(movieDetail.id, iso)
@@ -57,11 +59,12 @@ class MovieDetailViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     initData(movieDetail, it)
-                    handleSuccess()
                 }, {
                     handleError(it)
                 })
         )
+
+        return Single.just(movieDetail)
     }
 
     val imageUrl: MutableLiveData<String> = MutableLiveData("")

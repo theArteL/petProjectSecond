@@ -26,15 +26,21 @@ class GetNowPlayingMoviesUseCaseTest {
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase = GetNowPlayingMoviesUseCaseImpl(moviesRepository)
 
     @Test
-    fun invoke() {
+    fun invoke_SortTypeNo_False() {
         getNowPlayingMoviesUseCase.invoke(MovieSortType.NO).isEmpty.map {
             assertEquals(false, it)
         }
+    }
 
+    @Test
+    fun invoke_SortTypeAsc_False() {
         getNowPlayingMoviesUseCase.invoke(MovieSortType.ASC).isEmpty.map {
             assertEquals(false, it)
         }
+    }
 
+    @Test
+    fun invoke_SortTypeDesc_False() {
         getNowPlayingMoviesUseCase.invoke(MovieSortType.DESC).isEmpty.map {
             assertEquals(false, it)
         }

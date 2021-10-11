@@ -23,23 +23,35 @@ class GetMovieDateReleaseUseCaseTest {
     private val getMovieDateReleaseUseCase: GetMovieDateReleaseUseCase = GetMovieDateReleaseUseCaseImpl(movieRepository)
 
     @Test
-    fun invoke() {
+    fun invoke_NegativeMovieIdWithRuIso_True() {
         getMovieDateReleaseUseCase.invoke(-100, "RU").map {
             assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
+    }
 
+    @Test
+    fun invoke_ZeroMovieIdWithNotCorrectIso_True() {
         getMovieDateReleaseUseCase.invoke(0, "ADIAS").map {
             assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
+    }
 
+    @Test
+    fun invoke_PositiveMovieIdWithUsIso_True() {
         getMovieDateReleaseUseCase.invoke(100, "US").map {
             assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
+    }
 
+    @Test
+    fun invoke_MaxIntegerMovieIdWithEmptyIso_True() {
         getMovieDateReleaseUseCase.invoke(Integer.MAX_VALUE, "").map {
             assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
+    }
 
+    @Test
+    fun invoke_MinIntegerMovieIdWithEmojiIso_True() {
         getMovieDateReleaseUseCase.invoke(Integer.MIN_VALUE, "\uD83D\uDE0B\uD83D\uDE0B\uD83D\uDE0B").map {
             assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
