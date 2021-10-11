@@ -2,7 +2,9 @@ package com.artelsv.petprojectsecond.ui.movielist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.rxjava2.cachedIn
 import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieSortType
 import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
@@ -34,11 +36,11 @@ class MovieListViewModel @Inject constructor(
 
     private fun setup() {
         val nowPlayingPagingData: Flowable<PagingData<Movie>> by lazy {
-            getNowPlayingMoviesUseCase.invoke(MovieSortType.NO)
+            getNowPlayingMoviesUseCase.invoke(MovieSortType.NO).cachedIn(viewModelScope)
         }
 
         val popularPagingData: Flowable<PagingData<Movie>> by lazy {
-            getPopularMoviesUseCase.invoke(MovieSortType.NO)
+            getPopularMoviesUseCase.invoke(MovieSortType.NO).cachedIn(viewModelScope)
         }
 
         compositeDisposable.add(
