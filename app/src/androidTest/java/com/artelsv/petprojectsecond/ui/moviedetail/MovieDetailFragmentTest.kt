@@ -38,7 +38,9 @@ class MovieListToMovieDetailFragmentBackTest : TestCase() {
                 waitUntil(hasItemCount(greaterThan(0))),
                 actionOnItemAtPosition<MovieAdapter.ViewHolder>(0, click()))
 
-        onView(withId(R.id.fl_main_container)).check(matches(isDisplayed())).perform(pressBack())
+        onView(withId(R.id.fl_main_container))
+            .check(matches(isDisplayed()))
+            .perform(pressBack())
 
         onView(withId(R.id.fl_movie_list_main_container))
             .check(matches(isDisplayed()))
@@ -51,7 +53,9 @@ class MovieListToMovieDetailFragmentBackTest : TestCase() {
                 waitUntil(hasItemCount(greaterThan(0))),
                 actionOnItemAtPosition<MovieAdapter.ViewHolder>(1, click()))
 
-        onView(withId(R.id.fl_main_container)).check(matches(isDisplayed())).perform(pressBack())
+        onView(withId(R.id.fl_main_container))
+            .check(matches(isDisplayed()))
+            .perform(pressBack())
 
         onView(withId(R.id.fl_movie_list_main_container))
             .check(matches(isDisplayed()))
@@ -65,7 +69,9 @@ class MovieListToMovieDetailFragmentBackTest : TestCase() {
                     waitUntil(hasItemCount(greaterThan(0))),
                     actionOnItemAtPosition<MovieAdapter.ViewHolder>(-1, click()))
 
-            onView(withId(R.id.fl_main_container)).check(matches(isDisplayed())).perform(pressBack())
+            onView(withId(R.id.fl_main_container))
+                .check(matches(isDisplayed()))
+                .perform(pressBack())
 
             onView(withId(R.id.fl_movie_list_main_container))
                 .check(matches(isDisplayed()))

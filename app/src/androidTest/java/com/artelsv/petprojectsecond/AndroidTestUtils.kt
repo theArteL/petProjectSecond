@@ -86,35 +86,3 @@ private class LayoutChangeCallback(private val matcher: Matcher<View>) :
     }
 }
 
-fun waitId(viewId: Int, millis: Long): ViewAction {
-    return object : ViewAction {
-        override fun getConstraints(): Matcher<View> {
-            return ViewMatchers.isRoot()
-        }
-
-        override fun getDescription(): String {
-            return "wait for a specific view with id <$viewId> during $millis millis."
-        }
-
-        override fun perform(uiController: UiController, view: View) {
-            uiController.loopMainThreadUntilIdle()
-            val startTime = System.currentTimeMillis()
-            val endTime = startTime + millis
-            val viewMatcher = ViewMatchers.withId(viewId)
-            do {
-                for (child in TreeIterables.breadthFirstViewTraversal(view)) {
-                    // found view with required ID
-                    if (viewMatcher.matches(child)) {
-                        return
-                    }
-                }
-                uiController.loopMainThreadForAtLeast(50)
-            } while (System.currentTimeMillis() < endTime)
-            throw PerformException.Builder()
-                .withActionDescription(this.description)
-                .withViewDescription(HumanReadables.describe(view))
-                .withCause(TimeoutException())
-                .build()
-        }
-    }
-}

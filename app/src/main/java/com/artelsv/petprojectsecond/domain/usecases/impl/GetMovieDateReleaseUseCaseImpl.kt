@@ -13,21 +13,6 @@ class GetMovieDateReleaseUseCaseImpl @Inject constructor(
         getMovieDateReleaseModified(it, iso)
     }
 
-    private fun getMovieDateRelease(data: List<DateReleaseResult>, iso: String) : DateReleaseResult { // старая версия тут пока
-        var first = data.firstOrNull { filter -> filter.iso == iso }
-
-        if (first == null) { // если ру нету, то берем US
-            first = data.firstOrNull { filter -> filter.iso == DEFAULT_ISO }
-        }
-
-        if (first == null) { // если нету ру и юс, то берем первую
-            first = data.first()
-        }
-
-        return first
-    }
-
-    // TODO: 07.10.2021 изучай возможности котлина и читай чужой код :)
     private fun getMovieDateReleaseModified(data: List<DateReleaseResult>, iso: String) : DateReleaseResult =
         data.firstOrNull { filter -> filter.iso == iso } ?:
             data.firstOrNull { filter -> filter.iso == DEFAULT_ISO } ?:

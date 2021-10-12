@@ -8,7 +8,6 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.artelsv.petprojectsecond.R
-import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.hasItemCount
 import com.artelsv.petprojectsecond.ui.movielist.MovieAdapter
 import com.artelsv.petprojectsecond.waitUntil
@@ -32,8 +31,6 @@ class ScrollTest {
                 waitUntil(hasItemCount(Matchers.greaterThan(10))),
                 RecyclerViewActions.scrollToPosition<MovieAdapter.ViewHolder>(5)
             )
-
-        Thread.sleep(1000)
 
         Espresso.onView(ViewMatchers.withId(R.id.rv_movies_now_playing))
             .perform(RecyclerViewActions.actionOnItemAtPosition<MovieAdapter.ViewHolder>(0, ViewActions.click()))

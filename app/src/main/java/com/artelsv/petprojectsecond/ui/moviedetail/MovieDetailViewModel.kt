@@ -20,6 +20,7 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
+@SuppressLint("StaticFieldLeak")
 class MovieDetailViewModel @Inject constructor(
     private val context: Context,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,

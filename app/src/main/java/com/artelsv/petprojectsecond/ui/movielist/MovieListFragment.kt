@@ -15,7 +15,6 @@ import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
 import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
@@ -29,8 +28,6 @@ class MovieListFragment : DaggerFragment() {
     lateinit var router: Router
 
     private val binding: FragmentMovieListBinding by viewBinding(createMethod = CreateMethod.INFLATE)
-
-    private val compositeDisposable = CompositeDisposable()
 
     private val nowPlayingAdapter: MovieAdapter = MovieAdapter {
         it?.let {
@@ -94,12 +91,6 @@ class MovieListFragment : DaggerFragment() {
         binding.btnError.setOnClickListener {
 //            viewModel.getNowPlayingMovies(MovieSortType.NO)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        compositeDisposable.dispose()
     }
 
     private fun setObservers() {

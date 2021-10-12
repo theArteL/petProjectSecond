@@ -35,7 +35,7 @@ class MovieDetailViewModelTest : TestCase() {
 
     private lateinit var movieDetailViewModel: MovieDetailViewModel
 
-    val context = ApplicationProvider.getApplicationContext<Context>()
+    private val context: Context = ApplicationProvider.getApplicationContext()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

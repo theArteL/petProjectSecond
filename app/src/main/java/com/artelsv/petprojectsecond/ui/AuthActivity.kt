@@ -22,14 +22,4 @@ class AuthActivity : AppCompatActivity() {
 //            (application as App).getRouter().replaceScreen(ActivityScreen { Intent(this, MainActivity::class.java) })
         }
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//        (application as App).cicerone.getNavigatorHolder().setNavigator(appNavigator)
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        (application as App).cicerone.getNavigatorHolder().removeNavigator()
-//    }
 }
