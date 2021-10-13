@@ -1,6 +1,7 @@
 package com.artelsv.petprojectsecond.di.module
 
 import android.content.Context
+import android.service.autofill.UserData
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -9,15 +10,11 @@ import com.artelsv.petprojectsecond.data.database.MoviesDatabase
 import com.artelsv.petprojectsecond.data.database.dao.MovieDao
 import com.artelsv.petprojectsecond.data.datasource.*
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
+import com.artelsv.petprojectsecond.data.repository.UserRepositoryImpl
 import com.artelsv.petprojectsecond.domain.MoviesRepository
-import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
-import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
-import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
-import com.artelsv.petprojectsecond.domain.usecases.GetPopularMoviesUseCase
-import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDateReleaseUseCaseImpl
-import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDetailsUseCaseImpl
-import com.artelsv.petprojectsecond.domain.usecases.impl.GetNowPlayingMoviesUseCaseImpl
-import com.artelsv.petprojectsecond.domain.usecases.impl.GetPopularMoviesUseCaseImpl
+import com.artelsv.petprojectsecond.domain.UserRepository
+import com.artelsv.petprojectsecond.domain.usecases.*
+import com.artelsv.petprojectsecond.domain.usecases.impl.*
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_NAME
 import dagger.Binds
 import dagger.Module
@@ -48,11 +45,11 @@ class AppModule {
             .build()
 
     @Provides
-    fun bindMoviesDao(db: MoviesDatabase): MovieDao = db.getMovieDao()
+    fun providesMoviesDao(db: MoviesDatabase): MovieDao = db.getMovieDao()
 
     @ExperimentalCoroutinesApi
     @Provides
-    fun bindMoviesRepository(
+    fun providesMoviesRepository(
         @Named("movieLocalDataSource") localDataSource: MovieDataSource,
         @Named("movieRemoteDataSource") remoteDataSource: MovieDataSource,
         nowPlayingMoviePagingSource: NowPlayingMoviePagingSource.Factory,
@@ -64,6 +61,11 @@ class AppModule {
         popularMoviePagingSource
     )
 
+    @Provides
+    fun providesUserRepository(
+        @Named("userRemoteDataSource") userRemoteDataSource: UserDataSource
+    ): UserRepository = UserRepositoryImpl(userRemoteDataSource)
+
     @Module
     abstract class DataSourcesBinds {
 
@@ -74,6 +76,10 @@ class AppModule {
         @Binds
         @Named("movieRemoteDataSource")
         abstract fun bindRemoteDataSource(remoteDataSource: MovieRemoteDataSource): MovieDataSource
+
+        @Binds
+        @Named("userRemoteDataSource")
+        abstract fun bindUserRemoteDataSource(userRemoteDataSource: UserRemoteDataSource): UserDataSource
     }
 
     @Module
@@ -90,5 +96,8 @@ class AppModule {
 
         @Binds
         abstract fun bindGetMovieDateReleaseUseCase(getMovieDetailsUseCaseImpl: GetMovieDateReleaseUseCaseImpl): GetMovieDateReleaseUseCase
+
+        @Binds
+        abstract fun bindAuthAsGuest(authAsGuestUseCase: AuthAsGuestUseCaseImpl): AuthAsGuestUseCase
     }
 }

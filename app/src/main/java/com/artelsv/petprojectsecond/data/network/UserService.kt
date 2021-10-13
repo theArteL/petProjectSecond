@@ -2,12 +2,16 @@ package com.artelsv.petprojectsecond.data.network
 
 import com.artelsv.petprojectsecond.data.network.model.RequestTokenResponse
 import com.artelsv.petprojectsecond.data.network.model.SessionResponse
+import com.artelsv.petprojectsecond.data.network.model.auth.GuestSessionResponse
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface UserService {
+    @GET("/authentication/guest_session/new")
+    fun createGuestSession(): Single<GuestSessionResponse>
+
     @GET("/authentication/token/new")
     fun createRequestToken(): Single<RequestTokenResponse>
 
