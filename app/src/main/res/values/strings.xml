@@ -16,4 +16,10 @@
     <string name="menu_no">Без сортировки</string>
     <string name="menu_acs">По убыванию рейтинга</string>
     <string name="menu_desc">По возрастанию рейтинга</string>
+
+    <string name="auth_login">Войти</string>
+    <string name="auth_login_guest">Войти как гость</string>
+    <string name="auth_login_hint">Логин</string>
+    <string name="auth_password_hint">Пароль</string>
+    <string name="auth_title">Авторизация</string>
 </resources>
