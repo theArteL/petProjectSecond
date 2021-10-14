@@ -7,7 +7,7 @@ import io.reactivex.Single
 interface UserRepository {
 
     fun createGuestSession(): Single<String>
-    fun createRequestToken(): Single<RequestTokenResponse>
+    fun createRequestToken(): Single<String>
     fun createSession(requestToken: String): Single<SessionResponse>
     fun createSessionWithUser(
         requestToken: String,

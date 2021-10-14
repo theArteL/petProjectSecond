@@ -14,7 +14,7 @@ class UserRepositoryImpl @Inject constructor(
         return userRemoteDataSource.createGuestSession()
     }
 
-    override fun createRequestToken(): Single<RequestTokenResponse> {
+    override fun createRequestToken(): Single<String> {
         return userRemoteDataSource.createRequestToken()
     }
 

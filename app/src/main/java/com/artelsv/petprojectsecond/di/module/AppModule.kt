@@ -53,10 +53,6 @@ class AppModule {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideSharedPreferenceManager(pref: SharedPreferences) = SharedPreferenceManager(pref)
-
     @Provides
     fun providesMoviesDao(db: MoviesDatabase): MovieDao = db.getMovieDao()
 
@@ -111,6 +107,12 @@ class AppModule {
         abstract fun bindGetMovieDateReleaseUseCase(getMovieDetailsUseCaseImpl: GetMovieDateReleaseUseCaseImpl): GetMovieDateReleaseUseCase
 
         @Binds
-        abstract fun bindAuthAsGuest(authAsGuestUseCase: AuthAsGuestUseCaseImpl): AuthAsGuestUseCase
+        abstract fun bindAuthAsGuestUseCase(authAsGuestUseCase: AuthAsGuestUseCaseImpl): AuthAsGuestUseCase
+
+        @Binds
+        abstract fun bindAuthAsUserUseCase(authUserUseCase: AuthUserUseCaseImpl): AuthUserUseCase
+
+        @Binds
+        abstract fun bindGetRequestTokenUseCase(getRequestTokenUseCase: GetRequestTokenUseCaseImpl): GetRequestTokenUseCase
     }
 }

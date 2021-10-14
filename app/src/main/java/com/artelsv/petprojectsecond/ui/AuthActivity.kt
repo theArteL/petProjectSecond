@@ -38,7 +38,10 @@ class AuthActivity : AppCompatActivity() {
 
         binding.btnLoginGuest.setOnClickListener {
             viewModel.authAsGuest()
-//            (application as App).getRouter().replaceScreen(ActivityScreen { Intent(this, MainActivity::class.java) })
+        }
+
+        binding.btnLogin.setOnClickListener {
+            viewModel.createRequestTokenAndAuth()
         }
 
         viewModel.error.observe(this, {
@@ -48,6 +51,12 @@ class AuthActivity : AppCompatActivity() {
         })
 
         viewModel.guestSession.observe(this, {
+            it?.let {
+                if (it) router.newRootScreen(Screens.mainActivity(this))
+            }
+        })
+
+        viewModel.session.observe(this, {
             it?.let {
                 if (it) router.newRootScreen(Screens.mainActivity(this))
             }

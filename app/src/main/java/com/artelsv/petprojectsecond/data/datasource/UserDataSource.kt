@@ -7,7 +7,7 @@ import io.reactivex.Single
 interface UserDataSource {
 
     fun createGuestSession(): Single<String>
-    fun createRequestToken(): Single<RequestTokenResponse>
+    fun createRequestToken(): Single<String>
     fun createSession(requestToken: String): Single<SessionResponse>
     fun createSessionWithUser(
         requestToken: String,

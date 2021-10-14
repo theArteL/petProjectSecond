@@ -12,7 +12,7 @@ interface UserService {
     @GET("/3/authentication/guest_session/new")
     fun createGuestSession(): Single<GuestSessionResponse>
 
-    @GET("/authentication/token/new")
+    @GET("/3/authentication/token/new")
     fun createRequestToken(): Single<RequestTokenResponse>
 
     @POST("authentication/session/new")

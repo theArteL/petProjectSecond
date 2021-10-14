@@ -31,6 +31,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.login}"
                 android:hint="@string/auth_login_hint"
                 android:inputType="text" />
 
@@ -44,6 +45,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.password}"
                 android:hint="@string/auth_password_hint"
                 android:inputType="textPassword" />
 
