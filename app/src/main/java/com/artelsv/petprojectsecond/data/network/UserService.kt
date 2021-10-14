@@ -9,7 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface UserService {
-    @GET("/authentication/guest_session/new")
+    @GET("/3/authentication/guest_session/new")
     fun createGuestSession(): Single<GuestSessionResponse>
 
     @GET("/authentication/token/new")

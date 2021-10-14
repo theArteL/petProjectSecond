@@ -1,7 +1,7 @@
 package com.artelsv.petprojectsecond.di.module
 
 import android.content.Context
-import android.service.autofill.UserData
+import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -16,6 +16,7 @@ import com.artelsv.petprojectsecond.domain.UserRepository
 import com.artelsv.petprojectsecond.domain.usecases.*
 import com.artelsv.petprojectsecond.domain.usecases.impl.*
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_NAME
+import com.artelsv.petprojectsecond.utils.Constants.PREF_NAME
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -24,6 +25,8 @@ import timber.log.Timber
 import javax.inject.Named
 import javax.inject.Singleton
 
+
+@ExperimentalCoroutinesApi
 @Module(includes = [ViewModelModule::class, NetworkModule::class, AppModule.DataSourcesBinds::class, AppModule.UseCasesBinds::class])
 class AppModule {
 
@@ -43,6 +46,16 @@ class AppModule {
                 }
             })
             .build()
+
+    @Provides
+    @Singleton
+    fun provideSharedPreference(context: Context): SharedPreferences {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
+
+//    @Provides
+//    @Singleton
+//    fun provideSharedPreferenceManager(pref: SharedPreferences) = SharedPreferenceManager(pref)
 
     @Provides
     fun providesMoviesDao(db: MoviesDatabase): MovieDao = db.getMovieDao()

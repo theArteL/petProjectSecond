@@ -4,20 +4,24 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.artelsv.petprojectsecond.ui.AuthViewModel" />
+
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/default_padding"
-        android:gravity="center">
+        android:padding="@dimen/default_padding">
 
         <com.google.android.material.textview.MaterialTextView
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/auth_title"
-            style="@style/TextAppearance.AppCompat.Title"/>
+            android:text="@string/auth_title" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -27,8 +31,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/auth_login_hint"/>
+                android:hint="@string/auth_login_hint"
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -40,8 +44,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="@string/auth_password_hint"/>
+                android:hint="@string/auth_password_hint"
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

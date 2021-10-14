@@ -1,18 +1,18 @@
 package com.artelsv.petprojectsecond.data.datasource
 
-import android.service.autofill.UserData
 import com.artelsv.petprojectsecond.data.network.UserService
 import com.artelsv.petprojectsecond.data.network.model.RequestTokenResponse
 import com.artelsv.petprojectsecond.data.network.model.SessionResponse
-import com.artelsv.petprojectsecond.data.network.model.auth.GuestSessionResponse
 import io.reactivex.Single
 import javax.inject.Inject
 
 class UserRemoteDataSource @Inject constructor(
     private val userService: UserService
 ) : UserDataSource {
-    override fun createGuestSession(): Single<GuestSessionResponse> {
-        return userService.createGuestSession()
+    override fun createGuestSession(): Single<String> {
+        return userService.createGuestSession().map {
+            it.guestSessionId
+        }
     }
 
     override fun createRequestToken(): Single<RequestTokenResponse> {

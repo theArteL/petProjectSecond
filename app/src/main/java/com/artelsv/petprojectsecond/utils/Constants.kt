@@ -6,4 +6,6 @@ object Constants {
 
     const val DATABASE_NAME = "movies"
     const val DATABASE_MOVIE_TABLE = "movies"
+
+    const val PREF_NAME = "secondStudyPref"
 }
