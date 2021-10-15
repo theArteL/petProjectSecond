@@ -1,5 +1,6 @@
 package com.artelsv.petprojectsecond.ui
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.domain.usecases.AuthAsGuestUseCase
 import com.artelsv.petprojectsecond.domain.usecases.AuthUserUseCase
@@ -24,8 +25,27 @@ class AuthViewModel @Inject constructor(
 
     val error = MutableLiveData<String>(null)
 
+    val requestToken = MutableLiveData("")
     val session = MutableLiveData(false)
     val guestSession = MutableLiveData(false)
+
+    init {
+        getRequestToken()
+    }
+
+    private fun getRequestToken() {
+        compositeDisposable.add(
+            getRequestTokenUseCase.invoke()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map { requestToken.postValue(it) }
+                .subscribe({
+
+                }, {
+
+                })
+        )
+    }
 
     fun authAsGuest() {
         compositeDisposable.add(
@@ -42,32 +62,23 @@ class AuthViewModel @Inject constructor(
         )
     }
 
-    private fun authAsUser(requestToken: String, login: String?, password: String?) {
-
-        if (login.isNullOrEmpty()) return
-        if (password.isNullOrEmpty()) return
+    fun authAsUser() {
+        val requestToken = requestToken.value ?: return
+        val login = login.value ?: return
+        val password = password.value ?: return
 
         compositeDisposable.add(
             authUserUseCase.invoke(requestToken, login, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                .map {
                     preferenceManager.addSession(it)
                     preferenceManager.addAuth(true)
-                    session.postValue(preferenceManager.getSession() != null)
-                }, {
-
-                })
-        )
-    }
-
-    fun createRequestTokenAndAuth() {
-        compositeDisposable.add(
-            getRequestTokenUseCase.invoke()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                    session.postValue(true)
+                    Log.e("a", session.value.toString())
+                }
                 .subscribe({
-                    authAsUser(it, login.value!!, password.value!!)
+
                 }, {
 
                 })

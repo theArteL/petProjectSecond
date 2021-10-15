@@ -14,7 +14,7 @@ class AuthUserUseCaseImpl @Inject constructor(private val userRepository: UserRe
             login,
             password
         ).map {
-            it.sessionId
+            it.requestToken
         }
     }
 }

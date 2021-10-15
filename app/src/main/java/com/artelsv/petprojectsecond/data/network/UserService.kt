@@ -18,6 +18,7 @@ interface UserService {
     @POST("authentication/session/new")
     fun createSession(@Body body: HashMap<*, *>): Single<SessionResponse>
 
-    @POST("authentication/token/validate_with_login")
-    fun createSessionWithUser(@Body body: HashMap<*, *>): Single<SessionResponse>
+    @POST("/3/authentication/token/validate_with_login")
+    @JvmSuppressWildcards
+    fun createSessionWithUser(@Body body: Map<String, String>): Single<SessionResponse>
 }

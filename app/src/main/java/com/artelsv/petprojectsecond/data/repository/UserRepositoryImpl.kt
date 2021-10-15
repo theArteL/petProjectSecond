@@ -29,8 +29,10 @@ class UserRepositoryImpl @Inject constructor(
         login: String,
         password: String
     ): Single<SessionResponse> {
-        return userRemoteDataSource.createSession(
-            requestToken
+        return userRemoteDataSource.createSessionWithUser(
+            requestToken,
+            login,
+            password
         )
     }
 }

@@ -41,7 +41,7 @@ class AuthActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
-            viewModel.createRequestTokenAndAuth()
+            viewModel.authAsUser()
         }
 
         viewModel.error.observe(this, {
