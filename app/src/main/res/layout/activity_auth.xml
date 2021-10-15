@@ -33,9 +33,9 @@
                 android:id="@+id/et_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.login}"
                 android:hint="@string/auth_login_hint"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@={viewModel.login}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,9 +49,9 @@
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.password}"
                 android:hint="@string/auth_password_hint"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:text="@={viewModel.password}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
