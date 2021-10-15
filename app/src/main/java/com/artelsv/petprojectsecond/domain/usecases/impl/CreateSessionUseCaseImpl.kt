@@ -1,7 +1,6 @@
 package com.artelsv.petprojectsecond.domain.usecases.impl
 
 import com.artelsv.petprojectsecond.domain.UserRepository
-import com.artelsv.petprojectsecond.domain.usecases.AuthUserUseCase
 import com.artelsv.petprojectsecond.domain.usecases.CreateSessionUseCase
 import io.reactivex.Single
 import javax.inject.Inject

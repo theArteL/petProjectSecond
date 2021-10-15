@@ -1,8 +1,6 @@
 package com.artelsv.petprojectsecond.data.datasource
 
 import com.artelsv.petprojectsecond.data.network.UserService
-import com.artelsv.petprojectsecond.data.network.model.RequestTokenResponse
-import com.artelsv.petprojectsecond.data.network.model.SessionResponse
 import io.reactivex.Single
 import javax.inject.Inject
 

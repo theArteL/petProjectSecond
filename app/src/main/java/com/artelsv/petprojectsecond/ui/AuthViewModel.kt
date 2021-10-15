@@ -1,6 +1,5 @@
 package com.artelsv.petprojectsecond.ui
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.domain.usecases.AuthAsGuestUseCase
 import com.artelsv.petprojectsecond.domain.usecases.AuthUserUseCase
@@ -8,12 +7,9 @@ import com.artelsv.petprojectsecond.domain.usecases.CreateSessionUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetRequestTokenUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.utils.SharedPreferenceManager
-import io.reactivex.Single
-import io.reactivex.SingleSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
-import kotlin.math.log
 
 class AuthViewModel @Inject constructor(
     private val authAsGuestUseCase: AuthAsGuestUseCase,
