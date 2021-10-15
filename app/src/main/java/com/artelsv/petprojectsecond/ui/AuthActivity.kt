@@ -3,6 +3,7 @@ package com.artelsv.petprojectsecond.ui
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.ActivityAuthBinding
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -36,6 +37,11 @@ class AuthActivity : AppCompatActivity() {
 
         appNavigator = AppNavigator(this, R.id.container)
 
+        setListeners(binding)
+        setObservers(binding)
+    }
+
+    private fun setListeners(binding: ActivityAuthBinding) {
         binding.btnLoginGuest.setOnClickListener {
             viewModel.authAsGuest()
         }
@@ -44,6 +50,18 @@ class AuthActivity : AppCompatActivity() {
             viewModel.authAsUser()
         }
 
+        binding.etLogin.addTextChangedListener {
+            binding.tilLogin.error = null
+            binding.tilLogin.isErrorEnabled = false
+        }
+
+        binding.etPassword.addTextChangedListener {
+            binding.tilPassword.error = null
+            binding.tilLogin.isErrorEnabled = false
+        }
+    }
+
+    private fun setObservers(binding: ActivityAuthBinding) {
         viewModel.error.observe(this, {
             it?.let {
                 Toast.makeText(this, it, Toast.LENGTH_LONG).show()
@@ -59,6 +77,20 @@ class AuthActivity : AppCompatActivity() {
         viewModel.session.observe(this, {
             it?.let {
                 if (it) router.newRootScreen(Screens.mainActivity(this))
+            }
+        })
+
+        viewModel.loginError.observe(this, {
+            if (!it.isNullOrEmpty()) {
+                binding.tilLogin.error = it
+                viewModel.loginError.postValue("")
+            }
+        })
+
+        viewModel.passwordError.observe(this, {
+            if (!it.isNullOrEmpty()) {
+                binding.tilPassword.error = it
+                viewModel.passwordError.postValue("")
             }
         })
     }

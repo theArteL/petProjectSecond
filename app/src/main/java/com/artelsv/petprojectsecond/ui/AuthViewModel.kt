@@ -21,6 +21,9 @@ class AuthViewModel @Inject constructor(
     val login = MutableLiveData("")
     val password = MutableLiveData("")
 
+    val loginError = MutableLiveData("")
+    val passwordError = MutableLiveData("")
+
     val error = MutableLiveData<String>(null)
 
     val requestToken = MutableLiveData("")
@@ -79,12 +82,12 @@ class AuthViewModel @Inject constructor(
     }
 
     fun authAsUser() {
+        if (!validateAuth(login.value, password.value)) return
+
         val requestToken = requestToken.value ?: return
-        val login = login.value ?: return
-        val password = password.value ?: return
 
         compositeDisposable.add(
-            authUserUseCase.invoke(requestToken, login, password)
+            authUserUseCase.invoke(requestToken, login.value!!, password.value!!) // использую тут !! из-за проверки выше (по идеи не могут быть пустыми или null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
@@ -96,5 +99,18 @@ class AuthViewModel @Inject constructor(
 
                 })
         )
+    }
+
+    private fun validateAuth(login: String?, password: String?): Boolean {
+        if (!(!login.isNullOrEmpty() && login.length > LOGIN_SIZE - 1)) loginError.postValue(LOGIN_ERROR)
+        if (!(!password.isNullOrEmpty() && password.length > LOGIN_SIZE - 1)) passwordError.postValue(PASSWORD_ERROR)
+        return (!login.isNullOrEmpty() && login.length > LOGIN_SIZE - 1) && (!password.isNullOrEmpty() && password.length > PASSWORD_SIZE - 1)
+    }
+
+    companion object {
+        const val LOGIN_SIZE = 6
+        const val PASSWORD_SIZE = 6
+        const val LOGIN_ERROR = "Минимум 6 символов"
+        const val PASSWORD_ERROR = "Минимум 6 символов"
     }
 }
