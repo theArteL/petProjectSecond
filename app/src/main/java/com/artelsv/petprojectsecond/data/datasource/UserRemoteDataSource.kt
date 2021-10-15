@@ -21,21 +21,25 @@ class UserRemoteDataSource @Inject constructor(
         }
     }
 
-    override fun createSession(requestToken: String): Single<SessionResponse> {
-        return Single.error(Throwable("a"))
+    override fun createSession(requestToken: String): Single<String> {
+        return userService.createSession(
+            mapOf(
+                "request_token" to requestToken
+            )
+        ).map { it.sessionId }
     }
 
     override fun createSessionWithUser(
         requestToken: String,
         login: String,
         password: String
-    ): Single<SessionResponse> {
+    ): Single<String> {
         return userService.createSessionWithUser(
             hashMapOf(
                 "username" to login,
                 "password" to password,
                 "request_token" to requestToken
             )
-        )
+        ).map { it.requestToken }
     }
 }

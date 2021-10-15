@@ -18,7 +18,7 @@ class UserRepositoryImpl @Inject constructor(
         return userRemoteDataSource.createRequestToken()
     }
 
-    override fun createSession(requestToken: String): Single<SessionResponse> {
+    override fun createSession(requestToken: String): Single<String> {
         return userRemoteDataSource.createSession(
             requestToken
         )
@@ -28,7 +28,7 @@ class UserRepositoryImpl @Inject constructor(
         requestToken: String,
         login: String,
         password: String
-    ): Single<SessionResponse> {
+    ): Single<String> {
         return userRemoteDataSource.createSessionWithUser(
             requestToken,
             login,

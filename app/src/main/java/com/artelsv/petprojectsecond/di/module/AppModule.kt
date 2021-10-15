@@ -114,5 +114,8 @@ class AppModule {
 
         @Binds
         abstract fun bindGetRequestTokenUseCase(getRequestTokenUseCase: GetRequestTokenUseCaseImpl): GetRequestTokenUseCase
+
+        @Binds
+        abstract fun bindCreateSession(createSessionUseCase: CreateSessionUseCaseImpl): CreateSessionUseCase
     }
 }
