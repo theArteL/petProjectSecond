@@ -13,10 +13,15 @@ class SharedPreferenceManager @Inject constructor(
 
     fun addSession(session: String) {
         addValue(session, KEY_SESSION)
+
+        removeGuestSession()
     }
 
     fun addGuestSession(guestSession: String) {
         addValue(guestSession, KEY_GUEST_SESSION)
+
+        removeSession()
+        removeAuth()
     }
 
     fun getSession(): String? {

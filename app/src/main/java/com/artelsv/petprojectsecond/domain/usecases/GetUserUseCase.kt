@@ -5,4 +5,6 @@ import io.reactivex.Single
 
 interface GetUserUseCase {
     operator fun invoke(): Single<User>
+
+    fun getLocalUser(): User?
 }

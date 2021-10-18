@@ -20,7 +20,7 @@
             android:id="@+id/cl_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_popular"
@@ -33,6 +33,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_start_margin"
+                android:layout_marginTop="@dimen/default_top_margin"
+                android:layout_marginEnd="@dimen/default_end_margin"
+                android:text="@{viewModel.user.username}"
+                android:textColor="@color/purple_500"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:gravity="end"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_movies_popular"
@@ -79,31 +92,31 @@
             android:layout_gravity="center"
             android:visibility="visible"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="@android:color/white"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="@{viewModel.error ? View.VISIBLE : View.GONE}">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@android:color/white"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="vertical"-->
+<!--            android:visibility="@{viewModel.error ? View.VISIBLE : View.GONE}">-->
 
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/movies_list_error_title"
-                android:textSize="18sp" />
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="@string/movies_list_error_title"-->
+<!--                android:textSize="18sp" />-->
 
-            <Button
-                android:id="@+id/btn_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/default_top_margin"
-                android:text="@string/movies_list_error_button" />
+<!--            <Button-->
+<!--                android:id="@+id/btn_error"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="@dimen/default_top_margin"-->
+<!--                android:text="@string/movies_list_error_button" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
     </FrameLayout>
 </layout>

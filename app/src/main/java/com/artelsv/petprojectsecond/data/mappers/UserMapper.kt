@@ -3,6 +3,8 @@ package com.artelsv.petprojectsecond.data.mappers
 import com.artelsv.petprojectsecond.data.network.model.auth.AvatarResponse
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
 import com.artelsv.petprojectsecond.domain.model.Avatar
+import com.artelsv.petprojectsecond.domain.model.Gravatar
+import com.artelsv.petprojectsecond.domain.model.Tmdb
 import com.artelsv.petprojectsecond.domain.model.User
 
 object UserMapper {
@@ -17,5 +19,5 @@ object UserMapper {
         user.username
     )
 
-    private fun avatarResponseToAvatar(avatar: AvatarResponse) = Avatar(avatar.hash)
+    private fun avatarResponseToAvatar(avatar: AvatarResponse) = Avatar(Gravatar(avatar.gravatar.hash), Tmdb(avatar.tmdb.avatarPath))
 }

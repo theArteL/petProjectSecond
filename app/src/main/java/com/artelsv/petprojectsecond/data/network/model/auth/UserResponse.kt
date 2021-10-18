@@ -21,6 +21,15 @@ data class UserResponse(
 
 // не стал выносить в отдельный класс, ибо не вижу смысла
 data class AvatarResponse(
-    @SerializedName("gravatar")
-    val hash: String
+    @SerializedName("gravatar") val gravatar : GravatarResponse,
+    @SerializedName("tmdb") val tmdb : TmdbResponse
+)
+
+data class TmdbResponse (
+
+    @SerializedName("avatar_path") val avatarPath : String?
+)
+data class GravatarResponse (
+
+    @SerializedName("hash") val hash : String
 )

@@ -2,6 +2,7 @@ package com.artelsv.petprojectsecond.data.repository
 
 import com.artelsv.petprojectsecond.data.datasource.UserDataSource
 import com.artelsv.petprojectsecond.data.mappers.UserMapper
+import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
 import com.artelsv.petprojectsecond.domain.UserRepository
 import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.utils.SharedPreferenceManager
@@ -12,6 +13,8 @@ class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserDataSource,
     private val preferenceManager: SharedPreferenceManager
 ) : UserRepository {
+    private var user: User? = null
+
     override fun createGuestSession(): Single<String> {
         return userRemoteDataSource.createGuestSession()
             .map {
@@ -46,8 +49,23 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override fun getUser(): Single<User> {
-        return userRemoteDataSource.getUser(
-            preferenceManager.getSession() ?: return Single.error(Throwable("Session is empty"))
-        ).map(UserMapper::userResponseToUser)
+        return if (preferenceManager.getAuth()) {
+            userRemoteDataSource.getUser(
+                preferenceManager.getSession()!!
+            ).map {
+                setUser(it)
+            }
+        } else {
+            Single.error(Throwable("Not auth"))
+        }
+    }
+
+    private fun setUser(mUser: UserResponse): User {
+        user = UserMapper.userResponseToUser(mUser)
+        return user!!
+    }
+
+    override fun getLocalUser(): User? {
+        return user
     }
 }

@@ -7,18 +7,26 @@ import androidx.paging.PagingData
 import androidx.paging.rxjava2.cachedIn
 import com.artelsv.petprojectsecond.domain.model.Movie
 import com.artelsv.petprojectsecond.domain.model.MovieSortType
+import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetPopularMoviesUseCase
+import com.artelsv.petprojectsecond.domain.usecases.GetUserUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class MovieListViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase
+    private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
+    private val getUserUseCase: GetUserUseCase
 ) : BaseViewModel() {
+
+    val user = MutableLiveData<User>(null)
 
     val loadingPopular = MutableLiveData(false)
     val loadingNowPlaying = MutableLiveData(false)
@@ -35,6 +43,8 @@ class MovieListViewModel @Inject constructor(
     }
 
     private fun setup() {
+        getUser()
+
         val nowPlayingPagingData: Flowable<PagingData<Movie>> by lazy {
             getNowPlayingMoviesUseCase.invoke(MovieSortType.NO).cachedIn(viewModelScope)
         }
@@ -53,6 +63,21 @@ class MovieListViewModel @Inject constructor(
             popularPagingData.subscribe {
                 mPopularPagingLiveData.postValue(it)
             }
+        )
+    }
+
+    private fun getUser() {
+        compositeDisposable.add(getUserUseCase.invoke()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                user.postValue(it)
+            }
+            .subscribe({
+
+            }, {
+                Timber.e(it)
+            })
         )
     }
 

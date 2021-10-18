@@ -12,5 +12,13 @@ data class User(
 
 // не стал выносить в отдельный класс, ибо не вижу смысла
 data class Avatar(
-    val hash: String
+    val gravatar : Gravatar,
+    val tmdb : Tmdb
+)
+
+data class Tmdb(
+    val avatarPath : String?
+)
+data class Gravatar (
+    val hash : String
 )

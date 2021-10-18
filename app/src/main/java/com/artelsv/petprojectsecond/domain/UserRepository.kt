@@ -15,4 +15,5 @@ interface UserRepository {
     ): Single<String>
 
     fun getUser(): Single<User>
+    fun getLocalUser(): User?
 }

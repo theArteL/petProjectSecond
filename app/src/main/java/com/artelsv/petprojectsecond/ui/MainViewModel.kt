@@ -12,22 +12,4 @@ class MainViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase
 ): BaseViewModel() {
 
-    init {
-        getUser()
-    }
-
-    private fun getUser() {
-        compositeDisposable.add(getUserUseCase.invoke()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                Timber.tag("User").i(Throwable(it.toString()))
-            }
-            .subscribe({
-
-            }, {
-
-            })
-        )
-    }
 }

@@ -16,6 +16,7 @@ import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
 import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -88,9 +89,9 @@ class MovieListFragment : DaggerFragment() {
     }
 
     private fun setListeners() {
-        binding.btnError.setOnClickListener {
+//        binding.btnError.setOnClickListener {
 //            viewModel.getNowPlayingMovies(MovieSortType.NO)
-        }
+//        }
     }
 
     private fun setObservers() {

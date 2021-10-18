@@ -12,4 +12,8 @@ class GetUserUseCaseImpl @Inject constructor(
     override fun invoke(): Single<User> {
         return userRepository.getUser()
     }
+
+    override fun getLocalUser(): User? {
+        return userRepository.getLocalUser()
+    }
 }
