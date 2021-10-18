@@ -1,21 +1,23 @@
 package com.artelsv.petprojectsecond.ui
 
 import androidx.lifecycle.MutableLiveData
-import com.artelsv.petprojectsecond.domain.usecases.AuthAsGuestUseCase
-import com.artelsv.petprojectsecond.domain.usecases.AuthUserUseCase
-import com.artelsv.petprojectsecond.domain.usecases.CreateSessionUseCase
-import com.artelsv.petprojectsecond.domain.usecases.GetRequestTokenUseCase
+import com.artelsv.petprojectsecond.domain.usecases.*
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
     private val authAsGuestUseCase: AuthAsGuestUseCase,
     private val getRequestTokenUseCase: GetRequestTokenUseCase,
     private val authUserUseCase: AuthUserUseCase,
-    private val createSessionUseCase: CreateSessionUseCase
+    private val createSessionUseCase: CreateSessionUseCase,
+    private val userUseCase: GetUserUseCase
 ) : BaseViewModel() {
+    val loading = MutableLiveData(true)
+    val auth = MutableLiveData(false)
+
     val login = MutableLiveData("")
     val password = MutableLiveData("")
 
@@ -30,6 +32,24 @@ class AuthViewModel @Inject constructor(
 
     init {
         getRequestToken()
+        checkAuth()
+    }
+
+    private fun checkAuth() {
+        compositeDisposable.add(userUseCase.invoke()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                auth.postValue(true)
+            }
+            .subscribe({
+
+            }, {
+                loading.postValue(false)
+//                error.postValue(it.localizedMessage)
+                Timber.tag("auth").i(it.localizedMessage)
+            })
+        )
     }
 
     private fun getRequestToken() {

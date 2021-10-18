@@ -8,7 +8,9 @@ data class User(
     val name: String,
     val includeAdult: String,
     val username: String
-)
+) {
+    fun getUsernameValue() = username
+}
 
 // не стал выносить в отдельный класс, ибо не вижу смысла
 data class Avatar(

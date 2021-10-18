@@ -16,7 +16,6 @@ import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
 import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -44,7 +43,7 @@ class MovieListFragment : DaggerFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -92,6 +91,10 @@ class MovieListFragment : DaggerFragment() {
 //        binding.btnError.setOnClickListener {
 //            viewModel.getNowPlayingMovies(MovieSortType.NO)
 //        }
+
+        binding.tvUser.setOnClickListener {
+            router.navigateTo(Screens.profile())
+        }
     }
 
     private fun setObservers() {

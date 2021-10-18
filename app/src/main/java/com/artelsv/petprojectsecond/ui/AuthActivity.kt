@@ -62,6 +62,12 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun setObservers(binding: ActivityAuthBinding) {
+        viewModel.auth.observe(this, {
+            if (it != null && it) {
+                router.newRootScreen(Screens.mainActivity(this))
+            }
+        })
+
         viewModel.error.observe(this, {
             it?.let {
                 Toast.makeText(this, it, Toast.LENGTH_LONG).show()
