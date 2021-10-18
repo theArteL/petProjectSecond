@@ -1,9 +1,9 @@
-package com.artelsv.petprojectsecond.data.network.model
+package com.artelsv.petprojectsecond.data.network.model.auth
 
 import com.google.gson.annotations.SerializedName
 
 data class SessionResponse(
-    val success: Boolean? = null,
+    @SerializedName("success") val success: Boolean? = null,
     @SerializedName("session_id") val sessionId: String? = null,
     @SerializedName("expires_at") val expiresAt: String? = null,
     @SerializedName("request_token") val requestToken: String? = null,

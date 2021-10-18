@@ -6,7 +6,6 @@ import com.artelsv.petprojectsecond.domain.usecases.AuthUserUseCase
 import com.artelsv.petprojectsecond.domain.usecases.CreateSessionUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetRequestTokenUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
-import com.artelsv.petprojectsecond.utils.SharedPreferenceManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -15,8 +14,7 @@ class AuthViewModel @Inject constructor(
     private val authAsGuestUseCase: AuthAsGuestUseCase,
     private val getRequestTokenUseCase: GetRequestTokenUseCase,
     private val authUserUseCase: AuthUserUseCase,
-    private val createSessionUseCase: CreateSessionUseCase,
-    private val preferenceManager: SharedPreferenceManager
+    private val createSessionUseCase: CreateSessionUseCase
 ) : BaseViewModel() {
     val login = MutableLiveData("")
     val password = MutableLiveData("")
@@ -54,9 +52,7 @@ class AuthViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    preferenceManager.addGuestSession(it)
-
-                    guestSession.postValue(preferenceManager.getSession() != null)
+                    guestSession.postValue(true)
                 }, {
                     error.postValue(it.localizedMessage)
                 })
@@ -69,14 +65,12 @@ class AuthViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
-                    preferenceManager.addSession(it)
-                    preferenceManager.addAuth(true)
-                    session.postValue(preferenceManager.getSession() != null)
+                    session.postValue(true)
                 }
                 .subscribe({
 
                 }, {
-
+                    error.postValue(it.localizedMessage)
                 })
         )
     }
@@ -96,7 +90,7 @@ class AuthViewModel @Inject constructor(
                 .subscribe({
 
                 }, {
-
+                    error.postValue(it.localizedMessage)
                 })
         )
     }

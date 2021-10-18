@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.data.network.model
+package com.artelsv.petprojectsecond.data.network.model.auth
 
 import com.google.gson.annotations.SerializedName
 

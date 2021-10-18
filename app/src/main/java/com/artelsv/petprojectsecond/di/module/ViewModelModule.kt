@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.artelsv.petprojectsecond.di.ViewModelKey
 import com.artelsv.petprojectsecond.di.factory.ViewModelFactory
 import com.artelsv.petprojectsecond.ui.AuthViewModel
+import com.artelsv.petprojectsecond.ui.MainViewModel
+import com.artelsv.petprojectsecond.ui.favoritesmovies.FavoriteMoviesViewModel
 import com.artelsv.petprojectsecond.ui.moviedetail.MovieDetailViewModel
 import com.artelsv.petprojectsecond.ui.movielist.MovieListViewModel
 import dagger.Binds
@@ -33,4 +35,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MovieDetailViewModel::class)
     abstract fun providesAuthViewModel(viewModel: AuthViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FavoriteMoviesViewModel::class)
+    abstract fun providesFavoriteMoviesViewModel(viewModel: FavoriteMoviesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    abstract fun providesMainViewModel(viewModel: MainViewModel): ViewModel
 }

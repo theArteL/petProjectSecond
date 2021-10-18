@@ -1,6 +1,7 @@
 package com.artelsv.petprojectsecond.data.datasource
 
 import com.artelsv.petprojectsecond.data.network.UserService
+import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -39,5 +40,11 @@ class UserRemoteDataSource @Inject constructor(
                 "request_token" to requestToken
             )
         ).map { it.requestToken }
+    }
+
+    override fun getUser(sessionId: String): Single<UserResponse> {
+        return userService.getUser(
+            sessionId
+        )
     }
 }

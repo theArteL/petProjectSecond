@@ -18,6 +18,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var navHolder: NavigatorHolder
 
     @Inject
+    lateinit var viewModel: MainViewModel
+
+    @Inject
     lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         appNavigator = AppNavigator(this, R.id.main_container)
     }

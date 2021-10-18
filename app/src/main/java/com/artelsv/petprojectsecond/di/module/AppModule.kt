@@ -17,6 +17,7 @@ import com.artelsv.petprojectsecond.domain.usecases.*
 import com.artelsv.petprojectsecond.domain.usecases.impl.*
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_NAME
 import com.artelsv.petprojectsecond.utils.Constants.PREF_NAME
+import com.artelsv.petprojectsecond.utils.SharedPreferenceManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -72,8 +73,9 @@ class AppModule {
 
     @Provides
     fun providesUserRepository(
-        @Named("userRemoteDataSource") userRemoteDataSource: UserDataSource
-    ): UserRepository = UserRepositoryImpl(userRemoteDataSource)
+        @Named("userRemoteDataSource") userRemoteDataSource: UserDataSource,
+        pref: SharedPreferences
+    ): UserRepository = UserRepositoryImpl(userRemoteDataSource, SharedPreferenceManager(pref))
 
     @Module
     abstract class DataSourcesBinds {
@@ -116,6 +118,9 @@ class AppModule {
         abstract fun bindGetRequestTokenUseCase(getRequestTokenUseCase: GetRequestTokenUseCaseImpl): GetRequestTokenUseCase
 
         @Binds
-        abstract fun bindCreateSession(createSessionUseCase: CreateSessionUseCaseImpl): CreateSessionUseCase
+        abstract fun bindCreateSessionUseCase(createSessionUseCase: CreateSessionUseCaseImpl): CreateSessionUseCase
+
+        @Binds
+        abstract fun bindGetUserUseCase(getUserUseCase: GetUserUseCaseImpl): GetUserUseCase
     }
 }

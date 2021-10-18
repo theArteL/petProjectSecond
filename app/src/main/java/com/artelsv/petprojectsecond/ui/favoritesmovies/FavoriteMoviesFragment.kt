@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 class FavoriteMoviesFragment : DaggerFragment() {
 
-    @Inject
-    private lateinit var viewModel: FavoriteMoviesViewModel
+//    @Inject
+//    private lateinit var viewModel: FavoriteMoviesViewModel
 
     @Inject
     lateinit var router: Router
@@ -26,7 +26,7 @@ class FavoriteMoviesFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
+//        binding.viewModel = viewModel
 
         return binding.root
     }

@@ -1,5 +1,6 @@
 package com.artelsv.petprojectsecond.domain
 
+import com.artelsv.petprojectsecond.domain.model.User
 import io.reactivex.Single
 
 interface UserRepository {
@@ -12,4 +13,6 @@ interface UserRepository {
         login: String,
         password: String
     ): Single<String>
+
+    fun getUser(): Single<User>
 }
