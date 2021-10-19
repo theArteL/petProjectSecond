@@ -25,6 +25,8 @@
     <string name="auth_title">Авторизация</string>
 
     <string name="button_profile_update">Обновить профиль</string>
+    <string name="profile_username_hint">Логин</string>
+    <string name="profile_name_hint">Имя</string>
 
     <!--  Content descriptions  -->
     <string name="back_button">Назад</string>

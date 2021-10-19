@@ -70,6 +70,7 @@
                 android:layout_marginStart="@dimen/default_start_margin"
                 android:layout_marginTop="@dimen/big_top_margin"
                 android:layout_marginEnd="@dimen/default_end_margin"
+                android:hint="@string/profile_username_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mcv_image_container">
@@ -88,6 +89,7 @@
                 android:layout_marginStart="@dimen/default_start_margin"
                 android:layout_marginTop="@dimen/default_top_margin"
                 android:layout_marginEnd="@dimen/default_end_margin"
+                android:hint="@string/profile_name_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_username">
@@ -104,12 +106,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_start_margin"
-                android:layout_marginTop="@dimen/big_top_margin"
                 android:layout_marginEnd="@dimen/default_end_margin"
+                android:layout_marginBottom="@dimen/default_bottom_margin"
                 android:text="@string/button_profile_update"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/til_name" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

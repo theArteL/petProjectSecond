@@ -1,7 +1,6 @@
 package com.artelsv.petprojectsecond.ui.profile
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.usecases.GetUserUseCase
