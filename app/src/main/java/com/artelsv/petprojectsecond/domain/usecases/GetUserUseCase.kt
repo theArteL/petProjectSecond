@@ -7,4 +7,5 @@ interface GetUserUseCase {
     operator fun invoke(): Single<User>
 
     fun getLocalUser(): User?
+    fun exit()
 }

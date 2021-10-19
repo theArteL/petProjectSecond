@@ -16,4 +16,5 @@ interface UserRepository {
 
     fun getUser(): Single<User>
     fun getLocalUser(): User?
+    fun exit()
 }

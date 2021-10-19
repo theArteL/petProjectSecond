@@ -68,4 +68,10 @@ class UserRepositoryImpl @Inject constructor(
     override fun getLocalUser(): User? {
         return user
     }
+
+    override fun exit() {
+        preferenceManager.removeAuth()
+        preferenceManager.removeGuestSession()
+        preferenceManager.removeSession()
+    }
 }

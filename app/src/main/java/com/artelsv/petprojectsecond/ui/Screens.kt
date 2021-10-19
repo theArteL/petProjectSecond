@@ -12,6 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 object Screens {
     fun mainActivity(context: Context) = ActivityScreen { Intent(context, MainActivity::class.java) }
+    fun authActivity(context: Context) = ActivityScreen { Intent(context, AuthActivity::class.java) }
 
     fun movieList() = FragmentScreen { MovieListFragment() }
     fun movieDetail(movieId: Int) = FragmentScreen { MovieDetailFragment.newInstance(movieId) }

@@ -16,4 +16,8 @@ class GetUserUseCaseImpl @Inject constructor(
     override fun getLocalUser(): User? {
         return userRepository.getLocalUser()
     }
+
+    override fun exit() {
+        userRepository.exit()
+    }
 }
