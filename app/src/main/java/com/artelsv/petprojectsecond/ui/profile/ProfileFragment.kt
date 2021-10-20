@@ -8,15 +8,20 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
+import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.FragmentProfileBinding
+import com.artelsv.petprojectsecond.domain.model.MovieList
 import com.artelsv.petprojectsecond.ui.Screens
+import com.artelsv.petprojectsecond.ui.favoritesmovies.UserListAdapter
 import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -51,6 +56,10 @@ class ProfileFragment : DaggerFragment() {
             }
         }
 
+    private val userListAdapter = UserListAdapter {
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -72,6 +81,19 @@ class ProfileFragment : DaggerFragment() {
 
         setListeners()
         setObservers()
+
+        setUserLists()
+
+        userListAdapter.submitList(mutableListOf(
+            Pair(MovieList(0, listOf(), 1, 50), R.string.profile_movie_list_favorite),
+            Pair(MovieList(0, listOf(), 1, 50), R.string.profile_movie_list_favorite),
+            Pair(MovieList(0, listOf(), 1, 50), R.string.profile_movie_list_favorite)
+        ))
+    }
+
+    private fun setUserLists() {
+        binding.rvList.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvList.adapter = userListAdapter
     }
 
     private fun setObservers() {

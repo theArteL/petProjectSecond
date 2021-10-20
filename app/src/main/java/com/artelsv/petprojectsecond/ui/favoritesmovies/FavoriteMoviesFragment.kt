@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 class FavoriteMoviesFragment : DaggerFragment() {
 
-//    @Inject
-//    private lateinit var viewModel: FavoriteMoviesViewModel
+    @Inject
+    lateinit var viewModel: FavoriteMoviesViewModel
 
     @Inject
     lateinit var router: Router
@@ -23,10 +23,10 @@ class FavoriteMoviesFragment : DaggerFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding.lifecycleOwner = viewLifecycleOwner
-//        binding.viewModel = viewModel
+        binding.viewModel = viewModel
 
         return binding.root
     }

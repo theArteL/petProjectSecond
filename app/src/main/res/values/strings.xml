@@ -27,6 +27,8 @@
     <string name="button_profile_update">Обновить профиль</string>
     <string name="profile_username_hint">Логин</string>
     <string name="profile_name_hint">Имя</string>
+    <string name="profile_movie_list_pattern">%s (%d)</string>
+    <string name="profile_movie_list_favorite">Избранное</string>
 
     <!--  Content descriptions  -->
     <string name="back_button">Назад</string>

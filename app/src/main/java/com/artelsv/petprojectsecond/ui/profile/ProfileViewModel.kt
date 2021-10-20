@@ -15,6 +15,8 @@ class ProfileViewModel @Inject constructor(
     val loading = MutableLiveData(true)
     val error = MutableLiveData<Throwable>(null)
 
+    val listOpen = MutableLiveData(false)
+
     val user = MutableLiveData<User>(null)
     val saveUri = MutableLiveData<Uri>(null)
 
@@ -36,5 +38,9 @@ class ProfileViewModel @Inject constructor(
 
     fun exit() {
         getUserUseCase.exit()
+    }
+
+    fun toggleUserList() {
+        listOpen.value = !listOpen.value!!
     }
 }
