@@ -17,6 +17,7 @@ import com.artelsv.petprojectsecond.domain.usecases.*
 import com.artelsv.petprojectsecond.domain.usecases.impl.*
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_NAME
 import com.artelsv.petprojectsecond.utils.Constants.PREF_NAME
+import com.artelsv.petprojectsecond.utils.ObscuredSharedPreferences
 import com.artelsv.petprojectsecond.utils.SharedPreferenceManager
 import dagger.Binds
 import dagger.Module
@@ -25,7 +26,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 import javax.inject.Named
 import javax.inject.Singleton
-
 
 @ExperimentalCoroutinesApi
 @Module(includes = [ViewModelModule::class, NetworkModule::class, AppModule.DataSourcesBinds::class, AppModule.UseCasesBinds::class])
@@ -55,6 +55,12 @@ class AppModule {
     }
 
     @Provides
+    @Singleton
+    fun provideObscuredSharedPreference(context: Context, pref: SharedPreferences): ObscuredSharedPreferences {
+        return ObscuredSharedPreferences(context, pref)
+    }
+
+    @Provides
     fun providesMoviesDao(db: MoviesDatabase): MovieDao = db.getMovieDao()
 
     @ExperimentalCoroutinesApi
@@ -74,7 +80,7 @@ class AppModule {
     @Provides
     fun providesUserRepository(
         @Named("userRemoteDataSource") userRemoteDataSource: UserDataSource,
-        pref: SharedPreferences
+        pref: ObscuredSharedPreferences
     ): UserRepository = UserRepositoryImpl(userRemoteDataSource, SharedPreferenceManager(pref))
 
     @Module

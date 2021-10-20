@@ -1,10 +1,9 @@
 package com.artelsv.petprojectsecond.utils
 
-import android.content.SharedPreferences
 import javax.inject.Inject
 
 class SharedPreferenceManager @Inject constructor(
-    private val pref: SharedPreferences
+    private val pref: ObscuredSharedPreferences
     ) {
 
     fun addAuth(auth: Boolean) {
