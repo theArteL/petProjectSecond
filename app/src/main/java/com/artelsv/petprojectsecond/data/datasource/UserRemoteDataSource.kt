@@ -1,7 +1,9 @@
 package com.artelsv.petprojectsecond.data.datasource
 
 import com.artelsv.petprojectsecond.data.network.UserService
+import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
+import com.artelsv.petprojectsecond.domain.model.MovieList
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -46,5 +48,21 @@ class UserRemoteDataSource @Inject constructor(
         return userService.getUser(
             sessionId
         )
+    }
+
+    override fun getFavoriteMovies(accountId: Int): Single<MovieListResponse> {
+        return userService.getFavoriteMovies(accountId)
+    }
+
+    override fun getFavoriteTvShows(accountId: Int): Single<MovieListResponse> {
+        return userService.getFavoriteTv(accountId)
+    }
+
+    override fun getRatedMovies(): Single<MovieListResponse> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getRatedTvShows(): Single<MovieListResponse> {
+        TODO("Not yet implemented")
     }
 }

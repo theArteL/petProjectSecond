@@ -105,6 +105,17 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/default_start_margin"
+                    android:layout_marginEnd="@dimen/default_end_margin"
+                    android:background="@color/light_gray"
+                    app:layout_constraintBottom_toTopOf="@id/btn_list"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_name" />
+
                 <Button
                     android:id="@+id/btn_list"
                     android:layout_width="0dp"
@@ -114,8 +125,8 @@
                     android:layout_marginEnd="@dimen/default_end_margin"
                     android:drawableEnd="@{viewModel.listOpen ? @drawable/ic_baseline_arrow_drop_up_24 : @drawable/ic_baseline_arrow_drop_down_24}"
                     android:drawableTint="@android:color/white"
-                    android:text="Пользовательские списки"
                     android:onClick="@{() -> viewModel.toggleUserList()}"
+                    android:text="@string/profile_user_lists"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/til_name" />
@@ -135,25 +146,25 @@
                     android:id="@+id/view_list_divider"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray"
-                    app:layout_constraintTop_toBottomOf="@id/rv_list"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:visibility="@{viewModel.listOpen ? View.VISIBLE : View.GONE}"
                     android:layout_marginStart="@dimen/default_start_margin"
-                    android:layout_marginEnd="@dimen/default_end_margin"/>
+                    android:layout_marginEnd="@dimen/default_end_margin"
+                    android:background="@color/light_gray"
+                    android:visibility="@{viewModel.listOpen ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_list" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/switch_theme_toggle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Темная тема"
-                    app:layout_constraintTop_toBottomOf="@id/view_list_divider"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="@dimen/default_top_margin"
                     android:layout_marginStart="@dimen/default_start_margin"
-                    android:layout_marginEnd="@dimen/default_end_margin"/>
+                    android:layout_marginTop="@dimen/default_top_margin"
+                    android:layout_marginEnd="@dimen/default_end_margin"
+                    android:text="@string/profile_setting_theme"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_list_divider" />
 
                 <Button
                     android:id="@+id/btn_update"

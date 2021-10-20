@@ -17,9 +17,9 @@
         android:id="@+id/mcv_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_bottom_margin"
         app:cardBackgroundColor="@color/light_gray"
-        app:cardCornerRadius="@dimen/default_radius"
-        android:layout_marginBottom="@dimen/default_bottom_margin">
+        app:cardCornerRadius="@dimen/default_radius">
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"

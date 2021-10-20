@@ -128,5 +128,8 @@ class AppModule {
 
         @Binds
         abstract fun bindGetUserUseCase(getUserUseCase: GetUserUseCaseImpl): GetUserUseCase
+
+        @Binds
+        abstract fun bindUserListsUseCase(userListsUseCase: UserListsUseCaseImpl): UserListsUseCase
     }
 }

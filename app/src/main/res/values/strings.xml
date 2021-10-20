@@ -28,7 +28,12 @@
     <string name="profile_username_hint">Логин</string>
     <string name="profile_name_hint">Имя</string>
     <string name="profile_movie_list_pattern">%s (%d)</string>
-    <string name="profile_movie_list_favorite">Избранное</string>
+    <string name="profile_user_lists">Пользовательские списки</string>
+    <string name="profile_setting_theme">Темная тема</string>
+    <string name="profile_movie_list_favorite_movies">Избранные фильмы</string>
+    <string name="profile_movie_list_favorite_tv_shows">Избранные сериалы</string>
+    <string name="profile_movie_list_rated_movies">Оцененные фильмы</string>
+    <string name="profile_movie_list_rated_tv_shows">Оцененные сериалы</string>
 
     <!--  Content descriptions  -->
     <string name="back_button">Назад</string>

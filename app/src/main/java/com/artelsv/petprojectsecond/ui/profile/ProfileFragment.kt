@@ -8,7 +8,6 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -84,11 +83,11 @@ class ProfileFragment : DaggerFragment() {
 
         setUserLists()
 
-        userListAdapter.submitList(mutableListOf(
-            Pair(MovieList(0, listOf(), 1, 50), R.string.profile_movie_list_favorite),
-            Pair(MovieList(0, listOf(), 1, 50), R.string.profile_movie_list_favorite),
-            Pair(MovieList(0, listOf(), 1, 50), R.string.profile_movie_list_favorite)
-        ))
+        viewModel.userLists.observe(viewLifecycleOwner, {
+            if (!it.isNullOrEmpty()) {
+                userListAdapter.submitList(it.toMutableList())
+            }
+        })
     }
 
     private fun setUserLists() {

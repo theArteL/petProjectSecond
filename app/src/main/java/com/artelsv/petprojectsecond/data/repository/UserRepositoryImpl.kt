@@ -1,9 +1,12 @@
 package com.artelsv.petprojectsecond.data.repository
 
 import com.artelsv.petprojectsecond.data.datasource.UserDataSource
+import com.artelsv.petprojectsecond.data.mappers.MovieListMapper
 import com.artelsv.petprojectsecond.data.mappers.UserMapper
+import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
 import com.artelsv.petprojectsecond.domain.UserRepository
+import com.artelsv.petprojectsecond.domain.model.MovieList
 import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.utils.SharedPreferenceManager
 import io.reactivex.Single
@@ -73,5 +76,17 @@ class UserRepositoryImpl @Inject constructor(
         preferenceManager.removeAuth()
         preferenceManager.removeGuestSession()
         preferenceManager.removeSession()
+    }
+
+    override fun getFavoriteMovies(): Single<MovieList> {
+//        user?.let {
+//            return userRemoteDataSource.getFavoriteMovies(it.id).map(MovieListMapper::movieListResponseToMovieList)
+//        }
+    return userRemoteDataSource.getFavoriteMovies(getLocalUser()!!.id).map(MovieListMapper::movieListResponseToMovieList)
+//        return Single.error(Throwable("account is null"))
+    }
+
+    override fun getFavoriteTvShows(): Single<MovieList> {
+        TODO("Not yet implemented")
     }
 }
