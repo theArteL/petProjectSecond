@@ -56,7 +56,10 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideObscuredSharedPreference(context: Context, pref: SharedPreferences): ObscuredSharedPreferences {
+    fun provideObscuredSharedPreference(
+        context: Context,
+        pref: SharedPreferences,
+    ): ObscuredSharedPreferences {
         return ObscuredSharedPreferences(context, pref)
     }
 
@@ -69,7 +72,7 @@ class AppModule {
         @Named("movieLocalDataSource") localDataSource: MovieDataSource,
         @Named("movieRemoteDataSource") remoteDataSource: MovieDataSource,
         nowPlayingMoviePagingSource: NowPlayingMoviePagingSource.Factory,
-        popularMoviePagingSource: PopularMoviePagingSource.Factory
+        popularMoviePagingSource: PopularMoviePagingSource.Factory,
     ): MoviesRepository = MoviesRepositoryImpl(
         localDataSource,
         remoteDataSource,
@@ -80,7 +83,7 @@ class AppModule {
     @Provides
     fun providesUserRepository(
         @Named("userRemoteDataSource") userRemoteDataSource: UserDataSource,
-        pref: ObscuredSharedPreferences
+        pref: ObscuredSharedPreferences,
     ): UserRepository = UserRepositoryImpl(userRemoteDataSource, SharedPreferenceManager(pref))
 
     @Module

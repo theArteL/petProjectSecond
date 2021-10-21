@@ -3,8 +3,8 @@ package com.artelsv.petprojectsecond.utils
 import javax.inject.Inject
 
 class SharedPreferenceManager @Inject constructor(
-    private val pref: ObscuredSharedPreferences
-    ) {
+    private val pref: ObscuredSharedPreferences,
+) {
 
     fun addAuth(auth: Boolean) {
         addValue(auth, KEY_AUTH)
