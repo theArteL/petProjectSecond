@@ -16,11 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
-import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.FragmentProfileBinding
-import com.artelsv.petprojectsecond.domain.model.MovieList
 import com.artelsv.petprojectsecond.ui.Screens
-import com.artelsv.petprojectsecond.ui.favoritesmovies.UserListAdapter
+import com.artelsv.petprojectsecond.ui.userlist.UserListFragment
 import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -56,7 +54,12 @@ class ProfileFragment : DaggerFragment() {
         }
 
     private val userListAdapter = UserListAdapter {
+        val addProductDialogFragment = UserListFragment.newInstance(it)
 
+        addProductDialogFragment.show(
+            childFragmentManager,
+            UserListFragment::class.java.simpleName
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

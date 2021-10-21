@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.ui.favoritesmovies
+package com.artelsv.petprojectsecond.ui.profile
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import com.artelsv.petprojectsecond.databinding.ItemUserListBinding
 import com.artelsv.petprojectsecond.domain.model.MovieList
 
 class UserListAdapter(
-    private val clickListener: (clickData: MovieList) -> Unit
+    private val clickListener: (clickData: Pair<MovieList, Int>) -> Unit
 ) : ListAdapter<Pair<MovieList, Int>, UserListAdapter.UserListViewHolder>(UserListDiffItemCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): UserListViewHolder {
@@ -25,13 +25,13 @@ class UserListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: Pair<MovieList, Int>,
-            onClickListener: (clickData: MovieList) -> Unit
+            onClickListener: (clickData: Pair<MovieList, Int>) -> Unit
         ) {
             binding.item = item.first
             binding.type = binding.root.resources.getString(item.second)
 
             binding.mcvContainer.setOnClickListener {
-                onClickListener(item.first)
+                onClickListener(item)
             }
         }
 

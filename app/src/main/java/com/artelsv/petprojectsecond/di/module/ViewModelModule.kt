@@ -6,7 +6,7 @@ import com.artelsv.petprojectsecond.di.ViewModelKey
 import com.artelsv.petprojectsecond.di.factory.ViewModelFactory
 import com.artelsv.petprojectsecond.ui.AuthViewModel
 import com.artelsv.petprojectsecond.ui.MainViewModel
-import com.artelsv.petprojectsecond.ui.favoritesmovies.FavoriteMoviesViewModel
+import com.artelsv.petprojectsecond.ui.userlist.UserListViewModel
 import com.artelsv.petprojectsecond.ui.moviedetail.MovieDetailViewModel
 import com.artelsv.petprojectsecond.ui.movielist.MovieListViewModel
 import com.artelsv.petprojectsecond.ui.profile.ProfileViewModel
@@ -39,8 +39,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(FavoriteMoviesViewModel::class)
-    abstract fun providesFavoriteMoviesViewModel(viewModel: FavoriteMoviesViewModel): ViewModel
+    @ViewModelKey(UserListViewModel::class)
+    abstract fun providesUserListViewModel(viewModel: UserListViewModel): ViewModel
 
     @Binds
     @IntoMap
