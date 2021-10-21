@@ -20,6 +20,8 @@ interface UserRepository {
     fun getLocalUser(): User?
     fun exit()
 
-    fun getFavoriteMovies() : Single<MovieList>
-    fun getFavoriteTvShows() : Single<MovieList>
+    fun getFavoriteMovies(accountId: Int) : Single<MovieList>
+    fun getFavoriteTvShows(accountId: Int) : Single<MovieList>
+    fun getRatedMovies(accountId: Int) : Single<MovieList>
+    fun getRatedTvShows(accountId: Int) : Single<MovieList>
 }

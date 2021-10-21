@@ -33,23 +33,13 @@ class ProfileViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .map {
                 user.postValue(it)
+                getUserLists(it.id)
                 loading.postValue(false)
             }
             .subscribe({
 
             }, {
                 error.postValue(it)
-            })
-        )
-
-        compositeDisposable.add(userListsUseCase.getFavoriteMovies()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map { userLists.value?.add(Pair(it, R.string.profile_movie_list_favorite_movies)) }
-            .subscribe({
-
-            }, {
-                Timber.tag("profile").e(it)
             })
         )
     }
@@ -59,6 +49,72 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun toggleUserList() {
-        listOpen.value = !listOpen.value!!
+        if (!userLists.value.isNullOrEmpty()) listOpen.value = !listOpen.value!! else error.postValue(Throwable("Пользовательские списки пусты"))
+    }
+
+    private fun getUserLists(id: Int) {
+        compositeDisposable.addAll(
+            userListsUseCase.getFavoriteMovies(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                if (!it.results.isNullOrEmpty()) {
+                    userLists.value?.add(Pair(it, R.string.profile_movie_list_favorite_movies))
+                    userLists.value = userLists.value
+                }
+            }
+            .subscribe({
+
+            }, {
+                Timber.tag("profile").e(it)
+            }),
+
+            userListsUseCase.getFavoriteTvShows(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    if (!it.results.isNullOrEmpty()) {
+                        userLists.value?.add(Pair(it, R.string.profile_movie_list_favorite_tv_shows))
+                        userLists.value = userLists.value
+                    }
+                }
+                .subscribe({
+
+                }, {
+                    Timber.tag("profile").e(it)
+                }),
+
+            userListsUseCase.getRatedMovies(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    if (!it.results.isNullOrEmpty()) {
+                        userLists.value?.add(Pair(it, R.string.profile_movie_list_rated_movies))
+                        userLists.value = userLists.value
+                    }
+                }
+                .subscribe({
+
+                }, {
+                    Timber.tag("profile").e(it)
+                }),
+
+            userListsUseCase.getRatedMovies(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    if (!it.results.isNullOrEmpty()) {
+                        userLists.value?.add(Pair(it, R.string.profile_movie_list_rated_tv_shows))
+                        userLists.value = userLists.value
+                    }
+
+                    loading.postValue(false)
+                }
+                .subscribe({
+
+                }, {
+                    Timber.tag("profile").e(it)
+                })
+        )
     }
 }

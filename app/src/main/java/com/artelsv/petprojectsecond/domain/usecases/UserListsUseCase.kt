@@ -5,8 +5,8 @@ import io.reactivex.Single
 
 interface UserListsUseCase {
 
-    fun getFavoriteMovies() : Single<MovieList>
-    fun getFavoriteTvShows() : Single<MovieList>
-    fun getRatedMovies() : Single<MovieList>
-    fun getRatedTvShows() : Single<MovieList>
+    fun getFavoriteMovies(accountId: Int) : Single<MovieList>
+    fun getFavoriteTvShows(accountId: Int) : Single<MovieList>
+    fun getRatedMovies(accountId: Int) : Single<MovieList>
+    fun getRatedTvShows(accountId: Int) : Single<MovieList>
 }

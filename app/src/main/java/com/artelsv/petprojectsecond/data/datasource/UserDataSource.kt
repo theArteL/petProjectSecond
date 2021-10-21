@@ -18,8 +18,8 @@ interface UserDataSource {
 
     fun getUser(sessionId: String): Single<UserResponse>
 
-    fun getFavoriteMovies(accountId: Int) : Single<MovieListResponse>
-    fun getFavoriteTvShows(accountId: Int) : Single<MovieListResponse>
-    fun getRatedMovies() : Single<MovieListResponse>
-    fun getRatedTvShows() : Single<MovieListResponse>
+    fun getFavoriteMovies(accountId: Int, sessionId: String?) : Single<MovieListResponse>
+    fun getFavoriteTvShows(accountId: Int, sessionId: String?) : Single<MovieListResponse>
+    fun getRatedMovies(accountId: Int, sessionId: String?) : Single<MovieListResponse>
+    fun getRatedTvShows(accountId: Int, sessionId: String?) : Single<MovieListResponse>
 }

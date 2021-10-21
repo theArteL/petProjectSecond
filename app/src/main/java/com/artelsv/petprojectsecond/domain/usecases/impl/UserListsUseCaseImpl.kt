@@ -9,19 +9,19 @@ import javax.inject.Inject
 class UserListsUseCaseImpl @Inject constructor(
     private val userRepository: UserRepository
 ) : UserListsUseCase {
-    override fun getFavoriteMovies(): Single<MovieList> {
-        return userRepository.getFavoriteMovies()
+    override fun getFavoriteMovies(accountId: Int): Single<MovieList> {
+        return userRepository.getFavoriteMovies(accountId)
     }
 
-    override fun getFavoriteTvShows(): Single<MovieList> {
-        TODO("Not yet implemented")
+    override fun getFavoriteTvShows(accountId: Int): Single<MovieList> {
+        return userRepository.getFavoriteTvShows(accountId)
     }
 
-    override fun getRatedMovies(): Single<MovieList> {
-        TODO("Not yet implemented")
+    override fun getRatedMovies(accountId: Int): Single<MovieList> {
+        return userRepository.getFavoriteMovies(accountId)
     }
 
-    override fun getRatedTvShows(): Single<MovieList> {
-        TODO("Not yet implemented")
+    override fun getRatedTvShows(accountId: Int): Single<MovieList> {
+        return userRepository.getFavoriteMovies(accountId)
     }
 }

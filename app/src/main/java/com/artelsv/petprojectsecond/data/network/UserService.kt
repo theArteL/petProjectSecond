@@ -25,15 +25,15 @@ interface UserService {
     @GET("/3/account")
     fun getUser(@Query("session_id") sessionId: String): Single<UserResponse>
 
-    @GET("/3/account/{account_id}/favorite/movies?sort_by=created_at.asc&{page}")
-    fun getFavoriteMovies(@Path("account_id") accountId: Int, @Path("page") page: Int = 1): Single<MovieListResponse>
+    @GET("/3/account/{account_id}/favorite/movies") //sort_by=created_at.asc&{
+    fun getFavoriteMovies(@Path("account_id") accountId: Int, @Query("session_id") sessionId: String?, @Query("page") page: Int = 1): Single<MovieListResponse>
 
-    @GET("/3/account/{account_id}/favorite/tv?sort_by=created_at.asc&{page}")
-    fun getFavoriteTv(@Path("account_id") accountId: Int, @Path("page") page: Int = 1): Single<MovieListResponse>
+    @GET("/3/account/{account_id}/favorite/tv")
+    fun getFavoriteTv(@Path("account_id") accountId: Int, @Query("session_id") sessionId: String?, @Query("page") page: Int = 1): Single<MovieListResponse>
 
-    @GET("/3/account")
-    fun getRatedMovies(@Query("session_id") sessionId: String): Single<MovieListResponse>
+    @GET("/3/account/{account_id}/rated/movies")
+    fun getRatedMovies(@Path("account_id") accountId: Int, @Query("session_id") sessionId: String?, @Query("page") page: Int = 1): Single<MovieListResponse>
 
-    @GET("/3/account")
-    fun getRatedTvShows(@Query("session_id") sessionId: String): Single<MovieListResponse>
+    @GET("/3/account/{account_id}/rated/tv")
+    fun getRatedTvShows(@Path("account_id") accountId: Int, @Query("session_id") sessionId: String?, @Query("page") page: Int = 1): Single<MovieListResponse>
 }

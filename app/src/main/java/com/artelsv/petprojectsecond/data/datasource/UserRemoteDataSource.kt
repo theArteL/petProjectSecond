@@ -50,19 +50,19 @@ class UserRemoteDataSource @Inject constructor(
         )
     }
 
-    override fun getFavoriteMovies(accountId: Int): Single<MovieListResponse> {
-        return userService.getFavoriteMovies(accountId)
+    override fun getFavoriteMovies(accountId: Int, sessionId: String?): Single<MovieListResponse> {
+        return userService.getFavoriteMovies(accountId, sessionId)
     }
 
-    override fun getFavoriteTvShows(accountId: Int): Single<MovieListResponse> {
-        return userService.getFavoriteTv(accountId)
+    override fun getFavoriteTvShows(accountId: Int, sessionId: String?): Single<MovieListResponse> {
+        return userService.getFavoriteTv(accountId, sessionId)
     }
 
-    override fun getRatedMovies(): Single<MovieListResponse> {
-        TODO("Not yet implemented")
+    override fun getRatedMovies(accountId: Int, sessionId: String?): Single<MovieListResponse> {
+        return userService.getRatedMovies(accountId, sessionId)
     }
 
-    override fun getRatedTvShows(): Single<MovieListResponse> {
-        TODO("Not yet implemented")
+    override fun getRatedTvShows(accountId: Int, sessionId: String?): Single<MovieListResponse> {
+        return userService.getRatedTvShows(accountId, sessionId)
     }
 }

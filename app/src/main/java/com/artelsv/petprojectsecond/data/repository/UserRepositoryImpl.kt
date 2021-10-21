@@ -78,15 +78,19 @@ class UserRepositoryImpl @Inject constructor(
         preferenceManager.removeSession()
     }
 
-    override fun getFavoriteMovies(): Single<MovieList> {
-//        user?.let {
-//            return userRemoteDataSource.getFavoriteMovies(it.id).map(MovieListMapper::movieListResponseToMovieList)
-//        }
-    return userRemoteDataSource.getFavoriteMovies(getLocalUser()!!.id).map(MovieListMapper::movieListResponseToMovieList)
-//        return Single.error(Throwable("account is null"))
+    override fun getFavoriteMovies(accountId: Int): Single<MovieList> {
+        return userRemoteDataSource.getFavoriteMovies(accountId, preferenceManager.getSession()).map(MovieListMapper::movieListResponseToMovieList)
     }
 
-    override fun getFavoriteTvShows(): Single<MovieList> {
-        TODO("Not yet implemented")
+    override fun getFavoriteTvShows(accountId: Int): Single<MovieList> {
+        return userRemoteDataSource.getFavoriteTvShows(accountId, preferenceManager.getSession()).map(MovieListMapper::movieListResponseToMovieList)
+    }
+
+    override fun getRatedMovies(accountId: Int): Single<MovieList> {
+        return userRemoteDataSource.getRatedMovies(accountId, preferenceManager.getSession()).map(MovieListMapper::movieListResponseToMovieList)
+    }
+
+    override fun getRatedTvShows(accountId: Int): Single<MovieList> {
+        return userRemoteDataSource.getRatedTvShows(accountId, preferenceManager.getSession()).map(MovieListMapper::movieListResponseToMovieList)
     }
 }
