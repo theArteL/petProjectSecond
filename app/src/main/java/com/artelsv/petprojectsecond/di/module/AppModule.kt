@@ -131,5 +131,8 @@ class AppModule {
 
         @Binds
         abstract fun bindUserListsUseCase(userListsUseCase: UserListsUseCaseImpl): UserListsUseCase
+
+        @Binds
+        abstract fun bindMarkAsFavoriteUseCase(markAsFavoriteUseCase: MarkAsFavoriteUseCaseImpl): MarkAsFavoriteUseCase
     }
 }

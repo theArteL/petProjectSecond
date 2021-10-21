@@ -84,7 +84,7 @@ object MovieMapper {
             genreIds = movie.genreIds,
             id = movie.id,
             originalLanguage = movie.originalLanguage,
-            originalTitle = movie.originalTitle ?: "",
+            originalTitle = movie.originalTitle,
             overview = movie.overview,
             popularity = movie.popularity,
             posterPath = movie.posterPath,

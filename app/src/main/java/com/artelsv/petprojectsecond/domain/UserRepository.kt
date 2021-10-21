@@ -1,7 +1,8 @@
 package com.artelsv.petprojectsecond.domain
 
-import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
+import com.artelsv.petprojectsecond.data.network.model.ToggleFavoriteRequest
 import com.artelsv.petprojectsecond.domain.model.MovieList
+import com.artelsv.petprojectsecond.domain.model.ToggleFavorite
 import com.artelsv.petprojectsecond.domain.model.User
 import io.reactivex.Single
 
@@ -24,4 +25,6 @@ interface UserRepository {
     fun getFavoriteTvShows(accountId: Int) : Single<MovieList>
     fun getRatedMovies(accountId: Int) : Single<MovieList>
     fun getRatedTvShows(accountId: Int) : Single<MovieList>
+
+    fun toggleFavorite(data: ToggleFavorite, accountId: Int, sessionId: String?) : Single<Boolean>
 }

@@ -10,7 +10,6 @@ import com.artelsv.petprojectsecond.domain.usecases.UserListsUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.schedulers.Timed
 import timber.log.Timber
 import javax.inject.Inject
 

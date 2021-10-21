@@ -2,13 +2,13 @@ package com.artelsv.petprojectsecond.data.datasource
 
 import com.artelsv.petprojectsecond.data.network.UserService
 import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
+import com.artelsv.petprojectsecond.data.network.model.ToggleFavoriteRequest
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
-import com.artelsv.petprojectsecond.domain.model.MovieList
 import io.reactivex.Single
 import javax.inject.Inject
 
 class UserRemoteDataSource @Inject constructor(
-    private val userService: UserService
+    private val userService: UserService,
 ) : UserDataSource {
     override fun createGuestSession(): Single<String> {
         return userService.createGuestSession().map {
@@ -33,7 +33,7 @@ class UserRemoteDataSource @Inject constructor(
     override fun createSessionWithUser(
         requestToken: String,
         login: String,
-        password: String
+        password: String,
     ): Single<String> {
         return userService.createSessionWithUser(
             hashMapOf(
@@ -64,5 +64,18 @@ class UserRemoteDataSource @Inject constructor(
 
     override fun getRatedTvShows(accountId: Int, sessionId: String?): Single<MovieListResponse> {
         return userService.getRatedTvShows(accountId, sessionId)
+    }
+
+    override fun toggleFavorite(
+        data: ToggleFavoriteRequest,
+        accountId: Int,
+        sessionId: String?,
+    ): Single<Boolean> {
+        return userService.toggleFavorite(accountId, sessionId, data)
+            .map { it.statusCode == SUCCESS_CODE }
+    }
+
+    companion object {
+        private const val SUCCESS_CODE = 201
     }
 }
