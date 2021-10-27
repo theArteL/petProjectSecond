@@ -8,4 +8,8 @@ interface GetUserUseCase {
 
     fun getLocalUser(): User?
     fun exit()
+
+    fun syncLocalUserLists(id: Int)
+
+    fun dispose()
 }

@@ -49,7 +49,7 @@ object MovieMapper {
             video = movie.video,
             voteAverage = movie.voteAverage,
             voteCount = movie.voteCount,
-            movieType = type
+            movieType = type,
         )
     }
 
@@ -72,7 +72,8 @@ object MovieMapper {
             video = movie.video,
             voteAverage = movie.voteAverage,
             voteCount = movie.voteCount,
-            movieType = type ?: MovieType.NOW_PLAYING
+            movieType = type ?: MovieType.NOW_PLAYING,
+            rating = movie.rating
         )
     }
 

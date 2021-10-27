@@ -1,15 +1,18 @@
-package com.artelsv.petprojectsecond.domain.model
+package com.artelsv.petprojectsecond.data.entity
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.artelsv.petprojectsecond.domain.model.MovieType
+import com.artelsv.petprojectsecond.utils.Constants
 
-@Parcelize
-data class Movie(
+@Entity(tableName = Constants.DATABASE_USER_MOVIE_TABLE)
+data class UserMovieEntity(
+    @PrimaryKey
+    val id: Int,
     val adult: Boolean,
     val backdropPath: String?,
     val budget: Int,
     val genreIds: List<Int>,
-    val id: Int,
     val originalLanguage: String,
     val originalTitle: String,
     val overview: String,
@@ -24,5 +27,6 @@ data class Movie(
     val voteCount: Int,
 
     val movieType: MovieType = MovieType.NOW_PLAYING,
-    val rating: Int? = null
-) : Parcelable
+    val favorite: Boolean = false,
+    val rating: Int?
+)

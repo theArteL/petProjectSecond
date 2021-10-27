@@ -1,6 +1,7 @@
 package com.artelsv.petprojectsecond.domain
 
 import com.artelsv.petprojectsecond.domain.model.MovieList
+import com.artelsv.petprojectsecond.domain.model.RateMovie
 import com.artelsv.petprojectsecond.domain.model.ToggleFavorite
 import com.artelsv.petprojectsecond.domain.model.User
 import io.reactivex.Single
@@ -26,4 +27,5 @@ interface UserRepository {
     fun getRatedTvShows(accountId: Int): Single<MovieList>
 
     fun toggleFavorite(data: ToggleFavorite, accountId: Int, sessionId: String?): Single<Boolean>
+    fun rateMovie(data: RateMovie, movieId: Int, sessionId: String?): Single<Boolean>
 }

@@ -1,6 +1,7 @@
 package com.artelsv.petprojectsecond.data.datasource
 
 import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
+import com.artelsv.petprojectsecond.data.network.model.RateMovieRequest
 import com.artelsv.petprojectsecond.data.network.model.ToggleFavoriteRequest
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
 import io.reactivex.Single
@@ -26,6 +27,12 @@ interface UserDataSource {
     fun toggleFavorite(
         data: ToggleFavoriteRequest,
         accountId: Int,
+        sessionId: String?,
+    ): Single<Boolean>
+
+    fun rateMovie(
+        data: RateMovieRequest,
+        movieId: Int,
         sessionId: String?,
     ): Single<Boolean>
 }

@@ -1,12 +1,15 @@
 package com.artelsv.petprojectsecond.data.repository
 
 import com.artelsv.petprojectsecond.data.datasource.UserDataSource
+import com.artelsv.petprojectsecond.data.datasource.UserLocalDataSource
 import com.artelsv.petprojectsecond.data.mappers.MovieListMapper
+import com.artelsv.petprojectsecond.data.mappers.RateMovieMapper
 import com.artelsv.petprojectsecond.data.mappers.ToggleFavoriteMapper
 import com.artelsv.petprojectsecond.data.mappers.UserMapper
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
 import com.artelsv.petprojectsecond.domain.UserRepository
 import com.artelsv.petprojectsecond.domain.model.MovieList
+import com.artelsv.petprojectsecond.domain.model.RateMovie
 import com.artelsv.petprojectsecond.domain.model.ToggleFavorite
 import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.utils.SharedPreferenceManager
@@ -15,6 +18,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserDataSource,
+    private val userLocalDataSource: UserLocalDataSource,
     private val preferenceManager: SharedPreferenceManager,
 ) : UserRepository {
     private var user: User? = null
@@ -81,22 +85,34 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getFavoriteMovies(accountId: Int): Single<MovieList> {
         return userRemoteDataSource.getFavoriteMovies(accountId, preferenceManager.getSession())
-            .map(MovieListMapper::movieListResponseToMovieList)
+            .map {
+                userLocalDataSource.addFavorites(MovieListMapper.movieListResponseToMovieList(it))
+                MovieListMapper.movieListResponseToMovieList(it)
+            }
     }
 
     override fun getFavoriteTvShows(accountId: Int): Single<MovieList> {
         return userRemoteDataSource.getFavoriteTvShows(accountId, preferenceManager.getSession())
-            .map(MovieListMapper::movieListResponseToMovieList)
+            .map {
+                userLocalDataSource.addFavorites(MovieListMapper.movieListResponseToMovieList(it))
+                MovieListMapper.movieListResponseToMovieList(it)
+            }
     }
 
     override fun getRatedMovies(accountId: Int): Single<MovieList> {
         return userRemoteDataSource.getRatedMovies(accountId, preferenceManager.getSession())
-            .map(MovieListMapper::movieListResponseToMovieList)
+            .map {
+                userLocalDataSource.addRated(MovieListMapper.movieListResponseToMovieList(it))
+                MovieListMapper.movieListResponseToMovieList(it)
+            }
     }
 
     override fun getRatedTvShows(accountId: Int): Single<MovieList> {
         return userRemoteDataSource.getRatedTvShows(accountId, preferenceManager.getSession())
-            .map(MovieListMapper::movieListResponseToMovieList)
+            .map {
+                userLocalDataSource.addRated(MovieListMapper.movieListResponseToMovieList(it))
+                MovieListMapper.movieListResponseToMovieList(it)
+            }
     }
 
     override fun toggleFavorite(
@@ -108,5 +124,13 @@ class UserRepositoryImpl @Inject constructor(
             ToggleFavoriteMapper.appModelToRequest(data),
             accountId,
             sessionId)
+    }
+
+    override fun rateMovie(data: RateMovie, movieId: Int, sessionId: String?): Single<Boolean> {
+        return userRemoteDataSource.rateMovie(
+            RateMovieMapper.toRequest(data),
+            movieId,
+            sessionId
+        )
     }
 }

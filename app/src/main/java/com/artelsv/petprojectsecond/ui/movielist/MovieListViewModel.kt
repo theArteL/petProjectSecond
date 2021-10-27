@@ -71,15 +71,22 @@ class MovieListViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
+                getUserUseCase.syncLocalUserLists(it.id)
                 user.postValue(it)
             }
             .subscribe({
 
             }, {
-                Timber.e(it)
+//                Timber.e(it)
             })
         )
     }
 
     fun progressCheck() = loadingPopular.value == true && loadingNowPlaying.value == true
+
+    override fun onCleared() {
+        super.onCleared()
+
+        getUserUseCase.dispose()
+    }
 }

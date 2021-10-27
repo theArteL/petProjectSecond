@@ -2,6 +2,7 @@ package com.artelsv.petprojectsecond.data.network
 
 import com.artelsv.petprojectsecond.data.network.model.DefaultResponse
 import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
+import com.artelsv.petprojectsecond.data.network.model.RateMovieRequest
 import com.artelsv.petprojectsecond.data.network.model.ToggleFavoriteRequest
 import com.artelsv.petprojectsecond.data.network.model.auth.RequestTokenResponse
 import com.artelsv.petprojectsecond.data.network.model.auth.SessionResponse
@@ -60,5 +61,12 @@ interface UserService {
         @Path("account_id") accountId: Int,
         @Query("session_id") sessionId: String?,
         @Body body: ToggleFavoriteRequest
+    ): Single<DefaultResponse>
+
+    @POST("/3/movie/{movie_id}/rating")
+    fun rateMovie(
+        @Path("movie_id") movieId: Int,
+        @Query("session_id") sessionId: String?,
+        @Body body: RateMovieRequest
     ): Single<DefaultResponse>
 }

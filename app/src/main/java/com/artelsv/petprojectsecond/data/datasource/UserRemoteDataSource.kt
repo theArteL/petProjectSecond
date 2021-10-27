@@ -2,6 +2,7 @@ package com.artelsv.petprojectsecond.data.datasource
 
 import com.artelsv.petprojectsecond.data.network.UserService
 import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
+import com.artelsv.petprojectsecond.data.network.model.RateMovieRequest
 import com.artelsv.petprojectsecond.data.network.model.ToggleFavoriteRequest
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
 import io.reactivex.Single
@@ -72,6 +73,15 @@ class UserRemoteDataSource @Inject constructor(
         sessionId: String?,
     ): Single<Boolean> {
         return userService.toggleFavorite(accountId, sessionId, data)
+            .map { it.statusCode == SUCCESS_CODE }
+    }
+
+    override fun rateMovie(
+        data: RateMovieRequest,
+        movieId: Int,
+        sessionId: String?,
+    ): Single<Boolean> {
+        return userService.rateMovie(movieId, sessionId, data)
             .map { it.statusCode == SUCCESS_CODE }
     }
 

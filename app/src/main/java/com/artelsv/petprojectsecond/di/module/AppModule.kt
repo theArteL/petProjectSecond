@@ -8,6 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.artelsv.petprojectsecond.App
 import com.artelsv.petprojectsecond.data.database.MoviesDatabase
 import com.artelsv.petprojectsecond.data.database.dao.MovieDao
+import com.artelsv.petprojectsecond.data.database.dao.UserMovieDao
 import com.artelsv.petprojectsecond.data.datasource.*
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.data.repository.UserRepositoryImpl
@@ -66,6 +67,9 @@ class AppModule {
     @Provides
     fun providesMoviesDao(db: MoviesDatabase): MovieDao = db.getMovieDao()
 
+    @Provides
+    fun providesUserMovieDao(db: MoviesDatabase): UserMovieDao = db.getUserMovieDao()
+
     @ExperimentalCoroutinesApi
     @Provides
     fun providesMoviesRepository(
@@ -83,8 +87,9 @@ class AppModule {
     @Provides
     fun providesUserRepository(
         @Named("userRemoteDataSource") userRemoteDataSource: UserDataSource,
+        @Named("userLocalDataSource") userLocalDataSource: UserLocalDataSource,
         pref: ObscuredSharedPreferences,
-    ): UserRepository = UserRepositoryImpl(userRemoteDataSource, SharedPreferenceManager(pref))
+    ): UserRepository = UserRepositoryImpl(userRemoteDataSource, userLocalDataSource, SharedPreferenceManager(pref))
 
     @Module
     abstract class DataSourcesBinds {
@@ -100,6 +105,10 @@ class AppModule {
         @Binds
         @Named("userRemoteDataSource")
         abstract fun bindUserRemoteDataSource(userRemoteDataSource: UserRemoteDataSource): UserDataSource
+
+        @Binds
+        @Named("userLocalDataSource")
+        abstract fun bindUserLocalDataSource(userLocalDataSource: UserLocalDataSourceImpl): UserLocalDataSource
     }
 
     @Module
