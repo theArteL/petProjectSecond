@@ -26,6 +26,6 @@ interface UserRepository {
     fun getRatedMovies(accountId: Int): Single<MovieList>
     fun getRatedTvShows(accountId: Int): Single<MovieList>
 
-    fun toggleFavorite(data: ToggleFavorite, accountId: Int, sessionId: String?): Single<Boolean>
-    fun rateMovie(data: RateMovie, movieId: Int, sessionId: String?): Single<Boolean>
+    fun toggleFavorite(data: ToggleFavorite, accountId: Int): Single<Boolean>
+    fun rateMovie(data: RateMovie, movieId: Int): Single<Boolean>
 }

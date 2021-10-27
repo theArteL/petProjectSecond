@@ -118,19 +118,21 @@ class UserRepositoryImpl @Inject constructor(
     override fun toggleFavorite(
         data: ToggleFavorite,
         accountId: Int,
-        sessionId: String?,
     ): Single<Boolean> {
         return userRemoteDataSource.toggleFavorite(
             ToggleFavoriteMapper.appModelToRequest(data),
             accountId,
-            sessionId)
+            preferenceManager.getSession())
     }
 
-    override fun rateMovie(data: RateMovie, movieId: Int, sessionId: String?): Single<Boolean> {
+    override fun rateMovie(
+        data: RateMovie,
+        movieId: Int
+    ): Single<Boolean> {
         return userRemoteDataSource.rateMovie(
             RateMovieMapper.toRequest(data),
             movieId,
-            sessionId
+            preferenceManager.getSession()
         )
     }
 }

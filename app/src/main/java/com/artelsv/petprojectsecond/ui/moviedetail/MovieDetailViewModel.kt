@@ -130,6 +130,26 @@ class MovieDetailViewModel @Inject constructor(
         Timber.tag(this.toString()).e(throwable.message.toString())
     }
 
+    // логика для лайков / оценок
+    val favorite = MutableLiveData(false)
+    val rateIt = MutableLiveData(false)
+    val rating = MutableLiveData(0f)
+
+    fun toggleFavorite() {
+        favorite.postValue(!favorite.value!!)
+        // TODO запрос на сервер
+    }
+
+    fun toggleRateIt() {
+        rateIt.postValue(!rateIt.value!!)
+    }
+
+    fun rateMovie(value: Float) {
+        rating.postValue(value)
+        toggleRateIt()
+    }
+    //
+
     companion object {
         private const val DEFAULT_ISO = "RU"
         private const val DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"

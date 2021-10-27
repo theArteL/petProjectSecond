@@ -51,6 +51,52 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <FrameLayout
+                    android:id="@+id/ll_favorite_rated_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_poster">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:visibility="@{viewModel.rateIt ? View.INVISIBLE : View.VISIBLE}">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="@dimen/default_start_margin"
+                            android:onClick="@{() -> viewModel.toggleFavorite()}"
+                            android:src="@{viewModel.favorite ? @drawable/ic_baseline_favorite_24 : @drawable/ic_baseline_favorite_border_24}" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="@dimen/default_start_margin"
+                            android:onClick="@{() -> viewModel.toggleRateIt()}"
+                            android:src="@drawable/ic_baseline_star_rate_24" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <RatingBar
+                        android:id="@+id/rb_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:numStars="5"
+                        android:visibility="@{viewModel.rateIt ? View.VISIBLE : View.INVISIBLE}" />
+
+                </FrameLayout>
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_title"
                     style="@style/TextAppearance.AppCompat.Title"
@@ -61,7 +107,7 @@
                     android:text="@{viewModel.movieName}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_poster" />
+                    app:layout_constraintTop_toBottomOf="@id/ll_favorite_rated_container" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_genres"

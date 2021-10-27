@@ -47,9 +47,15 @@ class MovieDetailFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setListeners()
         setObservers()
     }
 
+    private fun setListeners() {
+        binding.rbRate.setOnRatingBarChangeListener { _, fl, _ ->
+            viewModel.rateMovie(fl)
+        }
+    }
     private fun setObservers() {
         viewModel.error.observe(viewLifecycleOwner, {
             if (it) {
