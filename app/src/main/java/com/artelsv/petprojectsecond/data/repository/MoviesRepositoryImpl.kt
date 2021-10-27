@@ -8,6 +8,7 @@ import com.artelsv.petprojectsecond.data.database.dao.MovieDao.Companion.PAGE_SI
 import com.artelsv.petprojectsecond.data.datasource.MovieDataSource
 import com.artelsv.petprojectsecond.data.datasource.NowPlayingMoviePagingSource
 import com.artelsv.petprojectsecond.data.datasource.PopularMoviePagingSource
+import com.artelsv.petprojectsecond.data.datasource.UserLocalDataSource
 import com.artelsv.petprojectsecond.domain.MoviesRepository
 import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.Movie
@@ -22,6 +23,8 @@ import javax.inject.Inject
 class MoviesRepositoryImpl @Inject constructor(
     private val localDataSource: MovieDataSource,
     private val remoteDataSource: MovieDataSource,
+    // только для получения актуальной инфы из бд
+    private val userLocalDataSource: UserLocalDataSource,
     private val nowPlayingMoviePagingSource: NowPlayingMoviePagingSource.Factory,
     private val popularMoviePagingSource: PopularMoviePagingSource.Factory
 ) : MoviesRepository {
@@ -49,6 +52,10 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override fun getMovieDetails(movieId: Int): Single<MovieDetail> {
         return remoteDataSource.getMovieDetails(movieId)
+            .map {
+                val local = userLocalDataSource.get(it.id)
+                if (local != null) it.copy(rating = local.rating, favorite = local.favorite) else it
+            }
             .onErrorResumeNext {
                 localDataSource.getMovieDetails(movieId)
             }

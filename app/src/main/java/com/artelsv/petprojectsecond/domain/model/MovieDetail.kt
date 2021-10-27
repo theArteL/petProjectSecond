@@ -26,5 +26,8 @@ data class MovieDetail(
     val productionCountries: List<Country>,
     val spokenLanguages: List<Language>,
     val status: String,
-    val tagline: String?
+    val tagline: String?,
+
+    val favorite: Boolean = false,
+    val rating: Float = 0f
 )

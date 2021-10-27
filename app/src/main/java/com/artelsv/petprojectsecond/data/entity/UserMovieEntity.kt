@@ -28,5 +28,5 @@ data class UserMovieEntity(
 
     val movieType: MovieType = MovieType.NOW_PLAYING,
     val favorite: Boolean = false,
-    val rating: Int?
+    val rating: Float = 0f
 )

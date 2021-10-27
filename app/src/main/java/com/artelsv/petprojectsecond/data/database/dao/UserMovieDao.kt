@@ -16,6 +16,6 @@ interface UserMovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAll(movies: List<UserMovieEntity>)
 
-    @Query("SELECT * FROM movies WHERE movies.id == :position")
-    fun get(position: Int): MovieEntity
+    @Query("SELECT * FROM userMovies WHERE userMovies.id == :id")
+    fun get(id: Int): UserMovieEntity
 }

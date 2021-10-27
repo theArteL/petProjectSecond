@@ -19,4 +19,6 @@ class UserLocalDataSourceImpl @Inject constructor(
             UserMovieMapper.toEntity(it)
         })
     }
+
+    override fun get(id: Int) = userListDao.get(id)
 }

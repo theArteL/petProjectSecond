@@ -24,5 +24,5 @@ data class Movie(
     val voteCount: Int,
 
     val movieType: MovieType = MovieType.NOW_PLAYING,
-    val rating: Int? = null
+    val rating: Float = 0f
 ) : Parcelable

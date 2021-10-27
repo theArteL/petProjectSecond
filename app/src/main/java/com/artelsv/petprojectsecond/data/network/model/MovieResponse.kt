@@ -23,5 +23,5 @@ data class MovieResponse(
     @SerializedName("vote_average") val voteAverage: Double,
     @SerializedName("vote_count") val voteCount: Int,
 
-    @SerializedName("rating") val rating: Int? = null
+    @SerializedName("rating") val rating: Float = 0f
 )

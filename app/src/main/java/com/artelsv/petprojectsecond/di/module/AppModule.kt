@@ -75,11 +75,13 @@ class AppModule {
     fun providesMoviesRepository(
         @Named("movieLocalDataSource") localDataSource: MovieDataSource,
         @Named("movieRemoteDataSource") remoteDataSource: MovieDataSource,
+        @Named("userLocalDataSource") userLocalDataSource: UserLocalDataSource,
         nowPlayingMoviePagingSource: NowPlayingMoviePagingSource.Factory,
         popularMoviePagingSource: PopularMoviePagingSource.Factory,
     ): MoviesRepository = MoviesRepositoryImpl(
         localDataSource,
         remoteDataSource,
+        userLocalDataSource,
         nowPlayingMoviePagingSource,
         popularMoviePagingSource
     )
