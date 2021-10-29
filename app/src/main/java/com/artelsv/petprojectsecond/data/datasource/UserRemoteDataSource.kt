@@ -1,6 +1,5 @@
 package com.artelsv.petprojectsecond.data.datasource
 
-import android.util.Log
 import com.artelsv.petprojectsecond.data.network.UserService
 import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
 import com.artelsv.petprojectsecond.data.network.model.RateMovieRequest
@@ -74,7 +73,7 @@ class UserRemoteDataSource @Inject constructor(
         sessionId: String?,
     ): Single<Boolean> {
         return userService.toggleFavorite(accountId, sessionId, data)
-            .map { it.statusCode == SUCCESS_CODE }
+            .map { it.success }
     }
 
     override fun rateMovie(
@@ -82,12 +81,13 @@ class UserRemoteDataSource @Inject constructor(
         movieId: Int,
         sessionId: String?,
     ): Single<Boolean> {
-        Log.e("ad", "ad1")
         return userService.rateMovie(movieId, sessionId, data)
             .map { it.statusCode == SUCCESS_CODE }
     }
 
     companion object {
         private const val SUCCESS_CODE = 201
+        private const val TOGGLE_SUCCESS_CODE_ON = 12
+        private const val TOGGLE_SUCCESS_CODE_OFF = 13
     }
 }

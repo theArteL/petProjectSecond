@@ -4,13 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.icu.text.SimpleDateFormat
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.MovieDetail
+import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
+import com.artelsv.petprojectsecond.domain.usecases.GetUserUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.utils.Constants
 import io.reactivex.Single
@@ -24,8 +27,11 @@ import javax.inject.Inject
 class MovieDetailViewModel @Inject constructor(
     private val context: Context,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
-    private val getMovieDateReleaseUseCase: GetMovieDateReleaseUseCase
+    private val getMovieDateReleaseUseCase: GetMovieDateReleaseUseCase,
+    private val getUserUseCase: GetUserUseCase
 ) : BaseViewModel() {
+    private val user = MutableLiveData<User>(null)
+
     private val mMovie = MutableLiveData<MovieDetail>(null)
     val movie: LiveData<MovieDetail> = mMovie
 
@@ -46,11 +52,29 @@ class MovieDetailViewModel @Inject constructor(
                 .flatMap {
                     getReleaseDate(it)
                 }
+                .map {
+                    rating.postValue(it.rating)
+                    favorite.postValue(it.favorite)
+                }
                 .subscribe({
                     handleSuccess()
                 }, {
                     handleError(it)
                 })
+        )
+
+        compositeDisposable.add(
+            getUserUseCase.invoke()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                user.postValue(it)
+            }
+            .subscribe({
+
+            }, {
+
+            })
         )
     }
 
@@ -138,9 +162,19 @@ class MovieDetailViewModel @Inject constructor(
     val rating = MutableLiveData(0f)
 
     fun toggleFavorite() {
-        favorite.postValue(!favorite.value!!)
+        movie.value?.let {
+            compositeDisposable.add(getMovieDetailsUseCase.favorite(user.value!!.id, it.id, !favorite.value!!)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map { result ->
+                    if (result) favorite.postValue(!favorite.value!!)
+                }
+                .subscribe({
 
+                }, {
 
+                }))
+        }
     }
 
     fun toggleRateIt() {

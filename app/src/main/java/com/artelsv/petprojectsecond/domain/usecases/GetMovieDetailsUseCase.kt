@@ -7,5 +7,5 @@ interface GetMovieDetailsUseCase {
     operator fun invoke(movieId: Int): Single<MovieDetail>
 
     fun rate(movieId: Int, rating: Number): Single<Boolean>
-    fun favorite(movieId: Int, favorite: Boolean): Single<Boolean>
+    fun favorite(accountId: Int, movieId: Int, favorite: Boolean): Single<Boolean>
 }

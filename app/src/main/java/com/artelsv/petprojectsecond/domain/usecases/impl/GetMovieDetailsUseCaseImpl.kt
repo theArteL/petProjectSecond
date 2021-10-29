@@ -11,9 +11,10 @@ import javax.inject.Inject
 
 class GetMovieDetailsUseCaseImpl @Inject constructor(
     private val moviesRepository: MoviesRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : GetMovieDetailsUseCase {
-    override fun invoke(movieId: Int): Single<MovieDetail> = moviesRepository.getMovieDetails(movieId)
+    override fun invoke(movieId: Int): Single<MovieDetail> =
+        moviesRepository.getMovieDetails(movieId)
 
     override fun rate(movieId: Int, rating: Number): Single<Boolean> {
         return userRepository.rateMovie(
@@ -22,10 +23,10 @@ class GetMovieDetailsUseCaseImpl @Inject constructor(
         )
     }
 
-    override fun favorite(movieId: Int, favorite: Boolean): Single<Boolean> {
+    override fun favorite(accountId: Int, movieId: Int, favorite: Boolean): Single<Boolean> {
         return userRepository.toggleFavorite(
-            ToggleFavorite("", movieId, favorite),
-            userRepository.getLocalUser()?.id ?: 0
+            ToggleFavorite("movie", movieId, favorite),
+            accountId
         )
     }
 }
