@@ -33,7 +33,9 @@ class MovieDetailViewModel @Inject constructor(
     val dateRelease: LiveData<DateReleaseResult> = mDateRelease
 
     val loading = MutableLiveData(true)
+    val lightLoading = MutableLiveData(false)
     val error = MutableLiveData(false)
+    val toastText = MutableLiveData<String>(null)
 
     fun getMovieDetail(movieId: Int) {
         compositeDisposable.add(
@@ -137,7 +139,8 @@ class MovieDetailViewModel @Inject constructor(
 
     fun toggleFavorite() {
         favorite.postValue(!favorite.value!!)
-        // TODO запрос на сервер
+
+
     }
 
     fun toggleRateIt() {
@@ -145,8 +148,23 @@ class MovieDetailViewModel @Inject constructor(
     }
 
     fun rateMovie(value: Float) {
-        rating.postValue(value)
-        toggleRateIt()
+        movie.value?.let {
+            compositeDisposable.add(getMovieDetailsUseCase.rate(it.id, value * 2)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map { result ->
+                    if (result) rating.postValue(value * 2) else rating.postValue(0f)
+
+//                    lightLoading.postValue(false)
+                    toggleRateIt()
+                }
+                .subscribe({
+//                    lightLoading.postValue(true)
+                }, { error ->
+                    toastText.postValue(error.localizedMessage)
+                })
+            )
+        }
     }
     //
 

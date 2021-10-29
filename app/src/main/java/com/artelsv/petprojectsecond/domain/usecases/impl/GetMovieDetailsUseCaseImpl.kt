@@ -15,15 +15,15 @@ class GetMovieDetailsUseCaseImpl @Inject constructor(
 ) : GetMovieDetailsUseCase {
     override fun invoke(movieId: Int): Single<MovieDetail> = moviesRepository.getMovieDetails(movieId)
 
-    override fun rate(movieId: Int, rating: Number) {
-        userRepository.rateMovie(
+    override fun rate(movieId: Int, rating: Number): Single<Boolean> {
+        return userRepository.rateMovie(
             RateMovie(rating),
             movieId
         )
     }
 
-    override fun favorite(movieId: Int, favorite: Boolean) {
-        userRepository.toggleFavorite(
+    override fun favorite(movieId: Int, favorite: Boolean): Single<Boolean> {
+        return userRepository.toggleFavorite(
             ToggleFavorite("", movieId, favorite),
             userRepository.getLocalUser()?.id ?: 0
         )

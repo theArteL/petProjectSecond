@@ -83,7 +83,21 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/tv_rate"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="@{@string/movie_detail_rate(viewModel.movie.voteCount, viewModel.movie.voteAverage)}"
+                            android:visibility="@{viewModel.rating == 0f ? View.VISIBLE : View.GONE}" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_rate_user"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="@{@string/movie_detail_rate_user(viewModel.movie.voteCount, viewModel.movie.voteAverage, viewModel.rating)}"
+                            android:visibility="@{viewModel.rating == 0f ? View.GONE : View.VISIBLE}" />
+
 
                     </LinearLayout>
 
@@ -169,7 +183,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{viewModel.loading || viewModel.lightLoading ? View.VISIBLE : View.GONE}" />
 
     </FrameLayout>
 </layout>

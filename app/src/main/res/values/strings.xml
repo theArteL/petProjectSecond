@@ -13,6 +13,8 @@
 
     <string name="movie_detail_separator">\u00A0&#8226;\u00A0</string>
     <string name="movie_detail_title_overview">Обзор</string>
+    <string name="movie_detail_rate">Оценок: $1%d | Средняя: %2$.2f</string>
+    <string name="movie_detail_rate_user">Оценок: %d | Средняя: %2$.2f | Вы оценили на %3$.2f</string>
 
     <string name="menu_no">Без сортировки</string>
     <string name="menu_acs">По убыванию рейтинга</string>

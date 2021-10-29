@@ -16,7 +16,7 @@ data class MovieDetail(
     val runtime: Int?,
     val title: String,
     val video: Boolean,
-    val voteAverage: Double,
+    val voteAverage: Float,
     val voteCount: Int,
 //    val belongsToCollection: String?,
     val genres: List<Genre>,

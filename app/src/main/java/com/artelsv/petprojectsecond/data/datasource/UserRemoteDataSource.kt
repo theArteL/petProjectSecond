@@ -1,5 +1,6 @@
 package com.artelsv.petprojectsecond.data.datasource
 
+import android.util.Log
 import com.artelsv.petprojectsecond.data.network.UserService
 import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
 import com.artelsv.petprojectsecond.data.network.model.RateMovieRequest
@@ -81,6 +82,7 @@ class UserRemoteDataSource @Inject constructor(
         movieId: Int,
         sessionId: String?,
     ): Single<Boolean> {
+        Log.e("ad", "ad1")
         return userService.rateMovie(movieId, sessionId, data)
             .map { it.statusCode == SUCCESS_CODE }
     }

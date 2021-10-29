@@ -1,5 +1,6 @@
 package com.artelsv.petprojectsecond.data.repository
 
+import android.util.Log
 import com.artelsv.petprojectsecond.data.datasource.UserDataSource
 import com.artelsv.petprojectsecond.data.datasource.UserLocalDataSource
 import com.artelsv.petprojectsecond.data.mappers.MovieListMapper
@@ -129,6 +130,7 @@ class UserRepositoryImpl @Inject constructor(
         data: RateMovie,
         movieId: Int
     ): Single<Boolean> {
+        Log.e("ad", "ad")
         return userRemoteDataSource.rateMovie(
             RateMovieMapper.toRequest(data),
             movieId,
