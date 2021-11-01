@@ -5,6 +5,7 @@ import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
 import com.artelsv.petprojectsecond.data.network.model.RateMovieRequest
 import com.artelsv.petprojectsecond.data.network.model.ToggleFavoriteRequest
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
+import com.artelsv.petprojectsecond.utils.ObscuredSharedPreferences
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -87,7 +88,5 @@ class UserRemoteDataSource @Inject constructor(
 
     companion object {
         private const val SUCCESS_CODE = 201
-        private const val TOGGLE_SUCCESS_CODE_ON = 12
-        private const val TOGGLE_SUCCESS_CODE_OFF = 13
     }
 }

@@ -133,6 +133,13 @@ class UserRepositoryImpl @Inject constructor(
             RateMovieMapper.toRequest(data),
             movieId,
             preferenceManager.getSession()
-        )
+        ).map {
+            val rep = userLocalDataSource.get(movieId)
+            rep?.let { movieData ->
+                userLocalDataSource.addRate(movieData.copy(rating = data.value.toFloat()))
+            }
+
+            it
+        }
     }
 }

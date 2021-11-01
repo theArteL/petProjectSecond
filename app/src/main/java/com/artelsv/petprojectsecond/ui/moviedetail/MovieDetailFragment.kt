@@ -28,7 +28,7 @@ class MovieDetailFragment : DaggerFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -56,6 +56,7 @@ class MovieDetailFragment : DaggerFragment() {
             viewModel.rateMovie(fl)
         }
     }
+
     private fun setObservers() {
         viewModel.error.observe(viewLifecycleOwner, {
             if (it) {

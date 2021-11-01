@@ -187,7 +187,11 @@ class MovieDetailViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { result ->
-                    if (result) rating.postValue(value * 2) else rating.postValue(0f)
+                    if (result) {
+                        rating.postValue(value * 2)
+                    } else {
+                        rating.postValue(0f)
+                    }
 
 //                    lightLoading.postValue(false)
                     toggleRateIt()
