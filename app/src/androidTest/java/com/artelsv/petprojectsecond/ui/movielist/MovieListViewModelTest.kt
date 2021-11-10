@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingData
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.artelsv.petprojectsecond.domain.model.*
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetPopularMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetNowPlayingMoviesUseCaseImpl

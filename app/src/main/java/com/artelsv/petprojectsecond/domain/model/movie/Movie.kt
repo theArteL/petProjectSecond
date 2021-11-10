@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.domain.model
+package com.artelsv.petprojectsecond.domain.model.movie
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -24,5 +24,5 @@ data class Movie(
     val voteCount: Int,
 
     val movieType: MovieType = MovieType.NOW_PLAYING,
-    val rating: Float = 0f
+    val rating: Float = 0f,
 ) : Parcelable

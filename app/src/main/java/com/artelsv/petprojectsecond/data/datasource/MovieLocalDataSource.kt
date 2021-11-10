@@ -2,10 +2,11 @@ package com.artelsv.petprojectsecond.data.datasource
 
 import com.artelsv.petprojectsecond.data.database.dao.MovieDao
 import com.artelsv.petprojectsecond.data.mappers.MovieMapper
-import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
-import com.artelsv.petprojectsecond.domain.model.Movie
-import com.artelsv.petprojectsecond.domain.model.MovieDetail
-import com.artelsv.petprojectsecond.domain.model.MovieType
+import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
+import com.artelsv.petprojectsecond.domain.model.movie.MovieType
+import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -33,6 +34,10 @@ class MovieLocalDataSource @Inject constructor(private val movieDao: MovieDao) :
         movieDao.addMovies(data.map { MovieMapper.toMovieEntity(it, type) })
 
         return data
+    }
+
+    override fun getMovieCredits(movieId: Int): Single<Credits> {
+        return Single.error(Throwable("Проверка ошибки"))
     }
 
 }

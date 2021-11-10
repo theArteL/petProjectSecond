@@ -2,9 +2,10 @@ package com.artelsv.petprojectsecond.domain.usecases.impl
 
 import com.artelsv.petprojectsecond.domain.MoviesRepository
 import com.artelsv.petprojectsecond.domain.UserRepository
-import com.artelsv.petprojectsecond.domain.model.MovieDetail
-import com.artelsv.petprojectsecond.domain.model.RateMovie
-import com.artelsv.petprojectsecond.domain.model.ToggleFavorite
+import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
+import com.artelsv.petprojectsecond.domain.model.movie.RateMovie
+import com.artelsv.petprojectsecond.domain.model.movie.ToggleFavorite
+import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
 import io.reactivex.Single
 import javax.inject.Inject
@@ -15,6 +16,9 @@ class GetMovieDetailsUseCaseImpl @Inject constructor(
 ) : GetMovieDetailsUseCase {
     override fun invoke(movieId: Int): Single<MovieDetail> =
         moviesRepository.getMovieDetails(movieId)
+
+    override fun getMovieCredits(movieId: Int): Single<Credits> =
+        moviesRepository.getMovieCredits(movieId)
 
     override fun rate(movieId: Int, rating: Number): Single<Boolean> {
         return userRepository.rateMovie(

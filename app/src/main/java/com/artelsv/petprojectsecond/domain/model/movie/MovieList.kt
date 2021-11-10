@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.domain.model
+package com.artelsv.petprojectsecond.domain.model.movie
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -8,5 +8,5 @@ data class MovieList(
     val page: Int,
     val results: List<Movie>,
     val totalPages: Int,
-    val totalResults: Int
+    val totalResults: Int,
 ) : Parcelable

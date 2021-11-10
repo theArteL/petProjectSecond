@@ -3,7 +3,7 @@ package com.artelsv.petprojectsecond.data.database.dao
 import androidx.room.*
 import androidx.room.OnConflictStrategy.IGNORE
 import com.artelsv.petprojectsecond.data.entity.MovieEntity
-import com.artelsv.petprojectsecond.domain.model.MovieType
+import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import io.reactivex.Single
 
 @Dao

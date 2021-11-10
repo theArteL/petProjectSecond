@@ -3,7 +3,7 @@ package com.artelsv.petprojectsecond.ui.profile
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.R
-import com.artelsv.petprojectsecond.domain.model.MovieList
+import com.artelsv.petprojectsecond.domain.model.movie.MovieList
 import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.usecases.GetUserUseCase
 import com.artelsv.petprojectsecond.domain.usecases.UserListsUseCase

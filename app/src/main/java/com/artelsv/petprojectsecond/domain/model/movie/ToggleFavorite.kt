@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.domain.model
+package com.artelsv.petprojectsecond.domain.model.movie
 
 data class ToggleFavorite(
     val mediaType: String,

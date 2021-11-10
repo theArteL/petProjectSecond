@@ -1,7 +1,7 @@
 package com.artelsv.petprojectsecond.data.mappers
 
 import com.artelsv.petprojectsecond.data.entity.UserMovieEntity
-import com.artelsv.petprojectsecond.domain.model.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
 
 object UserMovieMapper {
 

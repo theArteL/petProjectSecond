@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="com.artelsv.petprojectsecond.domain.model.Movie" />
+            type="com.artelsv.petprojectsecond.domain.model.movie.Movie" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

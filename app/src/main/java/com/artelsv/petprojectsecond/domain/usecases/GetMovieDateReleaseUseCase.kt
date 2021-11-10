@@ -1,6 +1,6 @@
 package com.artelsv.petprojectsecond.domain.usecases
 
-import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
+import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
 import io.reactivex.Single
 
 interface GetMovieDateReleaseUseCase {

@@ -9,7 +9,7 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.FragmentUserListBinding
-import com.artelsv.petprojectsecond.domain.model.MovieList
+import com.artelsv.petprojectsecond.domain.model.movie.MovieList
 import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
 import com.github.terrakok.cicerone.Router
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

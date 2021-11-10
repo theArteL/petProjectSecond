@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.ItemMovieBinding
-import com.artelsv.petprojectsecond.domain.model.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.utils.Constants.BASE_IMAGE_URL
 
 class UserListAdapter(

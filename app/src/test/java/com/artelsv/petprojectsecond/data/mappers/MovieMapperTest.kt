@@ -2,8 +2,8 @@ package com.artelsv.petprojectsecond.data.mappers
 
 import com.artelsv.petprojectsecond.data.entity.MovieEntity
 import com.artelsv.petprojectsecond.data.network.model.MovieResponse
-import com.artelsv.petprojectsecond.domain.model.Movie
-import com.artelsv.petprojectsecond.domain.model.MovieType
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

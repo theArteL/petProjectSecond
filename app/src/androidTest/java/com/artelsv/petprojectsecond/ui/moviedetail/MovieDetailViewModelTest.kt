@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.domain.model.*
+import com.artelsv.petprojectsecond.domain.model.movie.*
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDateReleaseUseCaseImpl

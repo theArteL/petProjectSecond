@@ -10,7 +10,7 @@
 
         <variable
             name="item"
-            type="com.artelsv.petprojectsecond.domain.model.MovieList" />
+            type="com.artelsv.petprojectsecond.domain.model.movie.MovieList" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

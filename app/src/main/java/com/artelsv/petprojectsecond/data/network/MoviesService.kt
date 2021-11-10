@@ -2,6 +2,7 @@ package com.artelsv.petprojectsecond.data.network
 
 import com.artelsv.petprojectsecond.data.network.model.MovieDetailResponse
 import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
+import com.artelsv.petprojectsecond.data.network.model.movie.CreditsResponse
 import com.artelsv.petprojectsecond.data.network.model.releasedate.DateReleaseListResponse
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -21,4 +22,7 @@ interface MoviesService {
 
     @GET("movie/{id}/release_dates")
     fun getMovieReleaseDates(@Path("id") movieId: Int): Single<DateReleaseListResponse>
+
+    @GET("movie/{id}/credits")
+    fun getMovieCredits(@Path("id") movieId: Int): Single<CreditsResponse>
 }

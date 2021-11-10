@@ -2,8 +2,8 @@ package com.artelsv.petprojectsecond.data.datasource
 
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxPagingSource
-import com.artelsv.petprojectsecond.domain.model.Movie
-import com.artelsv.petprojectsecond.domain.model.MovieType
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.reactivex.Single

@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.domain.model
+package com.artelsv.petprojectsecond.domain.model.movie
 
 data class MovieDetail(
     val adult: Boolean,
@@ -29,5 +29,5 @@ data class MovieDetail(
     val tagline: String?,
 
     val favorite: Boolean = false,
-    val rating: Float = 0f
+    val rating: Float = 0f,
 )

@@ -8,25 +8,26 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.ItemMovieBinding
-import com.artelsv.petprojectsecond.domain.model.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.utils.Constants.BASE_IMAGE_URL
 
 class MovieAdapter(
-    private val clickListener: (clickData: Movie?) -> Unit
+    private val clickListener: (clickData: Movie?) -> Unit,
 ) : PagingDataAdapter<Movie, MovieAdapter.ViewHolder>(MovieDiffItemCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position), clickListener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bind(getItem(position), clickListener)
 
     class ViewHolder private constructor(
-        private val binding: ItemMovieBinding
+        private val binding: ItemMovieBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: Movie?,
-            onClickListener: (clickData: Movie?) -> Unit
+            onClickListener: (clickData: Movie?) -> Unit,
         ) {
             binding.item = item
 

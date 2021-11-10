@@ -1,7 +1,7 @@
 package com.artelsv.petprojectsecond.data.mappers
 
 import com.artelsv.petprojectsecond.data.network.model.*
-import com.artelsv.petprojectsecond.domain.model.*
+import com.artelsv.petprojectsecond.domain.model.movie.*
 
 object MovieDetailMapper {
     fun toMovieDetail(movie: MovieDetailResponse): MovieDetail {

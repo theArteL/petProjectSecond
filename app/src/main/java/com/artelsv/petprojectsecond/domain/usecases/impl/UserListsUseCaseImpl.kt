@@ -1,7 +1,7 @@
 package com.artelsv.petprojectsecond.domain.usecases.impl
 
 import com.artelsv.petprojectsecond.domain.UserRepository
-import com.artelsv.petprojectsecond.domain.model.MovieList
+import com.artelsv.petprojectsecond.domain.model.movie.MovieList
 import com.artelsv.petprojectsecond.domain.usecases.UserListsUseCase
 import io.reactivex.Single
 import javax.inject.Inject

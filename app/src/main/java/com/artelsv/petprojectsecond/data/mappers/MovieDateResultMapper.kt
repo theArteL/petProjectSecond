@@ -2,8 +2,8 @@ package com.artelsv.petprojectsecond.data.mappers
 
 import com.artelsv.petprojectsecond.data.network.model.releasedate.DateReleaseResponse
 import com.artelsv.petprojectsecond.data.network.model.releasedate.DateReleaseResultsResponse
-import com.artelsv.petprojectsecond.domain.model.DateRelease
-import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
+import com.artelsv.petprojectsecond.domain.model.movie.DateRelease
+import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
 
 object MovieDateResultMapper {
     fun toDateRelease(date: DateReleaseResponse) =

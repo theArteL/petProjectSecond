@@ -10,10 +10,11 @@ import com.artelsv.petprojectsecond.data.datasource.NowPlayingMoviePagingSource
 import com.artelsv.petprojectsecond.data.datasource.PopularMoviePagingSource
 import com.artelsv.petprojectsecond.data.datasource.UserLocalDataSource
 import com.artelsv.petprojectsecond.domain.MoviesRepository
-import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
-import com.artelsv.petprojectsecond.domain.model.Movie
-import com.artelsv.petprojectsecond.domain.model.MovieDetail
-import com.artelsv.petprojectsecond.domain.model.MovieSortType
+import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
+import com.artelsv.petprojectsecond.domain.model.movie.MovieSortType
+import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
 import io.reactivex.Flowable
 import io.reactivex.Single
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -58,6 +59,13 @@ class MoviesRepositoryImpl @Inject constructor(
             }
             .onErrorResumeNext {
                 localDataSource.getMovieDetails(movieId)
+            }
+    }
+
+    override fun getMovieCredits(movieId: Int): Single<Credits> {
+        return remoteDataSource.getMovieCredits(movieId)
+            .onErrorResumeNext {
+                localDataSource.getMovieCredits(movieId)
             }
     }
 }

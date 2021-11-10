@@ -3,9 +3,9 @@ package com.artelsv.petprojectsecond.domain.usecases
 import androidx.paging.PagingData
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.domain.MoviesRepository
-import com.artelsv.petprojectsecond.domain.model.Movie
-import com.artelsv.petprojectsecond.domain.model.MovieSortType
-import com.artelsv.petprojectsecond.domain.model.MovieType
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.MovieSortType
+import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetPopularMoviesUseCaseImpl
 import io.mockk.every
 import io.mockk.mockk

@@ -2,6 +2,7 @@ package com.artelsv.petprojectsecond.domain.usecases
 
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.domain.model.*
+import com.artelsv.petprojectsecond.domain.model.movie.*
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDetailsUseCaseImpl
 import io.mockk.every
 import io.mockk.mockk

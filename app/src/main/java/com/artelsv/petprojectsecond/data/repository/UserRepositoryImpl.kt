@@ -8,9 +8,9 @@ import com.artelsv.petprojectsecond.data.mappers.ToggleFavoriteMapper
 import com.artelsv.petprojectsecond.data.mappers.UserMapper
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
 import com.artelsv.petprojectsecond.domain.UserRepository
-import com.artelsv.petprojectsecond.domain.model.MovieList
-import com.artelsv.petprojectsecond.domain.model.RateMovie
-import com.artelsv.petprojectsecond.domain.model.ToggleFavorite
+import com.artelsv.petprojectsecond.domain.model.movie.MovieList
+import com.artelsv.petprojectsecond.domain.model.movie.RateMovie
+import com.artelsv.petprojectsecond.domain.model.movie.ToggleFavorite
 import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.utils.SharedPreferenceManager
 import io.reactivex.Single

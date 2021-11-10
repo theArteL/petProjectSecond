@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.icu.text.SimpleDateFormat
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.R
-import com.artelsv.petprojectsecond.domain.model.DateReleaseResult
-import com.artelsv.petprojectsecond.domain.model.MovieDetail
+import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
+import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
 import com.artelsv.petprojectsecond.domain.model.User
+import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetUserUseCase
@@ -28,7 +28,7 @@ class MovieDetailViewModel @Inject constructor(
     private val context: Context,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getMovieDateReleaseUseCase: GetMovieDateReleaseUseCase,
-    private val getUserUseCase: GetUserUseCase
+    private val getUserUseCase: GetUserUseCase,
 ) : BaseViewModel() {
     private val user = MutableLiveData<User>(null)
 
@@ -37,6 +37,9 @@ class MovieDetailViewModel @Inject constructor(
 
     private val mDateRelease = MutableLiveData<DateReleaseResult>(null)
     val dateRelease: LiveData<DateReleaseResult> = mDateRelease
+
+    private val mCredits = MutableLiveData<Credits>(null)
+    val credits: LiveData<Credits> = mCredits
 
     val loading = MutableLiveData(true)
     val lightLoading = MutableLiveData(false)
@@ -55,6 +58,7 @@ class MovieDetailViewModel @Inject constructor(
                 .map {
                     rating.postValue(it.rating)
                     favorite.postValue(it.favorite)
+                    getMovieCredits(it.id)
                 }
                 .subscribe({
                     handleSuccess()
@@ -65,20 +69,39 @@ class MovieDetailViewModel @Inject constructor(
 
         compositeDisposable.add(
             getUserUseCase.invoke()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                user.postValue(it)
-            }
-            .subscribe({
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    user.postValue(it)
+                }
+                .subscribe({
 
-            }, {
+                }, {
 
-            })
+                })
         )
     }
 
-    private fun getReleaseDate(movieDetail: MovieDetail, iso: String = DEFAULT_ISO) : Single<MovieDetail> {
+    private fun getMovieCredits(movieId: Int) {
+        compositeDisposable.add(
+            getMovieDetailsUseCase.getMovieCredits(movieId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    mCredits.postValue(it)
+                }
+                .subscribe({
+
+                }, {
+
+                })
+        )
+    }
+
+    private fun getReleaseDate(
+        movieDetail: MovieDetail,
+        iso: String = DEFAULT_ISO,
+    ): Single<MovieDetail> {
         compositeDisposable.add(
             getMovieDateReleaseUseCase
                 .invoke(movieDetail.id, iso)
@@ -163,7 +186,9 @@ class MovieDetailViewModel @Inject constructor(
 
     fun toggleFavorite() {
         movie.value?.let {
-            compositeDisposable.add(getMovieDetailsUseCase.favorite(user.value!!.id, it.id, !favorite.value!!)
+            compositeDisposable.add(getMovieDetailsUseCase.favorite(user.value!!.id,
+                it.id,
+                !favorite.value!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { result ->

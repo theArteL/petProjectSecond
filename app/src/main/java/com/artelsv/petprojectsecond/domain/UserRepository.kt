@@ -1,8 +1,8 @@
 package com.artelsv.petprojectsecond.domain
 
-import com.artelsv.petprojectsecond.domain.model.MovieList
-import com.artelsv.petprojectsecond.domain.model.RateMovie
-import com.artelsv.petprojectsecond.domain.model.ToggleFavorite
+import com.artelsv.petprojectsecond.domain.model.movie.MovieList
+import com.artelsv.petprojectsecond.domain.model.movie.RateMovie
+import com.artelsv.petprojectsecond.domain.model.movie.ToggleFavorite
 import com.artelsv.petprojectsecond.domain.model.User
 import io.reactivex.Single
 

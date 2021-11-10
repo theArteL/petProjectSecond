@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.artelsv.petprojectsecond.databinding.FragmentMovieDetailBinding
@@ -25,6 +26,14 @@ class MovieDetailFragment : DaggerFragment() {
     lateinit var router: Router
 
     private val binding: FragmentMovieDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+
+    private val castAdapter = MovieCastAdapter {
+
+    }
+
+    private val crewAdapter = MovieCrewAdapter {
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +58,19 @@ class MovieDetailFragment : DaggerFragment() {
 
         setListeners()
         setObservers()
+        setLists()
+    }
+
+    private fun setLists() {
+        binding.rvCast.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = castAdapter
+        }
+
+        binding.rvCast.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = crewAdapter
+        }
     }
 
     private fun setListeners() {
@@ -62,6 +84,13 @@ class MovieDetailFragment : DaggerFragment() {
             if (it) {
                 Toast.makeText(requireContext(), ERROR, Toast.LENGTH_LONG).show()
                 router.backTo(Screens.movieList())
+            }
+        })
+
+        viewModel.credits.observe(viewLifecycleOwner, {
+            it?.let {
+                (binding.rvCast.adapter as MovieCastAdapter).submitList(it.cast)
+                (binding.rvCrew.adapter as MovieCrewAdapter).submitList(it.crew)
             }
         })
     }

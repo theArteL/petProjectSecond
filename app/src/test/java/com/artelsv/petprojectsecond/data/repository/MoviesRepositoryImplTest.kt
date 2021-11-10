@@ -3,6 +3,7 @@ package com.artelsv.petprojectsecond.data.repository
 import androidx.paging.PagingData
 import com.artelsv.petprojectsecond.domain.MoviesRepository
 import com.artelsv.petprojectsecond.domain.model.*
+import com.artelsv.petprojectsecond.domain.model.movie.*
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

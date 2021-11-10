@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.cachedIn
-import com.artelsv.petprojectsecond.domain.model.Movie
-import com.artelsv.petprojectsecond.domain.model.MovieSortType
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.MovieSortType
 import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetPopularMoviesUseCase
@@ -16,7 +16,6 @@ import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi

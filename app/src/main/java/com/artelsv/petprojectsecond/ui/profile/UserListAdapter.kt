@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.artelsv.petprojectsecond.databinding.ItemUserListBinding
-import com.artelsv.petprojectsecond.domain.model.MovieList
+import com.artelsv.petprojectsecond.domain.model.movie.MovieList
 
 class UserListAdapter(
     private val clickListener: (clickData: Pair<MovieList, Int>) -> Unit

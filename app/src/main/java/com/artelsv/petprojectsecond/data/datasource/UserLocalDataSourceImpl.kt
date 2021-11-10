@@ -3,7 +3,7 @@ package com.artelsv.petprojectsecond.data.datasource
 import com.artelsv.petprojectsecond.data.database.dao.UserMovieDao
 import com.artelsv.petprojectsecond.data.entity.UserMovieEntity
 import com.artelsv.petprojectsecond.data.mappers.UserMovieMapper
-import com.artelsv.petprojectsecond.domain.model.MovieList
+import com.artelsv.petprojectsecond.domain.model.movie.MovieList
 import javax.inject.Inject
 
 class UserLocalDataSourceImpl @Inject constructor(

@@ -1,7 +1,7 @@
 package com.artelsv.petprojectsecond.data.mappers
 
 import com.artelsv.petprojectsecond.data.network.model.RateMovieRequest
-import com.artelsv.petprojectsecond.domain.model.RateMovie
+import com.artelsv.petprojectsecond.domain.model.movie.RateMovie
 
 object RateMovieMapper {
 

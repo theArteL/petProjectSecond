@@ -2,7 +2,7 @@ package com.artelsv.petprojectsecond.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.artelsv.petprojectsecond.domain.model.*
+import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_MOVIE_TABLE
 
 @Entity(tableName = DATABASE_MOVIE_TABLE)
