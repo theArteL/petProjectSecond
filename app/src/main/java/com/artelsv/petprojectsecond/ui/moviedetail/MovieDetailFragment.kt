@@ -9,8 +9,10 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.FragmentMovieDetailBinding
 import com.artelsv.petprojectsecond.ui.Screens
+import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
 import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -63,13 +65,29 @@ class MovieDetailFragment : DaggerFragment() {
 
     private fun setLists() {
         binding.rvCast.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = castAdapter
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    requireContext().resources.getDimension(
+                        R.dimen.viewpager_current_item_horizontal_margin
+                    ).toInt()
+                )
+            )
         }
 
-        binding.rvCast.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+        binding.rvCrew.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = crewAdapter
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    requireContext().resources.getDimension(
+                        R.dimen.viewpager_current_item_horizontal_margin
+                    ).toInt()
+                )
+            )
         }
     }
 
@@ -89,8 +107,8 @@ class MovieDetailFragment : DaggerFragment() {
 
         viewModel.credits.observe(viewLifecycleOwner, {
             it?.let {
-                (binding.rvCast.adapter as MovieCastAdapter).submitList(it.cast)
-                (binding.rvCrew.adapter as MovieCrewAdapter).submitList(it.crew)
+                castAdapter.submitList(it.cast.filter { cast -> cast.knownForDepartment == "Acting" })
+                crewAdapter.submitList(it.crew.filter { crew -> crew.knownForDepartment != "Acting" })
             }
         })
     }

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.ItemPersonBinding
 import com.artelsv.petprojectsecond.domain.model.movie.credits.Crew
 
@@ -27,7 +28,16 @@ class MovieCrewAdapter(
             item: Crew,
             onClickListener: (clickData: Crew) -> Unit,
         ) {
-            binding.ivPerson.load("https://image.tmdb.org/t/p/w500${item.profilePath}")
+            binding.ivPerson.load("https://image.tmdb.org/t/p/w500${item.profilePath}") {
+                error(when (item.gender) {
+                    0 -> R.drawable.ic_empty_man
+                    1 -> R.drawable.ic_empty_women
+                    else -> R.drawable.ic_empty_man
+                })
+            }
+
+            binding.tvName.text =
+                binding.root.context.getString(R.string.item_person_name, item.name, item.job)
 
             binding.mcvContainer.setOnClickListener {
                 onClickListener(item)

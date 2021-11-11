@@ -7,9 +7,9 @@ import android.icu.text.SimpleDateFormat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.R
+import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
-import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
@@ -38,8 +38,7 @@ class MovieDetailViewModel @Inject constructor(
     private val mDateRelease = MutableLiveData<DateReleaseResult>(null)
     val dateRelease: LiveData<DateReleaseResult> = mDateRelease
 
-    private val mCredits = MutableLiveData<Credits>(null)
-    val credits: LiveData<Credits> = mCredits
+    val credits = MutableLiveData<Credits>(null)
 
     val loading = MutableLiveData(true)
     val lightLoading = MutableLiveData(false)
@@ -88,7 +87,7 @@ class MovieDetailViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
-                    mCredits.postValue(it)
+                    credits.postValue(it)
                 }
                 .subscribe({
 

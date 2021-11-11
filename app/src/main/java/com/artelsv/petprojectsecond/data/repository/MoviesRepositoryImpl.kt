@@ -27,7 +27,7 @@ class MoviesRepositoryImpl @Inject constructor(
     // только для получения актуальной инфы из бд
     private val userLocalDataSource: UserLocalDataSource,
     private val nowPlayingMoviePagingSource: NowPlayingMoviePagingSource.Factory,
-    private val popularMoviePagingSource: PopularMoviePagingSource.Factory
+    private val popularMoviePagingSource: PopularMoviePagingSource.Factory,
 ) : MoviesRepository {
 
     override fun getPopularMovies(movieSortType: MovieSortType): Flowable<PagingData<Movie>> {
@@ -64,8 +64,5 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override fun getMovieCredits(movieId: Int): Single<Credits> {
         return remoteDataSource.getMovieCredits(movieId)
-            .onErrorResumeNext {
-                localDataSource.getMovieCredits(movieId)
-            }
     }
 }

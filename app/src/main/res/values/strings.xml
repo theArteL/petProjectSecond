@@ -14,7 +14,9 @@
     <string name="movie_detail_separator">\u00A0&#8226;\u00A0</string>
     <string name="movie_detail_title_overview">Обзор</string>
     <string name="movie_detail_rate">Оценок: %d | Средняя: %2$.2f</string>
-    <string name="movie_detail_rate_user">Вы оценили на %3$.2f</string>
+    <string name="movie_detail_rate_user">Вы оценили на %.2f</string>
+    <string name="movie_detail_cast">Актеры</string>
+    <string name="movie_detail_crew">Команда</string>
 
     <string name="menu_no">Без сортировки</string>
     <string name="menu_acs">По убыванию рейтинга</string>
@@ -37,8 +39,11 @@
     <string name="profile_movie_list_rated_movies">Оцененные фильмы</string>
     <string name="profile_movie_list_rated_tv_shows">Оцененные сериалы</string>
 
+    <string name="item_person_name">%s / %s</string>
+
     <!--  Content descriptions  -->
     <string name="back_button">Назад</string>
     <string name="exit_button">Выйти из аккаунта</string>
     <string name="profile_image">Фото профиля</string>
+    <string name="person_image">Фото персоны</string>
 </resources>
