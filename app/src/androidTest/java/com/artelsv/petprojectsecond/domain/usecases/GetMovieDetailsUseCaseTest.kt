@@ -1,6 +1,7 @@
 package com.artelsv.petprojectsecond.domain.usecases
 
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
+import com.artelsv.petprojectsecond.data.repository.UserRepositoryImpl
 import com.artelsv.petprojectsecond.domain.model.*
 import com.artelsv.petprojectsecond.domain.model.movie.*
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDetailsUseCaseImpl
@@ -17,7 +18,7 @@ class GetMovieDetailsUseCaseTest {
     private val company = Company(0, "Name", "", "Russia")
     private val country = Country("iso", "Name")
     private val language = Language("EnglishName", "iso", "Name")
-    private val movieDetail = MovieDetail(false, "", 0, listOf(1, 2), 0, "Russian", "MovieTitle", "MovieOverview", 5.0, "", "11.11.2011", 0, 0, "MovieTitle", false, 5.0, 1000, listOf(genre, genre), "", "", listOf(company, company), listOf(country, country), listOf(language, language), "Ok", "")
+    private val movieDetail = MovieDetail(false, "", 0, listOf(1, 2), 0, "Russian", "MovieTitle", "MovieOverview", 5.0, "", "11.11.2011", 0, 0, "MovieTitle", false, 5.0f, 1000, listOf(genre, genre), "", "", listOf(company, company), listOf(country, country), listOf(language, language), "Ok", "")
 
     private val movieRepository = mockk<MoviesRepositoryImpl> {
         every { this@mockk.getMovieDetails(-100) } returns Single.just(movieDetail.copy(id = -100))
@@ -27,7 +28,11 @@ class GetMovieDetailsUseCaseTest {
         every { this@mockk.getMovieDetails(Integer.MIN_VALUE) } returns Single.just(movieDetail.copy(id = Integer.MIN_VALUE))
     }
 
-    private val getMovieDetailsUseCase: GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(movieRepository)
+    private val userRepository = mockk<UserRepositoryImpl> {
+
+    }
+
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(movieRepository, userRepository)
 
     @Test
     fun invoke_NegativeMovieId_True() {

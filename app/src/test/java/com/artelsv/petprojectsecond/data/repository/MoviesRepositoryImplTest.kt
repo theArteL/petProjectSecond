@@ -26,7 +26,7 @@ class MoviesRepositoryImplTest {
     private val company = Company(0, "Name", "", "Russia")
     private val country = Country("iso", "Name")
     private val language = Language("EnglishName", "iso", "Name")
-    private val movieDetail = MovieDetail(false, "", 0, listOf(1, 2), 0, "Russian", "MovieTitle", "MovieOverview", 5.0, "", "11.11.2011", 0, 0, "MovieTitle", false, 5.0, 1000, listOf(genre, genre), "", "", listOf(company, company), listOf(country, country), listOf(language, language), "Ok", "")
+    private val movieDetail = MovieDetail(false, "", 0, listOf(1, 2), 0, "Russian", "MovieTitle", "MovieOverview", 5.0, "", "11.11.2011", 0, 0, "MovieTitle", false, 5.0f, 1000, listOf(genre, genre), "", "", listOf(company, company), listOf(country, country), listOf(language, language), "Ok", "")
 
     private val moviesRepository: MoviesRepository = mockk<MoviesRepositoryImpl> {
         every { this@mockk.getPopularMovies(MovieSortType.NO) } returns Flowable.just(PagingData.from(listOf(moviePopular, moviePopular)))

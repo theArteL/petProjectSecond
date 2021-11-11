@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.artelsv.petprojectsecond.data.entity.MovieEntity
 import com.artelsv.petprojectsecond.data.entity.UserMovieEntity
 
 @Dao

@@ -10,8 +10,10 @@ import com.artelsv.petprojectsecond.domain.model.*
 import com.artelsv.petprojectsecond.domain.model.movie.*
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
+import com.artelsv.petprojectsecond.domain.usecases.GetUserUseCase
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDateReleaseUseCaseImpl
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDetailsUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.GetUserUseCaseImpl
 import com.artelsv.petprojectsecond.getOrAwaitValue
 import io.mockk.every
 import io.mockk.mockk
@@ -32,7 +34,7 @@ class MovieDetailViewModelTest : TestCase() {
     private val company = Company(0, "Name", "", "Russia")
     private val country = Country("iso", "Name")
     private val language = Language("EnglishName", "iso", "Name")
-    private val movieDetail = MovieDetail(false, "", 0, listOf(1, 2), 0, "Russian", "MovieTitle", "MovieOverview", 5.0, "", "2021-08-11T00:00:00.000Z", 0, 0, "MovieTitle", false, 5.0, 1000, listOf(genre, genre), "", "", listOf(company, company), listOf(country, country), listOf(language, language), "Ok", "")
+    private val movieDetail = MovieDetail(false, "", 0, listOf(1, 2), 0, "Russian", "MovieTitle", "MovieOverview", 5.0, "", "2021-08-11T00:00:00.000Z", 0, 0, "MovieTitle", false, 5.0f, 1000, listOf(genre, genre), "", "", listOf(company, company), listOf(country, country), listOf(language, language), "Ok", "")
 
     private lateinit var movieDetailViewModel: MovieDetailViewModel
 
@@ -49,6 +51,10 @@ class MovieDetailViewModelTest : TestCase() {
         every { this@mockk.invoke(allAny(), allAny()) } returns Single.just(dateReleaseResultList)
     }
 
+    private val getUserUseCase: GetUserUseCase = mockk<GetUserUseCaseImpl> {
+
+    }
+
     private val res = mockk<Resources> {
         every { this@mockk.getString(R.string.movie_detail_separator) } returns "value"
         every { this@mockk.getString(allAny()) } returns "value"
@@ -58,7 +64,7 @@ class MovieDetailViewModelTest : TestCase() {
 
     @Before
     fun setup() {
-        movieDetailViewModel = MovieDetailViewModel(context, getMovieDetailsUseCase, getMovieDateReleaseUseCase)
+        movieDetailViewModel = MovieDetailViewModel(context, getMovieDetailsUseCase, getMovieDateReleaseUseCase, getUserUseCase)
     }
 
     @Test

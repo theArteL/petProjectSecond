@@ -8,8 +8,10 @@ import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetPopularMoviesUseCase
+import com.artelsv.petprojectsecond.domain.usecases.GetUserUseCase
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetNowPlayingMoviesUseCaseImpl
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetPopularMoviesUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.GetUserUseCaseImpl
 import com.artelsv.petprojectsecond.getOrAwaitValue
 import io.mockk.every
 import io.mockk.mockk
@@ -38,12 +40,16 @@ class MovieListViewModelTest : TestCase() {
         every { this@mockk.invoke(allAny()) } returns Flowable.just(PagingData.from(listOf(movieNowPlaying, movieNowPlaying)))
     }
 
+    private val getUserUseCase: GetUserUseCase = mockk<GetUserUseCaseImpl> {
+
+    }
+
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setup() {
-        movieListViewModel = MovieListViewModel(getPopularMoviesUseCase, getNowPlayingMoviesUseCase)
+        movieListViewModel = MovieListViewModel(getPopularMoviesUseCase, getNowPlayingMoviesUseCase, getUserUseCase)
     }
 
     @Test

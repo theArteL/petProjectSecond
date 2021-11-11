@@ -5,7 +5,6 @@ import com.artelsv.petprojectsecond.data.network.model.MovieListResponse
 import com.artelsv.petprojectsecond.data.network.model.RateMovieRequest
 import com.artelsv.petprojectsecond.data.network.model.ToggleFavoriteRequest
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
-import com.artelsv.petprojectsecond.utils.ObscuredSharedPreferences
 import io.reactivex.Single
 import javax.inject.Inject
 
