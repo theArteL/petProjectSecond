@@ -5,6 +5,7 @@
     <dimen name="tiny_padding">4dp</dimen>
 
     <dimen name="default_radius">8dp</dimen>
+    <dimen name="medium_radius">16dp</dimen>
 
     <dimen name="viewpager_current_item_horizontal_margin">8dp</dimen>
 
@@ -15,8 +16,8 @@
     <dimen name="default_end_margin">8dp</dimen>
     <dimen name="default_bottom_margin">8dp</dimen>
 
-    <dimen name="big_start_margin">48dp</dimen>
-    <dimen name="big_top_margin">48dp</dimen>
-    <dimen name="big_end_margin">48dp</dimen>
-    <dimen name="big_bottom_margin">48dp</dimen>
+    <dimen name="tiny_margin">8dp</dimen>
+    <dimen name="small_margin">12dp</dimen>
+    <dimen name="medium_margin">24dp</dimen>
+    <dimen name="big_margin">48dp</dimen>
 </resources>

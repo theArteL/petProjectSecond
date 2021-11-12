@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import com.artelsv.petprojectsecond.ui.moviedetail.MovieDetailFragment
 import com.artelsv.petprojectsecond.ui.movielist.MovieListFragment
+import com.artelsv.petprojectsecond.ui.persondetail.PersonDetailFragment
 import com.artelsv.petprojectsecond.ui.profile.ProfileFragment
 import com.github.terrakok.cicerone.androidx.ActivityScreen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
@@ -17,4 +18,5 @@ object Screens {
     fun movieList() = FragmentScreen { MovieListFragment() }
     fun movieDetail(movieId: Int) = FragmentScreen { MovieDetailFragment.newInstance(movieId) }
     fun profile() = FragmentScreen { ProfileFragment() }
+    fun personDetail(value: Any) = FragmentScreen { PersonDetailFragment.newInstance(value) }
 }

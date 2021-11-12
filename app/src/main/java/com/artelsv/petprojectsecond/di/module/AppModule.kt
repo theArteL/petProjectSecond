@@ -91,7 +91,8 @@ class AppModule {
         @Named("userRemoteDataSource") userRemoteDataSource: UserDataSource,
         @Named("userLocalDataSource") userLocalDataSource: UserLocalDataSource,
         pref: ObscuredSharedPreferences,
-    ): UserRepository = UserRepositoryImpl(userRemoteDataSource, userLocalDataSource, SharedPreferenceManager(pref))
+    ): UserRepository =
+        UserRepositoryImpl(userRemoteDataSource, userLocalDataSource, SharedPreferenceManager(pref))
 
     @Module
     abstract class DataSourcesBinds {
@@ -145,5 +146,8 @@ class AppModule {
 
         @Binds
         abstract fun bindUserListsUseCase(userListsUseCase: UserListsUseCaseImpl): UserListsUseCase
+
+        @Binds
+        abstract fun bindPersonDetailUseCase(personDetailUseCase: PersonDetailUseCaseImpl): PersonDetailUseCase
     }
 }

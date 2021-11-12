@@ -16,4 +16,5 @@ interface MovieDataSource {
     fun addMoviesToDb(data: List<Movie>, type: MovieType): List<Movie>
 
     fun getMovieCredits(movieId: Int): Single<Credits>
+    fun getMoviesByCredits(personId: Int): Single<List<Movie>>
 }

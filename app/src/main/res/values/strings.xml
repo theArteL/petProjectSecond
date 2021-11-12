@@ -40,6 +40,11 @@
     <string name="profile_movie_list_rated_tv_shows">Оцененные сериалы</string>
 
     <string name="item_person_name">%s / %s</string>
+    <string name="person_detail_cast">Актер</string>
+    <string name="person_detail_crew">Съемочная команда</string>
+    <string name="person_detail_error">Упс… Произошла ошибка</string>
+    <string name="person_detail_button_error_back">Вернуться обратно</string>
+    <string name="person_detail_movies">Фильмы</string>
 
     <!--  Content descriptions  -->
     <string name="back_button">Назад</string>

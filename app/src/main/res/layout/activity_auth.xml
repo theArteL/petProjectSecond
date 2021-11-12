@@ -34,7 +34,7 @@
                 android:id="@+id/til_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_top_margin">
+                android:layout_marginTop="@dimen/tiny_margin">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_login"
@@ -50,7 +50,7 @@
                 android:id="@+id/til_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_top_margin">
+                android:layout_marginTop="@dimen/tiny_margin">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_password"
@@ -66,7 +66,7 @@
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_top_margin"
+                android:layout_marginTop="@dimen/tiny_margin"
                 android:text="@string/auth_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

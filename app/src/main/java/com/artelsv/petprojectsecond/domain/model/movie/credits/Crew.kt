@@ -1,5 +1,9 @@
 package com.artelsv.petprojectsecond.domain.model.movie.credits
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Crew(
     val adult: Boolean,
     val gender: Int?,
@@ -12,4 +16,4 @@ data class Crew(
     val creditId: String,
     val department: String,
     val job: String,
-)
+) : Parcelable

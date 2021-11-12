@@ -16,4 +16,5 @@ interface MoviesRepository {
     fun getMovieDateRelease(movieId: Int): Single<List<DateReleaseResult>>
     fun getMovieDetails(movieId: Int): Single<MovieDetail>
     fun getMovieCredits(movieId: Int): Single<Credits>
+    fun getMoviesByCredits(personId: Int): Single<List<Movie>>
 }

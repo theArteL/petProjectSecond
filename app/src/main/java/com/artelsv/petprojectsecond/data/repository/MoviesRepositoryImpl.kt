@@ -65,4 +65,8 @@ class MoviesRepositoryImpl @Inject constructor(
     override fun getMovieCredits(movieId: Int): Single<Credits> {
         return remoteDataSource.getMovieCredits(movieId)
     }
+
+    override fun getMoviesByCredits(personId: Int): Single<List<Movie>> {
+        return remoteDataSource.getMoviesByCredits(personId)
+    }
 }

@@ -40,4 +40,8 @@ class MovieLocalDataSource @Inject constructor(private val movieDao: MovieDao) :
         return Single.error(Throwable("Проверка ошибки"))
     }
 
+    override fun getMoviesByCredits(personId: Int): Single<List<Movie>> {
+        return Single.error(Throwable("Проверка ошибки"))
+    }
+
 }

@@ -30,11 +30,11 @@ class MovieDetailFragment : DaggerFragment() {
     private val binding: FragmentMovieDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
     private val castAdapter = MovieCastAdapter {
-
+        router.navigateTo(Screens.personDetail(it))
     }
 
     private val crewAdapter = MovieCrewAdapter {
-
+        router.navigateTo(Screens.personDetail(it))
     }
 
     override fun onCreateView(

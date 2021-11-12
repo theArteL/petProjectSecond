@@ -5,6 +5,7 @@ import com.artelsv.petprojectsecond.data.mappers.MovieDateResultMapper
 import com.artelsv.petprojectsecond.data.mappers.MovieDetailMapper
 import com.artelsv.petprojectsecond.data.mappers.MovieMapper
 import com.artelsv.petprojectsecond.data.network.MoviesService
+import com.artelsv.petprojectsecond.data.network.model.persondetail.toModel
 import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
@@ -14,7 +15,8 @@ import io.reactivex.Single
 import timber.log.Timber
 import javax.inject.Inject
 
-class MovieRemoteDataSource @Inject constructor(private val moviesService: MoviesService) : MovieDataSource {
+class MovieRemoteDataSource @Inject constructor(private val moviesService: MoviesService) :
+    MovieDataSource {
 
     override fun getPopularMovies(page: Int): Single<List<Movie>> =
         moviesService.getPopularMovies(page).map { it.results.map(MovieMapper::toMovie) }
@@ -34,5 +36,11 @@ class MovieRemoteDataSource @Inject constructor(private val moviesService: Movie
         return listOf() // выглядит как костыль, но пусть будет так
     }
 
-    override fun getMovieCredits(movieId: Int): Single<Credits> = moviesService.getMovieCredits(movieId).map(CreditsMapper::toCredits)
+    override fun getMovieCredits(movieId: Int): Single<Credits> =
+        moviesService.getMovieCredits(movieId).map(CreditsMapper::toCredits)
+
+    override fun getMoviesByCredits(personId: Int): Single<List<Movie>> =
+        moviesService.getMoviesByCredits(personId).map {
+            it.toModel()
+        }
 }

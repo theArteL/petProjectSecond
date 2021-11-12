@@ -9,6 +9,7 @@ import com.artelsv.petprojectsecond.ui.MainViewModel
 import com.artelsv.petprojectsecond.ui.userlist.UserListViewModel
 import com.artelsv.petprojectsecond.ui.moviedetail.MovieDetailViewModel
 import com.artelsv.petprojectsecond.ui.movielist.MovieListViewModel
+import com.artelsv.petprojectsecond.ui.persondetail.PersonDetailViewModel
 import com.artelsv.petprojectsecond.ui.profile.ProfileViewModel
 import dagger.Binds
 import dagger.Module
@@ -51,4 +52,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
     abstract fun providesProfileViewModel(viewModel: ProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewModel::class)
+    abstract fun providesPersonDetailViewModel(viewModel: PersonDetailViewModel): ViewModel
 }
