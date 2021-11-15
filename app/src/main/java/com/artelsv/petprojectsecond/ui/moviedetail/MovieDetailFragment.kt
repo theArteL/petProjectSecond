@@ -5,20 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import coil.load
+import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.FragmentMovieDetailBinding
-import com.artelsv.petprojectsecond.di.factory.ViewModelFactory
 import com.artelsv.petprojectsecond.ui.Screens
+import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
 import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class MovieDetailFragment : DaggerFragment() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
     lateinit var viewModel: MovieDetailViewModel
@@ -28,33 +29,86 @@ class MovieDetailFragment : DaggerFragment() {
 
     private val binding: FragmentMovieDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
+    private val castAdapter = MovieCastAdapter {
+        router.navigateTo(Screens.personDetail(it))
+    }
+
+    private val crewAdapter = MovieCrewAdapter {
+        router.navigateTo(Screens.personDetail(it))
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        arguments?.let {
-            viewModel.setMovieValue(it[MOVIE_ID] as Int)
-        }
-
-        setObservers(binding)
-
         return binding.root
     }
 
-    private fun setObservers(binding: FragmentMovieDetailBinding) {
-        viewModel.movie.observe(viewLifecycleOwner, {
-            if (it != null) {
-                binding.ivPoster.load(viewModel.getImageUrl(it))
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            viewModel.getMovieDetail(it[MOVIE_ID] as Int)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setListeners()
+        setObservers()
+        setLists()
+    }
+
+    private fun setLists() {
+        binding.rvCast.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = castAdapter
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    requireContext().resources.getDimension(
+                        R.dimen.viewpager_current_item_horizontal_margin
+                    ).toInt()
+                )
+            )
+        }
+
+        binding.rvCrew.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = crewAdapter
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    requireContext().resources.getDimension(
+                        R.dimen.viewpager_current_item_horizontal_margin
+                    ).toInt()
+                )
+            )
+        }
+    }
+
+    private fun setListeners() {
+        binding.rbRate.setOnRatingBarChangeListener { _, fl, _ ->
+            viewModel.rateMovie(fl)
+        }
+    }
+
+    private fun setObservers() {
+        viewModel.error.observe(viewLifecycleOwner, {
+            if (it) {
+                Toast.makeText(requireContext(), ERROR, Toast.LENGTH_LONG).show()
+                router.backTo(Screens.movieList())
             }
         })
 
-        viewModel.error.observe(viewLifecycleOwner, {
-            if (it != null && it) {
-                Toast.makeText(requireContext(), ERROR, Toast.LENGTH_LONG).show()
-                router.backTo(Screens.movieList())
+        viewModel.credits.observe(viewLifecycleOwner, {
+            it?.let {
+                castAdapter.submitList(it.cast.filter { cast -> cast.knownForDepartment == "Acting" })
+                crewAdapter.submitList(it.crew.filter { crew -> crew.knownForDepartment != "Acting" })
             }
         })
     }
@@ -64,9 +118,9 @@ class MovieDetailFragment : DaggerFragment() {
         private const val ERROR = "Ошибка, повторите попытку" // пока тут
 
         fun newInstance(movieId: Int) = MovieDetailFragment().apply {
-            arguments = Bundle().apply {
-                putInt(MOVIE_ID, movieId)
-            }
+            arguments = bundleOf(
+                MOVIE_ID to movieId
+            )
         }
     }
 }

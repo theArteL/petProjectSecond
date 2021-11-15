@@ -2,72 +2,90 @@ package com.artelsv.petprojectsecond.ui.movielist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.artelsv.petprojectsecond.base.BaseViewModel
-import com.artelsv.petprojectsecond.domain.model.Movie
-import com.artelsv.petprojectsecond.domain.model.MovieType
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.rxjava2.cachedIn
+import com.artelsv.petprojectsecond.domain.model.movie.Movie
+import com.artelsv.petprojectsecond.domain.model.movie.MovieSortType
+import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.usecases.GetNowPlayingMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.GetPopularMoviesUseCase
-import io.reactivex.Single
+import com.artelsv.petprojectsecond.domain.usecases.GetUserUseCase
+import com.artelsv.petprojectsecond.ui.base.BaseViewModel
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class MovieListViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase
+    private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
+    private val getUserUseCase: GetUserUseCase
 ) : BaseViewModel() {
 
-    private val mPopularMovies = MutableLiveData<List<Movie>?>(listOf())
-    val popularMovies: LiveData<List<Movie>?> = mPopularMovies
-    private val mNowPlayingMovies = MutableLiveData<List<Movie>?>(listOf())
-    val nowPlayingMovies: LiveData<List<Movie>?> = mNowPlayingMovies
+    val user = MutableLiveData<User>(null)
 
-    val loading = MutableLiveData(false)
+    val loadingPopular = MutableLiveData(false)
+    val loadingNowPlaying = MutableLiveData(false)
     val error = MutableLiveData(false)
 
+    private val mNowPlayingPagingLiveData = MutableLiveData<PagingData<Movie>>(null)
+    val nowPlayingPagingLiveData: LiveData<PagingData<Movie>> = mNowPlayingPagingLiveData
+
+    private val mPopularPagingLiveData = MutableLiveData<PagingData<Movie>>(null)
+    val popularPagingLiveData: LiveData<PagingData<Movie>> = mPopularPagingLiveData
+
     init {
-        getMovies()
+        setup()
     }
 
-    fun getMovies() {
-        val popularSingle = getPopularMoviesUseCase.invoke()
-        val newSingle = getNowPlayingMoviesUseCase.invoke()
-//        val newSingle = Single.error<List<Movie>>(Throwable("a"))
+    private fun setup() {
+        getUser()
 
-        val dis = Single.zip(newSingle, popularSingle, { new, popular ->
-            /**
-             * "Сортировка" по категориям
-             **/
-            val sorted = arrayListOf<Pair<MovieType, List<Movie>>>()
+        val nowPlayingPagingData: Flowable<PagingData<Movie>> by lazy {
+            getNowPlayingMoviesUseCase.invoke(MovieSortType.NO).cachedIn(viewModelScope)
+        }
 
-            sorted.add(Pair(MovieType.NOW_PLAYING, new))
-            sorted.add(Pair(MovieType.POPULAR, popular))
+        val popularPagingData: Flowable<PagingData<Movie>> by lazy {
+            getPopularMoviesUseCase.invoke(MovieSortType.NO).cachedIn(viewModelScope)
+        }
 
-            return@zip sorted.toList()
-        })
-            .subscribeOn(Schedulers.io()) // TODO вот эти две штуки особо выжные, они отвечают за то, в каком потоке будет происходить обработка данных
-            .observeOn(AndroidSchedulers.mainThread())  // TODO обзательно посомтри вот это https://proandroiddev.com/understanding-rxjava-subscribeon-and-observeon-744b0c6a41ea
-            .doOnSubscribe {
-                loading.postValue(true)
-                error.postValue(false)
+        compositeDisposable.add(
+            nowPlayingPagingData.subscribe {
+                mNowPlayingPagingLiveData.postValue(it)
+            }
+        )
+
+        compositeDisposable.add(
+            popularPagingData.subscribe {
+                mPopularPagingLiveData.postValue(it)
+            }
+        )
+    }
+
+    private fun getUser() {
+        compositeDisposable.add(getUserUseCase.invoke()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                getUserUseCase.syncLocalUserLists(it.id)
+                user.postValue(it)
             }
             .subscribe({
-                /**
-                 * У меня тут 2 категории разные, и они в разных лайвдате лежат, не придумал способа лучше для разделения (опираюсь на тудушку выше, что работа должна проиходить здесь)
-                 **/
-                for (item in it) {
-                    when(item.first) {
-                        MovieType.POPULAR -> mPopularMovies.postValue(item.second)
-                        MovieType.NOW_PLAYING -> mNowPlayingMovies.postValue(item.second)
-                    }
-                }
 
-                loading.postValue(false)
             }, {
-                error.postValue(true)
-                loading.postValue(false)
+//                Timber.e(it)
             })
+        )
+    }
 
-        compositeDisposable.add(dis)
+    fun progressCheck() = loadingPopular.value == true && loadingNowPlaying.value == true
+
+    override fun onCleared() {
+        super.onCleared()
+
+        getUserUseCase.dispose()
     }
 }

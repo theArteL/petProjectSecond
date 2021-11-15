@@ -1,14 +1,14 @@
 package com.artelsv.petprojectsecond.data.database
 
 import androidx.room.TypeConverter
-import com.artelsv.petprojectsecond.domain.model.*
+import com.artelsv.petprojectsecond.domain.model.movie.*
 import com.google.gson.reflect.TypeToken
 
 import com.google.gson.Gson
 import java.lang.reflect.Type
 
-
 class DataConverter {
+
     @TypeConverter
     fun fromCountryList(countryLang: List<Country>?): String? {
         if (countryLang == null) {

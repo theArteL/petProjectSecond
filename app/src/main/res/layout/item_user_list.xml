@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="type"
+            type="String" />
+
+        <variable
+            name="item"
+            type="com.artelsv.petprojectsecond.domain.model.movie.MovieList" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcv_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/tiny_margin"
+        app:cardBackgroundColor="@color/light_gray"
+        app:cardCornerRadius="@dimen/default_radius">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableEnd="@drawable/ic_baseline_arrow_forward_24"
+            android:drawableTint="@android:color/black"
+            android:padding="@dimen/icons_padding"
+            android:text="@{@string/profile_movie_list_pattern(type, item.totalResults)}"
+            android:textColor="@android:color/black" />
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
