@@ -4,6 +4,7 @@ import com.artelsv.petprojectsecond.data.mappers.CreditsMapper
 import com.artelsv.petprojectsecond.data.mappers.MovieDateResultMapper
 import com.artelsv.petprojectsecond.data.mappers.MovieDetailMapper
 import com.artelsv.petprojectsecond.data.mappers.MovieMapper
+import com.artelsv.petprojectsecond.data.mappers.persondetail.PersonDetailMapper
 import com.artelsv.petprojectsecond.data.network.MoviesService
 import com.artelsv.petprojectsecond.data.network.model.persondetail.toModel
 import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
@@ -11,6 +12,7 @@ import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
 import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
+import com.artelsv.petprojectsecond.domain.model.persondetail.PersonDetail
 import io.reactivex.Single
 import timber.log.Timber
 import javax.inject.Inject
@@ -43,4 +45,8 @@ class MovieRemoteDataSource @Inject constructor(private val moviesService: Movie
         moviesService.getMoviesByCredits(personId).map {
             it.toModel()
         }
+
+    override fun getPersonDetail(personId: Int): Single<PersonDetail> {
+        return moviesService.getPersonDetail(personId).map(PersonDetailMapper::asAppModel)
+    }
 }

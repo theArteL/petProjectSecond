@@ -7,6 +7,7 @@ import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
 import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
+import com.artelsv.petprojectsecond.domain.model.persondetail.PersonDetail
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -41,6 +42,10 @@ class MovieLocalDataSource @Inject constructor(private val movieDao: MovieDao) :
     }
 
     override fun getMoviesByCredits(personId: Int): Single<List<Movie>> {
+        return Single.error(Throwable("Проверка ошибки"))
+    }
+
+    override fun getPersonDetail(personId: Int): Single<PersonDetail> {
         return Single.error(Throwable("Проверка ошибки"))
     }
 

@@ -111,13 +111,21 @@
                                 android:layout_height="wrap_content"
                                 android:text="@{viewModel.cast == null ? viewModel.crew == null ? @string/person_detail_error : viewModel.crew.name : viewModel.cast.name}" />
 
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/tv_surname"
-                                style="@style/TextAppearance.AppCompat.Medium"
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_detail_expanded"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/tiny_margin"
+                                android:src="@drawable/ic_baseline_arrow_drop_down_24" />
+
+                            <LinearLayout
+                                android:id="@+id/ll_detail"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/tiny_margin"
-                                android:text="@{viewModel.cast == null ? viewModel.crew == null ? @string/person_detail_error : @string/person_detail_crew : @string/person_detail_cast}" />
+                                android:orientation="vertical">
+
+                            </LinearLayout>
 
                         </LinearLayout>
 

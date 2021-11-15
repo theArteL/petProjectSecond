@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
@@ -93,6 +95,10 @@ class PersonDetailFragment : DaggerFragment() {
         binding.ivBack.setOnClickListener {
             router.exit()
         }
+
+        binding.ivDetailExpanded.setOnClickListener {
+            viewModel.toggleDetailExpanded()
+        }
     }
 
     private fun setObservers() {
@@ -113,9 +119,48 @@ class PersonDetailFragment : DaggerFragment() {
                 loadAvatar(it.profilePath, it.gender)
             }
         })
+
+        viewModel.detailIsOpen.observe(viewLifecycleOwner, {
+            it?.let {
+                processDetailExpanding(it)
+            }
+        })
+
+        viewModel.personDetail.observe(viewLifecycleOwner, {
+            it?.let {
+
+            }
+        })
+    }
+
+    private fun processDetailExpanding(value: Boolean) {
+        val openAnimation = RotateAnimation(
+            0f,
+            180f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f
+        ).apply {
+            duration = EXPANDED_ANIMATION_DURATION
+            interpolator = LinearInterpolator()
+            fillAfter = true
+        }
+
+        val closeAnimation = RotateAnimation(
+            180f,
+            0f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f
+        ).apply {
+            duration = EXPANDED_ANIMATION_DURATION
+            interpolator = LinearInterpolator()
+            fillAfter = true
+        }
+
+        binding.ivDetailExpanded.startAnimation(if (value) openAnimation else closeAnimation)
     }
 
     companion object {
+        private const val EXPANDED_ANIMATION_DURATION = 300L
         private const val PERSON_VALUE = "personValue"
 
         fun newInstance(person: Any) = PersonDetailFragment().apply {

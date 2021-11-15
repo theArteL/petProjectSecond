@@ -15,6 +15,7 @@ import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
 import com.artelsv.petprojectsecond.domain.model.movie.MovieSortType
 import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
+import com.artelsv.petprojectsecond.domain.model.persondetail.PersonDetail
 import io.reactivex.Flowable
 import io.reactivex.Single
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -68,5 +69,9 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override fun getMoviesByCredits(personId: Int): Single<List<Movie>> {
         return remoteDataSource.getMoviesByCredits(personId)
+    }
+
+    override fun getPersonDetail(personId: Int): Single<PersonDetail> {
+        return remoteDataSource.getPersonDetail(personId)
     }
 }

@@ -5,6 +5,7 @@ import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
 import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
+import com.artelsv.petprojectsecond.domain.model.persondetail.PersonDetail
 import io.reactivex.Single
 
 interface MovieDataSource {
@@ -17,4 +18,5 @@ interface MovieDataSource {
 
     fun getMovieCredits(movieId: Int): Single<Credits>
     fun getMoviesByCredits(personId: Int): Single<List<Movie>>
+    fun getPersonDetail(personId: Int): Single<PersonDetail>
 }
