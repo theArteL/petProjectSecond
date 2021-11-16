@@ -22,7 +22,7 @@ import javax.inject.Inject
 class MovieListViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
-    private val getUserUseCase: GetUserUseCase
+    private val getUserUseCase: GetUserUseCase,
 ) : BaseViewModel() {
 
     val user = MutableLiveData<User>(null)
@@ -44,21 +44,21 @@ class MovieListViewModel @Inject constructor(
     private fun setup() {
         getUser()
 
-        val nowPlayingPagingData: Flowable<PagingData<Movie>> by lazy {
-            getNowPlayingMoviesUseCase(MovieSortType.NO).cachedIn(viewModelScope)
-        }
+        getNowPlayingMoviesUseCase(MovieSortType.NO)
+            .cachedIn(viewModelScope)
+            .subscribe({
+                mNowPlayingPagingLiveData.postValue(it)
+            }, {
 
-        val popularPagingData: Flowable<PagingData<Movie>> by lazy {
-            getPopularMoviesUseCase(MovieSortType.NO).cachedIn(viewModelScope)
-        }
+            }).addToComposite()
 
-        nowPlayingPagingData.subscribe {
-            mNowPlayingPagingLiveData.postValue(it)
-        }.addToComposite()
+        getPopularMoviesUseCase(MovieSortType.NO)
+            .cachedIn(viewModelScope)
+            .subscribe({
+                mPopularPagingLiveData.postValue(it)
+            }, {
 
-        popularPagingData.subscribe {
-            mPopularPagingLiveData.postValue(it)
-        }.addToComposite()
+            }).addToComposite()
     }
 
     private fun getUser() {

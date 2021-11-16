@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        appNavigator.applyCommands(arrayOf(Back()))
+        router.exit()
     }
 
 }

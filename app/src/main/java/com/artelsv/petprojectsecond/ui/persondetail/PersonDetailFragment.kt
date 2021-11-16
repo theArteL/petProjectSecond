@@ -135,10 +135,10 @@ class PersonDetailFragment : DaggerFragment() {
 
     private fun processDetailExpanding(value: Boolean) {
         val openAnimation = RotateAnimation(
-            0f,
-            180f,
-            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-            RotateAnimation.RELATIVE_TO_SELF, 0.5f
+            MIN_DEGREES,
+            MAX_DEGREES,
+            RotateAnimation.RELATIVE_TO_SELF, pivotX,
+            RotateAnimation.RELATIVE_TO_SELF, pivotY
         ).apply {
             duration = EXPANDED_ANIMATION_DURATION
             interpolator = LinearInterpolator()
@@ -146,10 +146,10 @@ class PersonDetailFragment : DaggerFragment() {
         }
 
         val closeAnimation = RotateAnimation(
-            180f,
-            0f,
-            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-            RotateAnimation.RELATIVE_TO_SELF, 0.5f
+            MAX_DEGREES,
+            MIN_DEGREES,
+            RotateAnimation.RELATIVE_TO_SELF, pivotX,
+            RotateAnimation.RELATIVE_TO_SELF, pivotY
         ).apply {
             duration = EXPANDED_ANIMATION_DURATION
             interpolator = LinearInterpolator()
@@ -161,6 +161,11 @@ class PersonDetailFragment : DaggerFragment() {
 
     companion object {
         private const val EXPANDED_ANIMATION_DURATION = 300L
+        private const val MIN_DEGREES = 0f
+        private const val MAX_DEGREES = 180f
+        private const val pivotX = 0.5f
+        private const val pivotY = 0.5f
+
         private const val PERSON_VALUE = "personValue"
 
         fun newInstance(person: Any) = PersonDetailFragment().apply {

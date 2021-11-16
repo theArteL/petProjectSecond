@@ -6,11 +6,11 @@ import coil.load
 import com.google.android.material.textview.MaterialTextView
 
 @BindingAdapter("imageUrl")
-fun loadImage(view: AppCompatImageView, url: String) {
+fun loadImage(view: AppCompatImageView, url: String?) {
     view.load(url)
 }
 
 @BindingAdapter("colorRes")
-fun colorRes(view: MaterialTextView, res: Int) {
-    view.setTextColor(view.context.getColor(res))
+fun colorRes(view: MaterialTextView, res: Int?) {
+    res?.let { view.setTextColor(view.context.getColor(res)) }
 }

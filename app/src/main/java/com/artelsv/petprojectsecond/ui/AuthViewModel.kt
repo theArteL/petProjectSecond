@@ -121,9 +121,9 @@ class AuthViewModel @Inject constructor(
     }
 
     companion object {
-        const val LOGIN_SIZE = 6
-        const val PASSWORD_SIZE = 6
-        const val LOGIN_ERROR = "Минимум 6 символов"
-        const val PASSWORD_ERROR = "Минимум 6 символов"
+        private const val LOGIN_SIZE = 6
+        private const val PASSWORD_SIZE = 6
+        private const val LOGIN_ERROR = "Минимум 6 символов"
+        private const val PASSWORD_ERROR = "Минимум 6 символов"
     }
 }
