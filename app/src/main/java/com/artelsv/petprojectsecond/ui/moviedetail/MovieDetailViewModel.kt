@@ -46,70 +46,66 @@ class MovieDetailViewModel @Inject constructor(
     val toastText = MutableLiveData<String>(null)
 
     fun getMovieDetail(movieId: Int) {
-        compositeDisposable.add(
-            getMovieDetailsUseCase(movieId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap {
-                    getReleaseDate(it)
-                }
-                .map {
-                    rating.postValue(it.rating)
-                    favorite.postValue(it.favorite)
-                    getMovieCredits(it.id)
-                }
-                .subscribe({
-                    handleSuccess()
-                }, {
-                    handleError(it)
-                })
-        )
+        getMovieDetailsUseCase(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap {
+                getReleaseDate(it)
+            }
+            .map {
+                rating.postValue(it.rating)
+                favorite.postValue(it.favorite)
+                getMovieCredits(it.id)
+            }
+            .subscribe({
+                handleSuccess()
+            }, {
+                handleError(it)
+            })
+            .addToComposite()
 
-        compositeDisposable.add(
-            getUserUseCase()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map {
-                    user.postValue(it)
-                }
-                .subscribe({
+        getUserUseCase()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                user.postValue(it)
+            }
+            .subscribe({
 
-                }, {
+            }, {
 
-                })
-        )
+            })
+            .addToComposite()
     }
 
     private fun getMovieCredits(movieId: Int) {
-        compositeDisposable.add(
-            getMovieDetailsUseCase.getMovieCredits(movieId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map {
-                    credits.postValue(it)
-                }
-                .subscribe({
+        getMovieDetailsUseCase.getMovieCredits(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                credits.postValue(it)
+            }
+            .subscribe({
 
-                }, {
+            }, {
 
-                })
-        )
+            })
+            .addToComposite()
     }
 
     private fun getReleaseDate(
         movieDetail: MovieDetail,
         iso: String = DEFAULT_ISO,
     ): Single<MovieDetail> {
-        compositeDisposable.add(
-            getMovieDateReleaseUseCase(movieDetail.id, iso)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    initData(movieDetail, it)
-                }, {
-                    handleError(it)
-                })
-        )
+        getMovieDateReleaseUseCase(movieDetail.id, iso)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                initData(movieDetail, it)
+            }, {
+                handleError(it)
+            })
+            .addToComposite()
 
         return Single.just(movieDetail)
     }
@@ -183,9 +179,7 @@ class MovieDetailViewModel @Inject constructor(
 
     fun toggleFavorite() {
         movie.value?.let {
-            compositeDisposable.add(getMovieDetailsUseCase.favorite(user.value!!.id,
-                it.id,
-                !favorite.value!!)
+            getMovieDetailsUseCase.favorite(user.value!!.id, it.id, !favorite.value!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { result ->
@@ -195,7 +189,8 @@ class MovieDetailViewModel @Inject constructor(
 
                 }, {
 
-                }))
+                })
+                .addToComposite()
         }
     }
 
@@ -205,7 +200,7 @@ class MovieDetailViewModel @Inject constructor(
 
     fun rateMovie(value: Float) {
         movie.value?.let {
-            compositeDisposable.add(getMovieDetailsUseCase.rate(it.id, value * 2)
+            getMovieDetailsUseCase.rate(it.id, value * 2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { result ->
@@ -223,7 +218,7 @@ class MovieDetailViewModel @Inject constructor(
                 }, { error ->
                     toastText.postValue(error.localizedMessage)
                 })
-            )
+                .addToComposite()
         }
     }
     //

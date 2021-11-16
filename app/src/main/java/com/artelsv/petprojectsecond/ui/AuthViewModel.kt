@@ -7,6 +7,7 @@ import com.artelsv.petprojectsecond.domain.usecases.auth.AuthUserUseCase
 import com.artelsv.petprojectsecond.domain.usecases.auth.CreateSessionUseCase
 import com.artelsv.petprojectsecond.domain.usecases.auth.GetRequestTokenUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
+import com.artelsv.petprojectsecond.utils.exts.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -20,7 +21,7 @@ class AuthViewModel @Inject constructor(
     private val userUseCase: GetUserUseCase,
 ) : BaseViewModel() {
     val loading = MutableLiveData(true)
-    val auth = MutableLiveData(false)
+    val auth = SingleLiveEvent<Boolean>()
 
     val login = MutableLiveData("")
     val password = MutableLiveData("")

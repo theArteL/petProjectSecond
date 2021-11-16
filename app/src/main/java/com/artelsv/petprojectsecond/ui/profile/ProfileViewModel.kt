@@ -27,7 +27,7 @@ class ProfileViewModel @Inject constructor(
     val saveUri = MutableLiveData<Uri>(null)
 
     init {
-        compositeDisposable.add(getUserUseCase()
+        getUserUseCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
@@ -40,7 +40,7 @@ class ProfileViewModel @Inject constructor(
             }, {
                 error.postValue(it)
             })
-        )
+            .addToComposite()
     }
 
     fun exit() {
@@ -52,8 +52,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getUserLists(id: Int) {
-        compositeDisposable.addAll(
-            userListsUseCase.getFavoriteMovies(id)
+        userListsUseCase.getFavoriteMovies(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
@@ -66,54 +65,57 @@ class ProfileViewModel @Inject constructor(
 
             }, {
                 Timber.tag("profile").e(it)
-            }),
+            })
+            .addToComposite()
 
-            userListsUseCase.getFavoriteTvShows(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map {
-                    if (!it.results.isNullOrEmpty()) {
-                        userLists.value?.add(Pair(it, R.string.profile_movie_list_favorite_tv_shows))
-                        userLists.value = userLists.value
-                    }
+        userListsUseCase.getFavoriteTvShows(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                if (!it.results.isNullOrEmpty()) {
+                    userLists.value?.add(Pair(it, R.string.profile_movie_list_favorite_tv_shows))
+                    userLists.value = userLists.value
                 }
-                .subscribe({
+            }
+            .subscribe({
 
-                }, {
-                    Timber.tag("profile").e(it)
-                }),
+            }, {
+                Timber.tag("profile").e(it)
+            })
+            .addToComposite()
 
-            userListsUseCase.getRatedMovies(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map {
-                    if (!it.results.isNullOrEmpty()) {
-                        userLists.value?.add(Pair(it, R.string.profile_movie_list_rated_movies))
-                        userLists.value = userLists.value
-                    }
+        userListsUseCase.getRatedMovies(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                if (!it.results.isNullOrEmpty()) {
+                    userLists.value?.add(Pair(it, R.string.profile_movie_list_rated_movies))
+                    userLists.value = userLists.value
                 }
-                .subscribe({
+            }
+            .subscribe({
 
-                }, {
-                    Timber.tag("profile").e(it)
-                }),
+            }, {
+                Timber.tag("profile").e(it)
+            })
+            .addToComposite()
 
-            userListsUseCase.getRatedMovies(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map {
-                    if (!it.results.isNullOrEmpty()) {
-                        userLists.value?.add(Pair(it, R.string.profile_movie_list_rated_tv_shows))
-                        userLists.value = userLists.value
-                    }
-
-                    loading.postValue(false)
+        userListsUseCase.getRatedMovies(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                if (!it.results.isNullOrEmpty()) {
+                    userLists.value?.add(Pair(it, R.string.profile_movie_list_rated_tv_shows))
+                    userLists.value = userLists.value
                 }
-                .subscribe({
 
-                }, {
-                    Timber.tag("profile").e(it)
-                })
-        )
+                loading.postValue(false)
+            }
+            .subscribe({
+
+            }, {
+                Timber.tag("profile").e(it)
+            })
+            .addToComposite()
     }
 }

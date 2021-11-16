@@ -52,21 +52,17 @@ class MovieListViewModel @Inject constructor(
             getPopularMoviesUseCase(MovieSortType.NO).cachedIn(viewModelScope)
         }
 
-        compositeDisposable.add(
-            nowPlayingPagingData.subscribe {
-                mNowPlayingPagingLiveData.postValue(it)
-            }
-        )
+        nowPlayingPagingData.subscribe {
+            mNowPlayingPagingLiveData.postValue(it)
+        }.addToComposite()
 
-        compositeDisposable.add(
-            popularPagingData.subscribe {
-                mPopularPagingLiveData.postValue(it)
-            }
-        )
+        popularPagingData.subscribe {
+            mPopularPagingLiveData.postValue(it)
+        }.addToComposite()
     }
 
     private fun getUser() {
-        compositeDisposable.add(getUserUseCase()
+        getUserUseCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
@@ -78,7 +74,7 @@ class MovieListViewModel @Inject constructor(
             }, {
 //                Timber.e(it)
             })
-        )
+            .addToComposite()
     }
 
     fun progressCheck() = loadingPopular.value == true && loadingNowPlaying.value == true
