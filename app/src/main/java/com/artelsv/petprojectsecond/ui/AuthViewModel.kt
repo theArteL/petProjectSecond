@@ -1,11 +1,11 @@
 package com.artelsv.petprojectsecond.ui
 
 import androidx.lifecycle.MutableLiveData
-import com.artelsv.petprojectsecond.domain.usecases.*
 import com.artelsv.petprojectsecond.domain.usecases.auth.AuthAsGuestUseCase
 import com.artelsv.petprojectsecond.domain.usecases.auth.AuthUserUseCase
 import com.artelsv.petprojectsecond.domain.usecases.auth.CreateSessionUseCase
 import com.artelsv.petprojectsecond.domain.usecases.auth.GetRequestTokenUseCase
+import com.artelsv.petprojectsecond.domain.usecases.user.GetUserUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.utils.exts.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers

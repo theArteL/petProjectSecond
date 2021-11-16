@@ -5,7 +5,8 @@ import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.domain.repository.MoviesRepository
 import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieSortType
-import com.artelsv.petprojectsecond.domain.usecases.impl.GetNowPlayingMoviesUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.movies.GetNowPlayingMoviesUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.movies.GetNowPlayingMoviesUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.Flowable

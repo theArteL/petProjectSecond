@@ -10,23 +10,25 @@ import com.artelsv.petprojectsecond.data.database.MoviesDatabase
 import com.artelsv.petprojectsecond.data.database.dao.MovieDao
 import com.artelsv.petprojectsecond.data.database.dao.UserMovieDao
 import com.artelsv.petprojectsecond.data.datasource.*
-import com.artelsv.petprojectsecond.data.datasource.impl.*
+import com.artelsv.petprojectsecond.data.datasource.impl.movies.NowPlayingMoviePagingSource
+import com.artelsv.petprojectsecond.data.datasource.impl.movies.PopularMoviePagingSource
 import com.artelsv.petprojectsecond.data.repository.AuthRepositoryImpl
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
+import com.artelsv.petprojectsecond.data.repository.UserMoviesRepositoryImpl
 import com.artelsv.petprojectsecond.data.repository.UserRepositoryImpl
+import com.artelsv.petprojectsecond.di.module.binds.usecase.AuthBinds
+import com.artelsv.petprojectsecond.di.module.binds.DataSourceBinds
+import com.artelsv.petprojectsecond.di.module.binds.usecase.MovieDetailBinds
+import com.artelsv.petprojectsecond.di.module.binds.usecase.MoviesBinds
+import com.artelsv.petprojectsecond.di.module.binds.usecase.UserMoviesBinds
 import com.artelsv.petprojectsecond.domain.repository.AuthRepository
 import com.artelsv.petprojectsecond.domain.repository.MoviesRepository
+import com.artelsv.petprojectsecond.domain.repository.UserMoviesRepository
 import com.artelsv.petprojectsecond.domain.repository.UserRepository
 import com.artelsv.petprojectsecond.domain.usecases.*
-import com.artelsv.petprojectsecond.domain.usecases.auth.AuthAsGuestUseCase
-import com.artelsv.petprojectsecond.domain.usecases.auth.AuthUserUseCase
-import com.artelsv.petprojectsecond.domain.usecases.auth.CreateSessionUseCase
-import com.artelsv.petprojectsecond.domain.usecases.auth.GetRequestTokenUseCase
 import com.artelsv.petprojectsecond.domain.usecases.impl.*
-import com.artelsv.petprojectsecond.domain.usecases.impl.auth.AuthAsGuestUseCaseImpl
-import com.artelsv.petprojectsecond.domain.usecases.impl.auth.AuthUserUseCaseImpl
-import com.artelsv.petprojectsecond.domain.usecases.impl.auth.CreateSessionUseCaseImpl
-import com.artelsv.petprojectsecond.domain.usecases.impl.auth.GetRequestTokenUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.user.GetUserUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.user.GetUserUseCase
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_NAME
 import com.artelsv.petprojectsecond.utils.Constants.PREF_NAME
 import com.artelsv.petprojectsecond.utils.ObscuredSharedPreferences
@@ -40,7 +42,11 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @ExperimentalCoroutinesApi
-@Module(includes = [ViewModelModule::class, NetworkModule::class, AppModule.DataSourcesBinds::class, AppModule.UseCasesBinds::class])
+@Module(includes = [
+    ViewModelModule::class, NetworkModule::class,
+    AppModule.UseCasesBinds::class,
+    DataSourceBinds::class, MovieDetailBinds::class, MoviesBinds::class, AuthBinds::class, UserMoviesBinds::class
+])
 class AppModule {
 
     @Provides
@@ -100,77 +106,31 @@ class AppModule {
     @Provides
     fun providesUserRepository(
         @Named("userRemoteDataSource") userRemoteDataSource: UserDataSource,
-        @Named("userLocalDataSource") userLocalDataSource: UserLocalDataSource,
         pref: ObscuredSharedPreferences,
     ): UserRepository =
-        UserRepositoryImpl(userRemoteDataSource, userLocalDataSource, SharedPreferenceManager(pref))
+        UserRepositoryImpl(userRemoteDataSource, SharedPreferenceManager(pref))
 
     @Provides
-
     fun providesAuthRepository(
         @Named("authRemoteDataSource") authRemoteDataSource: AuthDataSource,
         pref: ObscuredSharedPreferences,
     ): AuthRepository = AuthRepositoryImpl(authRemoteDataSource, SharedPreferenceManager(pref))
 
-    @Module
-    abstract class DataSourcesBinds {
-
-        @Binds
-        @Named("movieLocalDataSource")
-        abstract fun bindLocalDataSource(localDataSource: MovieLocalDataSource): MovieDataSource
-
-        @Binds
-        @Named("movieRemoteDataSource")
-        abstract fun bindRemoteDataSource(remoteDataSource: MovieRemoteDataSource): MovieDataSource
-
-        @Binds
-        @Named("userRemoteDataSource")
-        abstract fun bindUserRemoteDataSource(userRemoteDataSource: UserRemoteDataSource): UserDataSource
-
-        @Binds
-        @Named("userLocalDataSource")
-        abstract fun bindUserLocalDataSource(userLocalDataSource: UserLocalDataSourceImpl): UserLocalDataSource
-
-        @Binds
-        @Named("authRemoteDataSource")
-        abstract fun bindAuthRemoteDataSource(authRemoteDataSource: AuthRemoteDataSource): AuthDataSource
-    }
+    @Provides
+    fun providesUserMoviesRepository(
+        @Named("userMovieDataSource") userMovieDataSource: UserMoviesSource,
+        @Named("userLocalDataSource") userLocalDataSource: UserLocalDataSource,
+        pref: ObscuredSharedPreferences,
+    ): UserMoviesRepository = UserMoviesRepositoryImpl(userMovieDataSource, userLocalDataSource, SharedPreferenceManager(pref))
 
     @Module
     abstract class UseCasesBinds {
 
         @Binds
-        abstract fun bindGetPopularMoviesUseCase(getPopularMoviesUseCaseImpl: GetPopularMoviesUseCaseImpl): GetPopularMoviesUseCase
-
-        @Binds
-        abstract fun bindGetNowPlayingMoviesUseCase(getNowPlayingMoviesUseCaseImpl: GetNowPlayingMoviesUseCaseImpl): GetNowPlayingMoviesUseCase
-
-        @Binds
-        abstract fun bindGetMovieDetailsUseCase(getMovieDetailsUseCaseImpl: GetMovieDetailsUseCaseImpl): GetMovieDetailsUseCase
-
-        @Binds
-        abstract fun bindGetMovieDateReleaseUseCase(getMovieDetailsUseCaseImpl: GetMovieDateReleaseUseCaseImpl): GetMovieDateReleaseUseCase
-
-        @Binds
         abstract fun bindGetUserUseCase(getUserUseCase: GetUserUseCaseImpl): GetUserUseCase
 
         @Binds
-        abstract fun bindUserListsUseCase(userListsUseCase: UserListsUseCaseImpl): UserListsUseCase
-
-        @Binds
         abstract fun bindPersonDetailUseCase(personDetailUseCase: PersonDetailUseCaseImpl): PersonDetailUseCase
-
-        @Binds
-        abstract fun bindAuthAsGuestUseCase(authAsGuestUseCase: AuthAsGuestUseCaseImpl): AuthAsGuestUseCase
-
-        @Binds
-        abstract fun bindAuthAsUserUseCase(authUserUseCase: AuthUserUseCaseImpl): AuthUserUseCase
-
-        @Binds
-        abstract fun bindGetRequestTokenUseCase(getRequestTokenUseCase: GetRequestTokenUseCaseImpl): GetRequestTokenUseCase
-
-        @Binds
-        abstract fun bindCreateSessionUseCase(createSessionUseCase: CreateSessionUseCaseImpl): CreateSessionUseCase
 
     }
 }

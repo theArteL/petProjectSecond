@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.domain.model.movie.MovieList
 import com.artelsv.petprojectsecond.domain.model.User
-import com.artelsv.petprojectsecond.domain.usecases.GetUserUseCase
-import com.artelsv.petprojectsecond.domain.usecases.UserListsUseCase
+import com.artelsv.petprojectsecond.domain.usecases.user.GetUserUseCase
+import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.GetFavoriteMoviesUseCase
+import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.GetFavoriteTvShowsUseCase
+import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.GetRatedMoviesUseCase
+import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.GetRatedTvShowsUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -15,7 +18,10 @@ import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
-    private val userListsUseCase: UserListsUseCase
+    private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase,
+    private val getFavoriteTvShowsUseCase: GetFavoriteTvShowsUseCase,
+    private val getRatedMoviesUseCase: GetRatedMoviesUseCase,
+    private val getRatedTvShowsUseCase: GetRatedTvShowsUseCase,
 ) : BaseViewModel() {
     val loading = MutableLiveData(true)
     val error = MutableLiveData<Throwable>(null)
@@ -52,7 +58,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getUserLists(id: Int) {
-        userListsUseCase.getFavoriteMovies(id)
+        getFavoriteMoviesUseCase(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
@@ -68,7 +74,7 @@ class ProfileViewModel @Inject constructor(
             })
             .addToComposite()
 
-        userListsUseCase.getFavoriteTvShows(id)
+        getFavoriteTvShowsUseCase(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
@@ -84,7 +90,7 @@ class ProfileViewModel @Inject constructor(
             })
             .addToComposite()
 
-        userListsUseCase.getRatedMovies(id)
+        getRatedMoviesUseCase(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
@@ -100,7 +106,7 @@ class ProfileViewModel @Inject constructor(
             })
             .addToComposite()
 
-        userListsUseCase.getRatedMovies(id)
+        getRatedTvShowsUseCase(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {

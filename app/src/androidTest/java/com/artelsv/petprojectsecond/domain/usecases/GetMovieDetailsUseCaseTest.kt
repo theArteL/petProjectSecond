@@ -4,7 +4,8 @@ import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.data.repository.UserRepositoryImpl
 import com.artelsv.petprojectsecond.domain.model.*
 import com.artelsv.petprojectsecond.domain.model.movie.*
-import com.artelsv.petprojectsecond.domain.usecases.impl.GetMovieDetailsUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.movies.detail.GetMovieDetailsUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.movies.detail.GetMovieDetailsUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.Single

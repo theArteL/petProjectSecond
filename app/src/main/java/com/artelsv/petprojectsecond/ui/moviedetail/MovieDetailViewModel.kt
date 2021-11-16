@@ -11,9 +11,12 @@ import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
 import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
-import com.artelsv.petprojectsecond.domain.usecases.GetMovieDateReleaseUseCase
-import com.artelsv.petprojectsecond.domain.usecases.GetMovieDetailsUseCase
-import com.artelsv.petprojectsecond.domain.usecases.GetUserUseCase
+import com.artelsv.petprojectsecond.domain.usecases.movies.GetMovieDateReleaseUseCase
+import com.artelsv.petprojectsecond.domain.usecases.movies.detail.GetMovieCreditsUseCase
+import com.artelsv.petprojectsecond.domain.usecases.movies.detail.GetMovieDetailsUseCase
+import com.artelsv.petprojectsecond.domain.usecases.movies.detail.RateMovieUseCase
+import com.artelsv.petprojectsecond.domain.usecases.movies.detail.ToggleFavoriteMovieUseCase
+import com.artelsv.petprojectsecond.domain.usecases.user.GetUserUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.utils.Constants
 import io.reactivex.Single
@@ -28,6 +31,9 @@ class MovieDetailViewModel @Inject constructor(
     private val context: Context,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getMovieDateReleaseUseCase: GetMovieDateReleaseUseCase,
+    private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
+    private val rateMovieUseCase: RateMovieUseCase,
+    private val toggleFavoriteMovieUseCase: ToggleFavoriteMovieUseCase,
     private val getUserUseCase: GetUserUseCase,
 ) : BaseViewModel() {
     private val user = MutableLiveData<User>(null)
@@ -79,7 +85,7 @@ class MovieDetailViewModel @Inject constructor(
     }
 
     private fun getMovieCredits(movieId: Int) {
-        getMovieDetailsUseCase.getMovieCredits(movieId)
+        getMovieCreditsUseCase(movieId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
@@ -179,7 +185,7 @@ class MovieDetailViewModel @Inject constructor(
 
     fun toggleFavorite() {
         movie.value?.let {
-            getMovieDetailsUseCase.favorite(user.value!!.id, it.id, !favorite.value!!)
+            toggleFavoriteMovieUseCase(user.value!!.id, it.id, !favorite.value!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { result ->
@@ -200,7 +206,7 @@ class MovieDetailViewModel @Inject constructor(
 
     fun rateMovie(value: Float) {
         movie.value?.let {
-            getMovieDetailsUseCase.rate(it.id, value * 2)
+            rateMovieUseCase(it.id, value * 2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { result ->
