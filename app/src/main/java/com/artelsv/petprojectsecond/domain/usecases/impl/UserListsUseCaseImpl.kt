@@ -1,6 +1,6 @@
 package com.artelsv.petprojectsecond.domain.usecases.impl
 
-import com.artelsv.petprojectsecond.domain.UserRepository
+import com.artelsv.petprojectsecond.domain.repository.UserRepository
 import com.artelsv.petprojectsecond.domain.model.movie.MovieList
 import com.artelsv.petprojectsecond.domain.usecases.UserListsUseCase
 import io.reactivex.Single

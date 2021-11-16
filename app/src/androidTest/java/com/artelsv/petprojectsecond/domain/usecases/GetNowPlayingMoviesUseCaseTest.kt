@@ -2,7 +2,7 @@ package com.artelsv.petprojectsecond.domain.usecases
 
 import androidx.paging.PagingData
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
-import com.artelsv.petprojectsecond.domain.MoviesRepository
+import com.artelsv.petprojectsecond.domain.repository.MoviesRepository
 import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieSortType
 import com.artelsv.petprojectsecond.domain.usecases.impl.GetNowPlayingMoviesUseCaseImpl
@@ -27,21 +27,21 @@ class GetNowPlayingMoviesUseCaseTest {
 
     @Test
     fun invoke_SortTypeNo_False() {
-        getNowPlayingMoviesUseCase.invoke(MovieSortType.NO).isEmpty.map {
+        getNowPlayingMoviesUseCase(MovieSortType.NO).isEmpty.map {
             assertEquals(false, it)
         }
     }
 
     @Test
     fun invoke_SortTypeAsc_False() {
-        getNowPlayingMoviesUseCase.invoke(MovieSortType.ASC).isEmpty.map {
+        getNowPlayingMoviesUseCase(MovieSortType.ASC).isEmpty.map {
             assertEquals(false, it)
         }
     }
 
     @Test
     fun invoke_SortTypeDesc_False() {
-        getNowPlayingMoviesUseCase.invoke(MovieSortType.DESC).isEmpty.map {
+        getNowPlayingMoviesUseCase(MovieSortType.DESC).isEmpty.map {
             assertEquals(false, it)
         }
     }

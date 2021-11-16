@@ -33,11 +33,11 @@ class MovieListViewModelTest : TestCase() {
     private val moviePopular = Movie(false, "", 1000, listOf(1, 2), 0, "Russian", "MovieTitle", "MovieOverview", 5.0, "", "11.11.2011", 0, 0, "MovieTitle", false, 5.0, 1000, movieType = MovieType.POPULAR)
 
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase = mockk<GetPopularMoviesUseCaseImpl> {
-        every { this@mockk.invoke(allAny()) } returns Flowable.just(PagingData.from(listOf(moviePopular, moviePopular)))
+        every { this@mockk(allAny()) } returns Flowable.just(PagingData.from(listOf(moviePopular, moviePopular)))
     }
 
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase = mockk<GetNowPlayingMoviesUseCaseImpl> {
-        every { this@mockk.invoke(allAny()) } returns Flowable.just(PagingData.from(listOf(movieNowPlaying, movieNowPlaying)))
+        every { this@mockk(allAny()) } returns Flowable.just(PagingData.from(listOf(movieNowPlaying, movieNowPlaying)))
     }
 
     private val getUserUseCase: GetUserUseCase = mockk<GetUserUseCaseImpl> {

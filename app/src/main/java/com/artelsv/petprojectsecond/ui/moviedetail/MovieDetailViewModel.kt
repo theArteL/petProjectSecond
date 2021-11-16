@@ -47,8 +47,7 @@ class MovieDetailViewModel @Inject constructor(
 
     fun getMovieDetail(movieId: Int) {
         compositeDisposable.add(
-            getMovieDetailsUseCase
-                .invoke(movieId)
+            getMovieDetailsUseCase(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
@@ -67,7 +66,7 @@ class MovieDetailViewModel @Inject constructor(
         )
 
         compositeDisposable.add(
-            getUserUseCase.invoke()
+            getUserUseCase()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
@@ -102,8 +101,7 @@ class MovieDetailViewModel @Inject constructor(
         iso: String = DEFAULT_ISO,
     ): Single<MovieDetail> {
         compositeDisposable.add(
-            getMovieDateReleaseUseCase
-                .invoke(movieDetail.id, iso)
+            getMovieDateReleaseUseCase(movieDetail.id, iso)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

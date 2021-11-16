@@ -7,7 +7,7 @@ import com.artelsv.petprojectsecond.data.mappers.RateMovieMapper
 import com.artelsv.petprojectsecond.data.mappers.ToggleFavoriteMapper
 import com.artelsv.petprojectsecond.data.mappers.UserMapper
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
-import com.artelsv.petprojectsecond.domain.UserRepository
+import com.artelsv.petprojectsecond.domain.repository.UserRepository
 import com.artelsv.petprojectsecond.domain.model.movie.MovieList
 import com.artelsv.petprojectsecond.domain.model.movie.RateMovie
 import com.artelsv.petprojectsecond.domain.model.movie.ToggleFavorite
@@ -22,39 +22,6 @@ class UserRepositoryImpl @Inject constructor(
     private val preferenceManager: SharedPreferenceManager,
 ) : UserRepository {
     private var user: User? = null
-
-    override fun createGuestSession(): Single<String> {
-        return userRemoteDataSource.createGuestSession()
-            .map {
-                preferenceManager.addGuestSession(it)
-                it
-            }
-    }
-
-    override fun createRequestToken(): Single<String> {
-        return userRemoteDataSource.createRequestToken()
-    }
-
-    override fun createSession(requestToken: String): Single<String> {
-        return userRemoteDataSource.createSession(requestToken)
-            .map {
-                preferenceManager.addSession(it)
-                preferenceManager.addAuth(true)
-                it
-            }
-    }
-
-    override fun createSessionWithUser(
-        requestToken: String,
-        login: String,
-        password: String,
-    ): Single<String> {
-        return userRemoteDataSource.createSessionWithUser(
-            requestToken,
-            login,
-            password
-        )
-    }
 
     override fun getUser(): Single<User> {
         return if (preferenceManager.getAuth()) {

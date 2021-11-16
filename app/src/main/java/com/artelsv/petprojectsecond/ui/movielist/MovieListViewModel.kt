@@ -45,11 +45,11 @@ class MovieListViewModel @Inject constructor(
         getUser()
 
         val nowPlayingPagingData: Flowable<PagingData<Movie>> by lazy {
-            getNowPlayingMoviesUseCase.invoke(MovieSortType.NO).cachedIn(viewModelScope)
+            getNowPlayingMoviesUseCase(MovieSortType.NO).cachedIn(viewModelScope)
         }
 
         val popularPagingData: Flowable<PagingData<Movie>> by lazy {
-            getPopularMoviesUseCase.invoke(MovieSortType.NO).cachedIn(viewModelScope)
+            getPopularMoviesUseCase(MovieSortType.NO).cachedIn(viewModelScope)
         }
 
         compositeDisposable.add(
@@ -66,7 +66,7 @@ class MovieListViewModel @Inject constructor(
     }
 
     private fun getUser() {
-        compositeDisposable.add(getUserUseCase.invoke()
+        compositeDisposable.add(getUserUseCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {

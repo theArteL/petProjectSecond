@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.domain
+package com.artelsv.petprojectsecond.domain.repository
 
 import androidx.paging.PagingData
 import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult

@@ -1,7 +1,8 @@
-package com.artelsv.petprojectsecond.data.datasource
+package com.artelsv.petprojectsecond.data.datasource.impl
 
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxPagingSource
+import com.artelsv.petprojectsecond.data.datasource.MovieDataSource
 import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieType
 import dagger.assisted.AssistedFactory
@@ -11,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Named
 
-class NowPlayingMoviePagingSource @AssistedInject constructor(
+class PopularMoviePagingSource @AssistedInject constructor(
     @Named("movieLocalDataSource") private val movieLocalDataSource: MovieDataSource,
     @Named("movieRemoteDataSource") private val movieRemoteDataSource: MovieDataSource
 ) : RxPagingSource<Int, Movie>() {
@@ -26,9 +27,9 @@ class NowPlayingMoviePagingSource @AssistedInject constructor(
     override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, Movie>> {
         val page = params.key ?: INITIAL_PAGE_NUMBER
 
-        val response = movieRemoteDataSource.getNowPlayingMovies(page).map {
+        val response = movieRemoteDataSource.getPopularMovies(page).map {
             movieLocalDataSource.addMoviesToDb(it, MovieType.NOW_PLAYING)
-        }.onErrorResumeNext { movieLocalDataSource.getNowPlayingMovies(page) }
+        }.onErrorResumeNext { movieLocalDataSource.getPopularMovies(page) }
 
         return response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map {
             toLoadResult(it, page)
@@ -48,7 +49,7 @@ class NowPlayingMoviePagingSource @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
 
-        fun create(): NowPlayingMoviePagingSource
+        fun create(): PopularMoviePagingSource
     }
 
     companion object {

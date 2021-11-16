@@ -44,11 +44,11 @@ class MovieDetailViewModelTest : TestCase() {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase = mockk<GetMovieDetailsUseCaseImpl> {
-        every { this@mockk.invoke(allAny()) } returns Single.just(movieDetail)
+        every { this@mockk(allAny()) } returns Single.just(movieDetail)
     }
 
     private val getMovieDateReleaseUseCase: GetMovieDateReleaseUseCase = mockk<GetMovieDateReleaseUseCaseImpl> {
-        every { this@mockk.invoke(allAny(), allAny()) } returns Single.just(dateReleaseResultList)
+        every { this@mockk(allAny(), allAny()) } returns Single.just(dateReleaseResultList)
     }
 
     private val getUserUseCase: GetUserUseCase = mockk<GetUserUseCaseImpl> {

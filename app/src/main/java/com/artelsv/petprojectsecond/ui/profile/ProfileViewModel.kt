@@ -27,7 +27,7 @@ class ProfileViewModel @Inject constructor(
     val saveUri = MutableLiveData<Uri>(null)
 
     init {
-        compositeDisposable.add(getUserUseCase.invoke()
+        compositeDisposable.add(getUserUseCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {

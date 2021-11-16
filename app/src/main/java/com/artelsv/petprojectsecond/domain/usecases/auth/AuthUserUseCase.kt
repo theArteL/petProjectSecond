@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.domain.usecases
+package com.artelsv.petprojectsecond.domain.usecases.auth
 
 import io.reactivex.Single
 

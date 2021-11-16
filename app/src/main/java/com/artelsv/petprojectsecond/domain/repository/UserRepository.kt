@@ -1,4 +1,4 @@
-package com.artelsv.petprojectsecond.domain
+package com.artelsv.petprojectsecond.domain.repository
 
 import com.artelsv.petprojectsecond.domain.model.movie.MovieList
 import com.artelsv.petprojectsecond.domain.model.movie.RateMovie
@@ -8,14 +8,7 @@ import io.reactivex.Single
 
 interface UserRepository {
 
-    fun createGuestSession(): Single<String>
-    fun createRequestToken(): Single<String>
-    fun createSession(requestToken: String): Single<String>
-    fun createSessionWithUser(
-        requestToken: String,
-        login: String,
-        password: String,
-    ): Single<String>
+
 
     fun getUser(): Single<User>
     fun getLocalUser(): User?

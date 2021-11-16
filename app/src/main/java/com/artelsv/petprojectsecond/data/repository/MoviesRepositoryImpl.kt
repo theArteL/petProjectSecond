@@ -6,10 +6,10 @@ import androidx.paging.PagingData
 import androidx.paging.rxjava2.flowable
 import com.artelsv.petprojectsecond.data.database.dao.MovieDao.Companion.PAGE_SIZE
 import com.artelsv.petprojectsecond.data.datasource.MovieDataSource
-import com.artelsv.petprojectsecond.data.datasource.NowPlayingMoviePagingSource
-import com.artelsv.petprojectsecond.data.datasource.PopularMoviePagingSource
+import com.artelsv.petprojectsecond.data.datasource.impl.NowPlayingMoviePagingSource
+import com.artelsv.petprojectsecond.data.datasource.impl.PopularMoviePagingSource
 import com.artelsv.petprojectsecond.data.datasource.UserLocalDataSource
-import com.artelsv.petprojectsecond.domain.MoviesRepository
+import com.artelsv.petprojectsecond.domain.repository.MoviesRepository
 import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail

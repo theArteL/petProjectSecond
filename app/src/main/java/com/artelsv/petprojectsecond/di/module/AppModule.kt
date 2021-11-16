@@ -10,12 +10,23 @@ import com.artelsv.petprojectsecond.data.database.MoviesDatabase
 import com.artelsv.petprojectsecond.data.database.dao.MovieDao
 import com.artelsv.petprojectsecond.data.database.dao.UserMovieDao
 import com.artelsv.petprojectsecond.data.datasource.*
+import com.artelsv.petprojectsecond.data.datasource.impl.*
+import com.artelsv.petprojectsecond.data.repository.AuthRepositoryImpl
 import com.artelsv.petprojectsecond.data.repository.MoviesRepositoryImpl
 import com.artelsv.petprojectsecond.data.repository.UserRepositoryImpl
-import com.artelsv.petprojectsecond.domain.MoviesRepository
-import com.artelsv.petprojectsecond.domain.UserRepository
+import com.artelsv.petprojectsecond.domain.repository.AuthRepository
+import com.artelsv.petprojectsecond.domain.repository.MoviesRepository
+import com.artelsv.petprojectsecond.domain.repository.UserRepository
 import com.artelsv.petprojectsecond.domain.usecases.*
+import com.artelsv.petprojectsecond.domain.usecases.auth.AuthAsGuestUseCase
+import com.artelsv.petprojectsecond.domain.usecases.auth.AuthUserUseCase
+import com.artelsv.petprojectsecond.domain.usecases.auth.CreateSessionUseCase
+import com.artelsv.petprojectsecond.domain.usecases.auth.GetRequestTokenUseCase
 import com.artelsv.petprojectsecond.domain.usecases.impl.*
+import com.artelsv.petprojectsecond.domain.usecases.impl.auth.AuthAsGuestUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.auth.AuthUserUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.auth.CreateSessionUseCaseImpl
+import com.artelsv.petprojectsecond.domain.usecases.impl.auth.GetRequestTokenUseCaseImpl
 import com.artelsv.petprojectsecond.utils.Constants.DATABASE_NAME
 import com.artelsv.petprojectsecond.utils.Constants.PREF_NAME
 import com.artelsv.petprojectsecond.utils.ObscuredSharedPreferences
@@ -94,6 +105,13 @@ class AppModule {
     ): UserRepository =
         UserRepositoryImpl(userRemoteDataSource, userLocalDataSource, SharedPreferenceManager(pref))
 
+    @Provides
+
+    fun providesAuthRepository(
+        @Named("authRemoteDataSource") authRemoteDataSource: AuthDataSource,
+        pref: ObscuredSharedPreferences,
+    ): AuthRepository = AuthRepositoryImpl(authRemoteDataSource, SharedPreferenceManager(pref))
+
     @Module
     abstract class DataSourcesBinds {
 
@@ -112,6 +130,10 @@ class AppModule {
         @Binds
         @Named("userLocalDataSource")
         abstract fun bindUserLocalDataSource(userLocalDataSource: UserLocalDataSourceImpl): UserLocalDataSource
+
+        @Binds
+        @Named("authRemoteDataSource")
+        abstract fun bindAuthRemoteDataSource(authRemoteDataSource: AuthRemoteDataSource): AuthDataSource
     }
 
     @Module
@@ -130,6 +152,15 @@ class AppModule {
         abstract fun bindGetMovieDateReleaseUseCase(getMovieDetailsUseCaseImpl: GetMovieDateReleaseUseCaseImpl): GetMovieDateReleaseUseCase
 
         @Binds
+        abstract fun bindGetUserUseCase(getUserUseCase: GetUserUseCaseImpl): GetUserUseCase
+
+        @Binds
+        abstract fun bindUserListsUseCase(userListsUseCase: UserListsUseCaseImpl): UserListsUseCase
+
+        @Binds
+        abstract fun bindPersonDetailUseCase(personDetailUseCase: PersonDetailUseCaseImpl): PersonDetailUseCase
+
+        @Binds
         abstract fun bindAuthAsGuestUseCase(authAsGuestUseCase: AuthAsGuestUseCaseImpl): AuthAsGuestUseCase
 
         @Binds
@@ -141,13 +172,5 @@ class AppModule {
         @Binds
         abstract fun bindCreateSessionUseCase(createSessionUseCase: CreateSessionUseCaseImpl): CreateSessionUseCase
 
-        @Binds
-        abstract fun bindGetUserUseCase(getUserUseCase: GetUserUseCaseImpl): GetUserUseCase
-
-        @Binds
-        abstract fun bindUserListsUseCase(userListsUseCase: UserListsUseCaseImpl): UserListsUseCase
-
-        @Binds
-        abstract fun bindPersonDetailUseCase(personDetailUseCase: PersonDetailUseCaseImpl): PersonDetailUseCase
     }
 }

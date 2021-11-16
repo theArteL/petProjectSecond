@@ -26,35 +26,35 @@ class GetMovieDateReleaseUseCaseTest {
 
     @Test
     fun invoke_NegativeMovieIdWithRuIso_True() {
-        getMovieDateReleaseUseCase.invoke(-100, "RU").map {
+        getMovieDateReleaseUseCase(-100, "RU").map {
             assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
     }
 
     @Test
     fun invoke_ZeroMovieIdWithNotCorrectIso_True() {
-        getMovieDateReleaseUseCase.invoke(0, "ADIAS").map {
+        getMovieDateReleaseUseCase(0, "ADIAS").map {
             assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
     }
 
     @Test
     fun invoke_PositiveMovieIdWithUsIso_True() {
-        getMovieDateReleaseUseCase.invoke(100, "US").map {
+        getMovieDateReleaseUseCase(100, "US").map {
             assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
     }
 
     @Test
     fun invoke_MaxIntegerMovieIdWithEmptyIso_True() {
-        getMovieDateReleaseUseCase.invoke(Integer.MAX_VALUE, "").map {
+        getMovieDateReleaseUseCase(Integer.MAX_VALUE, "").map {
             assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
     }
 
     @Test
     fun invoke_MinIntegerMovieIdWithEmojiIso_True() {
-        getMovieDateReleaseUseCase.invoke(Integer.MIN_VALUE, "\uD83D\uDE0B\uD83D\uDE0B\uD83D\uDE0B").map {
+        getMovieDateReleaseUseCase(Integer.MIN_VALUE, "\uD83D\uDE0B\uD83D\uDE0B\uD83D\uDE0B").map {
             assertEquals(true, it.iso.isNotEmpty() && it.releaseDates.isNotEmpty())
         }
     }

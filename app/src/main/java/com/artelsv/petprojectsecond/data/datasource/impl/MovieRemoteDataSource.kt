@@ -1,5 +1,6 @@
-package com.artelsv.petprojectsecond.data.datasource
+package com.artelsv.petprojectsecond.data.datasource.impl
 
+import com.artelsv.petprojectsecond.data.datasource.MovieDataSource
 import com.artelsv.petprojectsecond.data.mappers.CreditsMapper
 import com.artelsv.petprojectsecond.data.mappers.MovieDateResultMapper
 import com.artelsv.petprojectsecond.data.mappers.MovieDetailMapper

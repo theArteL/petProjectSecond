@@ -36,35 +36,35 @@ class GetMovieDetailsUseCaseTest {
 
     @Test
     fun invoke_NegativeMovieId_True() {
-        getMovieDetailsUseCase.invoke(-100).map {
+        getMovieDetailsUseCase(-100).map {
             assertEquals(true, it.id == -100)
         }
     }
 
     @Test
     fun invoke_PositiveMovieId_True() {
-        getMovieDetailsUseCase.invoke(100).map {
+        getMovieDetailsUseCase(100).map {
             assertEquals(true, it.id == 100)
         }
     }
 
     @Test
     fun invoke_ZeroMovieId_True() {
-        getMovieDetailsUseCase.invoke(0).map {
+        getMovieDetailsUseCase(0).map {
             assertEquals(true, it.id == 0)
         }
     }
 
     @Test
     fun invoke_MaxIntegerMovieId_True() {
-        getMovieDetailsUseCase.invoke(Integer.MAX_VALUE).map {
+        getMovieDetailsUseCase(Integer.MAX_VALUE).map {
             assertEquals(true, it.id == Integer.MAX_VALUE)
         }
     }
 
     @Test
     fun invoke_MinIntegerMovieId_True() {
-        getMovieDetailsUseCase.invoke(Integer.MIN_VALUE).map {
+        getMovieDetailsUseCase(Integer.MIN_VALUE).map {
             assertEquals(true, it.id == Integer.MIN_VALUE)
         }
     }
