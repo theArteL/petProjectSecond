@@ -44,11 +44,8 @@ class AuthViewModel @Inject constructor(
         userUseCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                auth.postValue(true)
-            }
             .subscribe({
-
+                auth.postValue(true)
             }, {
                 loading.postValue(false)
 //                error.postValue(it.localizedMessage)
@@ -60,9 +57,8 @@ class AuthViewModel @Inject constructor(
         getRequestTokenUseCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map { requestToken.postValue(it) }
             .subscribe({
-
+                requestToken.postValue(it)
             }, {
 
             }).addToComposite()
@@ -73,7 +69,7 @@ class AuthViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                guestSession.postValue(true)
+                guestSession.value = true
             }, {
                 error.postValue(it.localizedMessage)
             }).addToComposite()
@@ -83,11 +79,8 @@ class AuthViewModel @Inject constructor(
         createSessionUseCase(requestToken)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                session.postValue(true)
-            }
             .subscribe({
-
+                session.value = true
             }, {
                 error.postValue(it.localizedMessage)
             }).addToComposite()
@@ -103,22 +96,28 @@ class AuthViewModel @Inject constructor(
             password.value!!) // использую тут !! из-за проверки выше (по идеи не могут быть пустыми или null)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                createSession(it)
-            }
             .subscribe({
-
+                createSession(it)
             }, {
                 error.postValue(it.localizedMessage)
             }).addToComposite()
     }
 
     private fun validateAuth(login: String?, password: String?): Boolean {
-        if (!(!login.isNullOrEmpty() && login.length > LOGIN_SIZE - 1)) loginError.postValue(
-            LOGIN_ERROR)
-        if (!(!password.isNullOrEmpty() && password.length > LOGIN_SIZE - 1)) passwordError.postValue(
-            PASSWORD_ERROR)
-        return (!login.isNullOrEmpty() && login.length > LOGIN_SIZE - 1) && (!password.isNullOrEmpty() && password.length > PASSWORD_SIZE - 1)
+        var isLoginOk = true
+        var isPasswordOk = true
+
+        if (login.isNullOrEmpty() || login.length < LOGIN_SIZE) {
+            loginError.postValue(LOGIN_ERROR)
+            isLoginOk = false
+        }
+
+        if (password.isNullOrEmpty() || password.length < PASSWORD_SIZE) {
+            passwordError.postValue(PASSWORD_ERROR)
+            isPasswordOk = false
+        }
+
+        return isLoginOk && isPasswordOk
     }
 
     companion object {

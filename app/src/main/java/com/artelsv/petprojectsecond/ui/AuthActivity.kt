@@ -52,12 +52,12 @@ class AuthActivity : AppCompatActivity() {
 
         binding.etLogin.addTextChangedListener {
             binding.tilLogin.error = null
-            binding.tilLogin.isErrorEnabled = false
+            viewModel.loginError.postValue(null)
         }
 
         binding.etPassword.addTextChangedListener {
             binding.tilPassword.error = null
-            binding.tilLogin.isErrorEnabled = false
+            viewModel.passwordError.postValue(null)
         }
     }
 
@@ -89,14 +89,12 @@ class AuthActivity : AppCompatActivity() {
         viewModel.loginError.observe(this, {
             if (!it.isNullOrEmpty()) {
                 binding.tilLogin.error = it
-                viewModel.loginError.postValue("")
             }
         })
 
         viewModel.passwordError.observe(this, {
             if (!it.isNullOrEmpty()) {
                 binding.tilPassword.error = it
-                viewModel.passwordError.postValue("")
             }
         })
     }
