@@ -2,15 +2,15 @@ package com.artelsv.petprojectsecond.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.ActivityMainBinding
 import com.github.terrakok.cicerone.NavigatorHolder
-import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var appNavigator: AppNavigator
 
@@ -20,17 +20,14 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModel: MainViewModel
 
-    @Inject
-    lateinit var router: Router
+    private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        setContentView(binding.root)
 
         appNavigator = AppNavigator(this, R.id.main_container)
     }
@@ -46,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        router.exit()
+        viewModel.navigateBack()
     }
 
 }

@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.ActivityAuthBinding
 import com.github.terrakok.cicerone.NavigatorHolder
-import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import dagger.android.AndroidInjection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class AuthActivity : AppCompatActivity() {
+class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
 
     private lateinit var appNavigator: AppNavigator
 
@@ -24,13 +24,11 @@ class AuthActivity : AppCompatActivity() {
     @Inject
     lateinit var navHolder: NavigatorHolder
 
-    @Inject
-    lateinit var router: Router
+    private val binding: ActivityAuthBinding by viewBinding(ActivityAuthBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        val binding = ActivityAuthBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         setContentView(binding.root)
@@ -42,29 +40,31 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun setListeners(binding: ActivityAuthBinding) {
-        binding.btnLoginGuest.setOnClickListener {
-            viewModel.authAsGuest()
-        }
+        binding.apply {
+            btnLoginGuest.setOnClickListener {
+                viewModel.authAsGuest()
+            }
 
-        binding.btnLogin.setOnClickListener {
-            viewModel.authAsUser()
-        }
+            btnLogin.setOnClickListener {
+                viewModel.authAsUser()
+            }
 
-        binding.etLogin.addTextChangedListener {
-            binding.tilLogin.error = null
-            viewModel.loginError.postValue(null)
-        }
+            etLogin.addTextChangedListener {
+                binding.tilLogin.error = null
+                viewModel.loginError.postValue(null)
+            }
 
-        binding.etPassword.addTextChangedListener {
-            binding.tilPassword.error = null
-            viewModel.passwordError.postValue(null)
+            etPassword.addTextChangedListener {
+                binding.tilPassword.error = null
+                viewModel.passwordError.postValue(null)
+            }
         }
     }
 
     private fun setObservers(binding: ActivityAuthBinding) {
         viewModel.auth.observe(this, {
             if (it != null && it) {
-                router.newRootScreen(Screens.mainActivity(this))
+                viewModel.navigateToMain(this)
             }
         })
 
@@ -76,13 +76,13 @@ class AuthActivity : AppCompatActivity() {
 
         viewModel.guestSession.observe(this, {
             it?.let {
-                if (it) router.newRootScreen(Screens.mainActivity(this))
+                if (it) viewModel.navigateToMain(this)
             }
         })
 
         viewModel.session.observe(this, {
             it?.let {
-                if (it) router.newRootScreen(Screens.mainActivity(this))
+                if (it) viewModel.navigateToMain(this)
             }
         })
 
@@ -110,6 +110,6 @@ class AuthActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        router.exit()
+        viewModel.navigateBack()
     }
 }
