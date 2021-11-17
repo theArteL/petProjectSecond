@@ -2,6 +2,7 @@ package com.artelsv.petprojectsecond.ui
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.domain.usecases.auth.AuthAsGuestUseCase
 import com.artelsv.petprojectsecond.domain.usecases.auth.AuthUserUseCase
 import com.artelsv.petprojectsecond.domain.usecases.auth.CreateSessionUseCase
@@ -66,8 +67,8 @@ class AuthViewModel @Inject constructor(
             }).addToComposite()
     }
 
-    fun authAsUser() {
-        if (!validateAuth(login.value, password.value)) return
+    fun authAsUser(context: Context) {
+        if (!validateAuth(login.value, password.value, context)) return
 
         val requestToken = requestToken.value ?: return
 
@@ -118,17 +119,17 @@ class AuthViewModel @Inject constructor(
             }).addToComposite()
     }
 
-    private fun validateAuth(login: String?, password: String?): Boolean {
+    private fun validateAuth(login: String?, password: String?, context: Context): Boolean {
         var isLoginOk = true
         var isPasswordOk = true
 
         if (login.isNullOrEmpty() || login.length < LOGIN_SIZE) {
-            loginError.postValue(LOGIN_ERROR)
+            loginError.postValue(context.getString(LOGIN_ERROR))
             isLoginOk = false
         }
 
         if (password.isNullOrEmpty() || password.length < PASSWORD_SIZE) {
-            passwordError.postValue(PASSWORD_ERROR)
+            passwordError.postValue(context.getString(PASSWORD_ERROR))
             isPasswordOk = false
         }
 
@@ -138,7 +139,7 @@ class AuthViewModel @Inject constructor(
     companion object {
         private const val LOGIN_SIZE = 6
         private const val PASSWORD_SIZE = 6
-        private const val LOGIN_ERROR = "Минимум 6 символов"
-        private const val PASSWORD_ERROR = "Минимум 6 символов"
+        private const val LOGIN_ERROR = R.string.system_login_validate_error
+        private const val PASSWORD_ERROR = R.string.system_password_validate_error
     }
 }

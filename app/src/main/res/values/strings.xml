@@ -51,4 +51,12 @@
     <string name="exit_button">Выйти из аккаунта</string>
     <string name="profile_image">Фото профиля</string>
     <string name="person_image">Фото персоны</string>
+
+    <!--  app vars  -->
+    <string name="system_person_work">Acting</string>
+
+    <!--  errors  -->
+    <string name="movie_detail_error">Ошибка, повторите попытку</string>
+    <string name="system_login_validate_error">Минимум 6 символов</string>
+    <string name="system_password_validate_error">Минимум 6 символов</string>
 </resources>

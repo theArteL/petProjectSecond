@@ -102,15 +102,15 @@ class MovieDetailFragment : DaggerFragment() {
 
         viewModel.credits.observe(viewLifecycleOwner, {
             it?.let {
-                castAdapter.submitList(it.cast.filter { cast -> cast.knownForDepartment == "Acting" })
-                crewAdapter.submitList(it.crew.filter { crew -> crew.knownForDepartment != "Acting" })
+                castAdapter.submitList(it.cast.filter { cast -> cast.knownForDepartment == getString(R.string.system_person_work) })
+                crewAdapter.submitList(it.crew.filter { crew -> crew.knownForDepartment != getString(R.string.system_person_work) })
             }
         })
     }
 
     companion object {
         private const val MOVIE_ID = "movieId"
-        private const val ERROR = "Ошибка, повторите попытку" // пока тут
+        private const val ERROR = R.string.movie_detail_error
 
         fun newInstance(movieId: Int) = MovieDetailFragment().apply {
             arguments = bundleOf(

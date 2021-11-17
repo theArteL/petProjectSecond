@@ -46,7 +46,7 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
             }
 
             btnLogin.setOnClickListener {
-                this@AuthActivity.viewModel.authAsUser()
+                this@AuthActivity.viewModel.authAsUser(applicationContext)
             }
 
             etLogin.addTextChangedListener {
