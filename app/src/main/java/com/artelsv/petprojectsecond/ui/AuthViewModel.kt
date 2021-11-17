@@ -26,7 +26,6 @@ class AuthViewModel @Inject constructor(
     private val router: Router,
 ) : BaseViewModel() {
     val loading = MutableLiveData(true)
-    val auth = SingleLiveEvent<Boolean>()
 
     val login = MutableLiveData("")
     val password = MutableLiveData("")
@@ -37,8 +36,11 @@ class AuthViewModel @Inject constructor(
     val error = MutableLiveData<String>(null)
 
     val requestToken = MutableLiveData("")
-    val session = MutableLiveData(false)
-    val guestSession = MutableLiveData(false)
+
+    // для навигации
+    val auth = SingleLiveEvent<Boolean>()
+    val session = SingleLiveEvent<Boolean>()
+    val guestSession = SingleLiveEvent<Boolean>()
 
     init {
         getRequestToken()

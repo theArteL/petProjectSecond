@@ -10,23 +10,29 @@ import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.model.movie.DateReleaseResult
 import com.artelsv.petprojectsecond.domain.model.movie.MovieDetail
+import com.artelsv.petprojectsecond.domain.model.movie.credits.Cast
 import com.artelsv.petprojectsecond.domain.model.movie.credits.Credits
+import com.artelsv.petprojectsecond.domain.model.movie.credits.Crew
 import com.artelsv.petprojectsecond.domain.usecases.movies.GetMovieDateReleaseUseCase
 import com.artelsv.petprojectsecond.domain.usecases.movies.detail.GetMovieCreditsUseCase
 import com.artelsv.petprojectsecond.domain.usecases.movies.detail.GetMovieDetailsUseCase
 import com.artelsv.petprojectsecond.domain.usecases.movies.detail.RateMovieUseCase
 import com.artelsv.petprojectsecond.domain.usecases.movies.detail.ToggleFavoriteMovieUseCase
 import com.artelsv.petprojectsecond.domain.usecases.user.GetUserUseCase
+import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.utils.Constants
 import com.artelsv.petprojectsecond.utils.exts.safeLet
+import com.github.terrakok.cicerone.Router
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @SuppressLint("StaticFieldLeak")
 class MovieDetailViewModel @Inject constructor(
     private val context: Context,
@@ -36,6 +42,7 @@ class MovieDetailViewModel @Inject constructor(
     private val rateMovieUseCase: RateMovieUseCase,
     private val toggleFavoriteMovieUseCase: ToggleFavoriteMovieUseCase,
     private val getUserUseCase: GetUserUseCase,
+    private val router: Router,
 ) : BaseViewModel() {
     private val user = MutableLiveData<User>(null)
 
@@ -155,6 +162,18 @@ class MovieDetailViewModel @Inject constructor(
         movieDetail.genres.joinToString(separator = resources.getString(R.string.movie_detail_separator)) {
             it.name
         }
+
+    fun navigateBack() {
+        router.exit()
+    }
+
+    fun navigateToPersonCast(cast: Cast) {
+        router.navigateTo(Screens.personDetail(cast))
+    }
+
+    fun navigateToPersonCrew(crew: Crew) {
+        router.navigateTo(Screens.personDetail(crew))
+    }
 
     private fun getMovieCredits(movieId: Int) {
         getMovieCreditsUseCase(movieId)

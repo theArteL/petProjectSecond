@@ -35,33 +35,33 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
 
         appNavigator = AppNavigator(this, R.id.container)
 
-        setListeners(binding)
-        setObservers(binding)
+        setListeners()
+        setObservers()
     }
 
-    private fun setListeners(binding: ActivityAuthBinding) {
+    private fun setListeners() {
         binding.apply {
             btnLoginGuest.setOnClickListener {
-                viewModel.authAsGuest()
+                this@AuthActivity.viewModel.authAsGuest()
             }
 
             btnLogin.setOnClickListener {
-                viewModel.authAsUser()
+                this@AuthActivity.viewModel.authAsUser()
             }
 
             etLogin.addTextChangedListener {
                 binding.tilLogin.error = null
-                viewModel.loginError.postValue(null)
+                this@AuthActivity.viewModel.loginError.postValue(null)
             }
 
             etPassword.addTextChangedListener {
                 binding.tilPassword.error = null
-                viewModel.passwordError.postValue(null)
+                this@AuthActivity.viewModel.passwordError.postValue(null)
             }
         }
     }
 
-    private fun setObservers(binding: ActivityAuthBinding) {
+    private fun setObservers() {
         viewModel.auth.observe(this, {
             if (it != null && it) {
                 viewModel.navigateToMain(this)

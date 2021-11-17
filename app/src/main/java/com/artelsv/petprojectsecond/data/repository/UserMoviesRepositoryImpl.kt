@@ -11,6 +11,8 @@ import com.artelsv.petprojectsecond.domain.model.movie.ToggleFavorite
 import com.artelsv.petprojectsecond.domain.repository.UserMoviesRepository
 import com.artelsv.petprojectsecond.utils.SharedPreferenceManager
 import io.reactivex.Single
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class UserMoviesRepositoryImpl @Inject constructor(
@@ -49,6 +51,12 @@ class UserMoviesRepositoryImpl @Inject constructor(
                 userLocalDataSource.addRated(MovieListMapper.movieListResponseToMovieList(it))
                 MovieListMapper.movieListResponseToMovieList(it)
             }
+    }
+
+    override fun syncLocalUserLists(id: Int): Disposable {
+        return Single.merge(getFavoriteMovies(id), getFavoriteTvShows(id), getRatedMovies(id), getRatedTvShows(id))
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 
     override fun toggleFavorite(

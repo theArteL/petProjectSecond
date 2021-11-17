@@ -11,12 +11,14 @@ import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.usecases.movies.GetNowPlayingMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.movies.GetPopularMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.user.GetUserUseCase
+import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.SyncLocalUserListsUseCase
 import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.github.terrakok.cicerone.Router
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -24,6 +26,7 @@ class MovieListViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
     private val getUserUseCase: GetUserUseCase,
+    private val syncLocalUserListsUseCase: SyncLocalUserListsUseCase,
     private val router: Router,
 ) : BaseViewModel() {
 
@@ -75,23 +78,14 @@ class MovieListViewModel @Inject constructor(
         getUserUseCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                getUserUseCase.syncLocalUserLists(it.id)
-                user.postValue(it)
-            }
             .subscribe({
-
+                syncLocalUserListsUseCase(it.id).addToComposite()
+                user.postValue(it)
             }, {
-//                Timber.e(it)
+                Timber.e(it)
             })
             .addToComposite()
     }
 
     fun progressCheck() = loadingPopular.value == true && loadingNowPlaying.value == true
-
-    override fun onCleared() {
-        super.onCleared()
-
-        getUserUseCase.dispose()
-    }
 }

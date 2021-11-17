@@ -11,9 +11,7 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.FragmentMovieDetailBinding
-import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
-import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -24,17 +22,14 @@ class MovieDetailFragment : DaggerFragment() {
     @Inject
     lateinit var viewModel: MovieDetailViewModel
 
-    @Inject
-    lateinit var router: Router
-
     private val binding: FragmentMovieDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
     private val castAdapter = MovieCastAdapter {
-        router.navigateTo(Screens.personDetail(it))
+        viewModel.navigateToPersonCast(it)
     }
 
     private val crewAdapter = MovieCrewAdapter {
-        router.navigateTo(Screens.personDetail(it))
+        viewModel.navigateToPersonCrew(it)
     }
 
     override fun onCreateView(
@@ -51,7 +46,7 @@ class MovieDetailFragment : DaggerFragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            viewModel.getMovieDetail(it[MOVIE_ID] as Int)
+            viewModel.getMovieDetail(it.getInt(MOVIE_ID))
         }
     }
 
@@ -101,7 +96,7 @@ class MovieDetailFragment : DaggerFragment() {
         viewModel.error.observe(viewLifecycleOwner, {
             if (it) {
                 Toast.makeText(requireContext(), ERROR, Toast.LENGTH_LONG).show()
-                router.backTo(Screens.movieList())
+                viewModel.navigateBack()
             }
         })
 
