@@ -7,12 +7,14 @@ import com.artelsv.petprojectsecond.domain.model.movie.credits.Crew
 import com.artelsv.petprojectsecond.domain.model.persondetail.PersonDetail
 import com.artelsv.petprojectsecond.domain.usecases.PersonDetailUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
+import com.github.terrakok.cicerone.Router
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class PersonDetailViewModel @Inject constructor(
     private val personDetailUseCase: PersonDetailUseCase,
+    private val router: Router,
 ) : BaseViewModel() {
     /**
      * Основные данные для отображения
@@ -52,7 +54,11 @@ class PersonDetailViewModel @Inject constructor(
     }
 
     fun toggleDetailExpanded() {
-        if (detailIsOpen.value == null) detailIsOpen.postValue(true) else detailIsOpen.postValue(!detailIsOpen.value!!)
+        if (detailIsOpen.value == null) detailIsOpen.postValue(true) else detailIsOpen.postValue(!(detailIsOpen.value ?: false))
+    }
+
+    fun navigationBack() {
+        router.exit()
     }
 
     private fun init(personId: Int) {

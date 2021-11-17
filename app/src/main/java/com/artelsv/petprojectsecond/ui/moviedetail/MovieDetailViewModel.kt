@@ -19,6 +19,7 @@ import com.artelsv.petprojectsecond.domain.usecases.movies.detail.ToggleFavorite
 import com.artelsv.petprojectsecond.domain.usecases.user.GetUserUseCase
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.artelsv.petprojectsecond.utils.Constants
+import com.artelsv.petprojectsecond.utils.exts.safeLet
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -51,19 +52,28 @@ class MovieDetailViewModel @Inject constructor(
     val error = MutableLiveData(false)
     val toastText = MutableLiveData<String>(null)
 
+    val imageUrl: MutableLiveData<String> = MutableLiveData("")
+    val voteAsString: MutableLiveData<String> = MutableLiveData("")
+    val voteColor: MutableLiveData<Int> = MutableLiveData(R.color.red)
+    val movieName: MutableLiveData<String> = MutableLiveData("")
+    val genresAsString: MutableLiveData<String> = MutableLiveData("")
+
+    // логика для лайков / оценок
+    val favorite = MutableLiveData(false)
+    val rateIt = MutableLiveData(false)
+    val rating = MutableLiveData(0f)
+
     fun getMovieDetail(movieId: Int) {
         getMovieDetailsUseCase(movieId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
+                getMovieCredits(it.id)
                 getReleaseDate(it)
             }
-            .map {
+            .subscribe({
                 rating.postValue(it.rating)
                 favorite.postValue(it.favorite)
-                getMovieCredits(it.id)
-            }
-            .subscribe({
                 handleSuccess()
             }, {
                 handleError(it)
@@ -73,71 +83,51 @@ class MovieDetailViewModel @Inject constructor(
         getUserUseCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
+            .subscribe({
                 user.postValue(it)
-            }
-            .subscribe({
-
             }, {
 
             })
             .addToComposite()
     }
 
-    private fun getMovieCredits(movieId: Int) {
-        getMovieCreditsUseCase(movieId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                credits.postValue(it)
-            }
-            .subscribe({
+    fun toggleFavorite() {
+        safeLet(movie.value, user.value) { movieDetail, user ->
+            toggleFavoriteMovieUseCase(user.id, movieDetail.id, !(favorite.value ?: false))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    if (result) favorite.postValue(!(favorite.value ?: false))
+                }, {
 
-            }, {
-
-            })
-            .addToComposite()
+                })
+                .addToComposite()
+        }
     }
 
-    private fun getReleaseDate(
-        movieDetail: MovieDetail,
-        iso: String = DEFAULT_ISO,
-    ): Single<MovieDetail> {
-        getMovieDateReleaseUseCase(movieDetail.id, iso)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                initData(movieDetail, it)
-            }, {
-                handleError(it)
-            })
-            .addToComposite()
-
-        return Single.just(movieDetail)
+    fun toggleRateIt() {
+        rateIt.postValue(!(rateIt.value ?: false))
     }
 
-    val imageUrl: MutableLiveData<String> = MutableLiveData("")
-    val voteAsString: MutableLiveData<String> = MutableLiveData("")
-    val voteColor: MutableLiveData<Int> = MutableLiveData(R.color.red)
-    val movieName: MutableLiveData<String> = MutableLiveData("")
-    val genresAsString: MutableLiveData<String> = MutableLiveData("")
+    fun rateMovie(value: Float) {
+        movie.value?.let {
+            rateMovieUseCase(it.id, value * 2)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    if (result) {
+                        rating.postValue(value * 2)
+                    } else {
+                        rating.postValue(0f)
+                    }
 
-    private fun initData(movieDetail: MovieDetail, result: DateReleaseResult) {
-        mDateRelease.postValue(result)
-        mMovie.postValue(movieDetail)
+                    toggleRateIt()
 
-        imageUrl.postValue(Constants.BASE_IMAGE_URL + movieDetail.backdropPath)
-        voteAsString.postValue(movieDetail.voteAverage.toString())
-        voteColor.postValue(
-            when (movieDetail.voteAverage) {
-                in 0.0..5.0 -> R.color.red
-                in 5.1..7.0 -> R.color.yellow
-                in 7.1..10.0 -> R.color.green
-                else -> R.color.red
-            }
-        )
-        getMovieName(context.resources, movieDetail, result)
-        genresAsString.postValue(getGenresAsString(context.resources, movieDetail))
+                }, { error ->
+                    toastText.postValue(error.localizedMessage)
+                })
+                .addToComposite()
+        }
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -166,6 +156,53 @@ class MovieDetailViewModel @Inject constructor(
             it.name
         }
 
+    private fun getMovieCredits(movieId: Int) {
+        getMovieCreditsUseCase(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                credits.postValue(it)
+            }, {
+
+            })
+            .addToComposite()
+    }
+
+    private fun getReleaseDate(
+        movieDetail: MovieDetail,
+        iso: String = DEFAULT_ISO,
+    ): Single<MovieDetail> {
+        getMovieDateReleaseUseCase(movieDetail.id, iso)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                initData(movieDetail, it)
+            }, {
+                handleError(it)
+            })
+            .addToComposite()
+
+        return Single.just(movieDetail)
+    }
+
+    private fun initData(movieDetail: MovieDetail, result: DateReleaseResult) {
+        mDateRelease.postValue(result)
+        mMovie.postValue(movieDetail)
+
+        imageUrl.postValue(Constants.BASE_IMAGE_URL + movieDetail.backdropPath)
+        voteAsString.postValue(movieDetail.voteAverage.toString())
+        voteColor.postValue(
+            when (movieDetail.voteAverage) {
+                in 0.0..5.0 -> R.color.red
+                in 5.1..7.0 -> R.color.yellow
+                in 7.1..10.0 -> R.color.green
+                else -> R.color.red
+            }
+        )
+        getMovieName(context.resources, movieDetail, result)
+        genresAsString.postValue(getGenresAsString(context.resources, movieDetail))
+    }
+
     private fun handleSuccess() {
         loading.postValue(false)
         error.postValue(false)
@@ -177,57 +214,6 @@ class MovieDetailViewModel @Inject constructor(
 
         Timber.tag(this.toString()).e(throwable.message.toString())
     }
-
-    // логика для лайков / оценок
-    val favorite = MutableLiveData(false)
-    val rateIt = MutableLiveData(false)
-    val rating = MutableLiveData(0f)
-
-    fun toggleFavorite() {
-        movie.value?.let {
-            toggleFavoriteMovieUseCase(user.value!!.id, it.id, !favorite.value!!)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map { result ->
-                    if (result) favorite.postValue(!favorite.value!!)
-                }
-                .subscribe({
-
-                }, {
-
-                })
-                .addToComposite()
-        }
-    }
-
-    fun toggleRateIt() {
-        rateIt.postValue(!rateIt.value!!)
-    }
-
-    fun rateMovie(value: Float) {
-        movie.value?.let {
-            rateMovieUseCase(it.id, value * 2)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map { result ->
-                    if (result) {
-                        rating.postValue(value * 2)
-                    } else {
-                        rating.postValue(0f)
-                    }
-
-//                    lightLoading.postValue(false)
-                    toggleRateIt()
-                }
-                .subscribe({
-//                    lightLoading.postValue(true)
-                }, { error ->
-                    toastText.postValue(error.localizedMessage)
-                })
-                .addToComposite()
-        }
-    }
-    //
 
     companion object {
         private const val DEFAULT_ISO = "RU"

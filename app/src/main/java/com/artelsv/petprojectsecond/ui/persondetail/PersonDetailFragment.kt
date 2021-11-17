@@ -16,7 +16,6 @@ import com.artelsv.petprojectsecond.databinding.FragmentPersonDetailBinding
 import com.artelsv.petprojectsecond.domain.model.movie.credits.Cast
 import com.artelsv.petprojectsecond.domain.model.movie.credits.Crew
 import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
-import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -24,9 +23,6 @@ class PersonDetailFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModel: PersonDetailViewModel
-
-    @Inject
-    lateinit var router: Router
 
     private val binding: FragmentPersonDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
@@ -93,7 +89,7 @@ class PersonDetailFragment : DaggerFragment() {
 
     private fun setListeners() {
         binding.ivBack.setOnClickListener {
-            router.exit()
+            viewModel.navigationBack()
         }
 
         binding.ivDetailExpanded.setOnClickListener {

@@ -17,9 +17,7 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.artelsv.petprojectsecond.databinding.FragmentProfileBinding
-import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.userlist.UserListFragment
-import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -32,9 +30,6 @@ class ProfileFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModel: ProfileViewModel
-
-    @Inject
-    lateinit var router: Router
 
     private var currentPhotoPath: String? = null
 
@@ -109,7 +104,7 @@ class ProfileFragment : DaggerFragment() {
 
     private fun setListeners() {
         binding.ivBack.setOnClickListener {
-            router.backTo(Screens.movieList())
+            viewModel.navigationBack()
         }
 
         binding.ivExit.setOnClickListener {
@@ -122,8 +117,7 @@ class ProfileFragment : DaggerFragment() {
     }
 
     private fun exit() {
-        viewModel.exit()
-        router.newRootScreen(Screens.authActivity(requireActivity()))
+        viewModel.exit(requireActivity())
     }
 
     private fun hasCameraPermission() = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
@@ -151,10 +145,8 @@ class ProfileFragment : DaggerFragment() {
             val uri =
                 FileProvider.getUriForFile(requireContext(), FILEPROVIDER_AUTHORITY, createImageFile())
 
-
-
             getCameraImage.launch(uri)
-            viewModel.saveUri.postValue(uri)
+            viewModel.saveUri(uri)
         } else {
             requestMultiplePermissionLauncher.launch(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
         }

@@ -16,9 +16,9 @@ class UserRepositoryImpl @Inject constructor(
     private var user: User? = null
 
     override fun getUser(): Single<User> {
-        return if (preferenceManager.getAuth()) {
+        return if (preferenceManager.isAuth()) {
             userRemoteDataSource.getUser(
-                preferenceManager.getSession()!!
+                preferenceManager.getSession()
             ).map {
                 setUser(it)
             }

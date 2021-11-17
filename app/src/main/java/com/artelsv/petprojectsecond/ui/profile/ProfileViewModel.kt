@@ -1,5 +1,6 @@
 package com.artelsv.petprojectsecond.ui.profile
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.R
@@ -10,18 +11,24 @@ import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.GetFavoriteM
 import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.GetFavoriteTvShowsUseCase
 import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.GetRatedMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.GetRatedTvShowsUseCase
+import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
+import com.github.terrakok.cicerone.Router
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class ProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase,
     private val getFavoriteTvShowsUseCase: GetFavoriteTvShowsUseCase,
     private val getRatedMoviesUseCase: GetRatedMoviesUseCase,
     private val getRatedTvShowsUseCase: GetRatedTvShowsUseCase,
+
+    private val router: Router,
 ) : BaseViewModel() {
     val loading = MutableLiveData(true)
     val error = MutableLiveData<Throwable>(null)
@@ -36,39 +43,42 @@ class ProfileViewModel @Inject constructor(
         getUserUseCase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
+            .subscribe({
                 user.postValue(it)
                 getUserLists(it.id)
                 loading.postValue(false)
-            }
-            .subscribe({
-
             }, {
                 error.postValue(it)
             })
             .addToComposite()
     }
 
-    fun exit() {
+    fun exit(context: Context) {
         getUserUseCase.exit()
+        router.newRootScreen(Screens.authActivity(context))
     }
 
     fun toggleUserList() {
-        if (!userLists.value.isNullOrEmpty()) listOpen.value = !listOpen.value!! else error.postValue(Throwable("Пользовательские списки пусты"))
+        if (!userLists.value.isNullOrEmpty()) listOpen.value = !(listOpen.value ?: false) else error.postValue(Throwable("Пользовательские списки пусты"))
+    }
+
+    fun saveUri(value: Uri) {
+        saveUri.postValue(value)
+    }
+
+    fun navigationBack() {
+        router.exit()
     }
 
     private fun getUserLists(id: Int) {
         getFavoriteMoviesUseCase(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
+            .subscribe({
                 if (!it.results.isNullOrEmpty()) {
                     userLists.value?.add(Pair(it, R.string.profile_movie_list_favorite_movies))
                     userLists.value = userLists.value
                 }
-            }
-            .subscribe({
-
             }, {
                 Timber.tag("profile").e(it)
             })
@@ -77,14 +87,11 @@ class ProfileViewModel @Inject constructor(
         getFavoriteTvShowsUseCase(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
+            .subscribe({
                 if (!it.results.isNullOrEmpty()) {
                     userLists.value?.add(Pair(it, R.string.profile_movie_list_favorite_tv_shows))
                     userLists.value = userLists.value
                 }
-            }
-            .subscribe({
-
             }, {
                 Timber.tag("profile").e(it)
             })
@@ -93,14 +100,11 @@ class ProfileViewModel @Inject constructor(
         getRatedMoviesUseCase(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
+            .subscribe({
                 if (!it.results.isNullOrEmpty()) {
                     userLists.value?.add(Pair(it, R.string.profile_movie_list_rated_movies))
                     userLists.value = userLists.value
                 }
-            }
-            .subscribe({
-
             }, {
                 Timber.tag("profile").e(it)
             })
@@ -109,16 +113,13 @@ class ProfileViewModel @Inject constructor(
         getRatedTvShowsUseCase(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
+            .subscribe({
                 if (!it.results.isNullOrEmpty()) {
                     userLists.value?.add(Pair(it, R.string.profile_movie_list_rated_tv_shows))
                     userLists.value = userLists.value
                 }
 
                 loading.postValue(false)
-            }
-            .subscribe({
-
             }, {
                 Timber.tag("profile").e(it)
             })

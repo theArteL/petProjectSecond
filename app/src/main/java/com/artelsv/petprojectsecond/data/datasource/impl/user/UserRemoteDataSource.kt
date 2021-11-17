@@ -10,9 +10,11 @@ class UserRemoteDataSource @Inject constructor(
     private val userService: UserService,
 ) : UserDataSource {
 
-    override fun getUser(sessionId: String): Single<UserResponse> {
-        return userService.getUser(
-            sessionId
-        )
+    override fun getUser(sessionId: String?): Single<UserResponse> {
+        return if (!sessionId.isNullOrEmpty()) userService.getUser(sessionId) else Single.error(Throwable(SESSION_IS_EMPTY))
+    }
+
+    companion object {
+        private const val SESSION_IS_EMPTY = "Значение сессии пустое, или равно нуль"
     }
 }

@@ -11,7 +11,9 @@ import com.artelsv.petprojectsecond.domain.model.User
 import com.artelsv.petprojectsecond.domain.usecases.movies.GetNowPlayingMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.movies.GetPopularMoviesUseCase
 import com.artelsv.petprojectsecond.domain.usecases.user.GetUserUseCase
+import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
+import com.github.terrakok.cicerone.Router
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,6 +24,7 @@ class MovieListViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
     private val getUserUseCase: GetUserUseCase,
+    private val router: Router,
 ) : BaseViewModel() {
 
     val user = MutableLiveData<User>(null)
@@ -38,6 +41,14 @@ class MovieListViewModel @Inject constructor(
 
     init {
         setup()
+    }
+
+    fun navigateToProfile() {
+        router.navigateTo(Screens.profile())
+    }
+
+    fun navigateToMovieDetail(id: Int) {
+        router.navigateTo(Screens.movieDetail(id))
     }
 
     private fun setup() {

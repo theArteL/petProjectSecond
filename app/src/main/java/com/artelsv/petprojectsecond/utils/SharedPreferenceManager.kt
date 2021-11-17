@@ -31,7 +31,7 @@ class SharedPreferenceManager @Inject constructor(
         }
     }
 
-    fun getAuth(): Boolean {
+    fun isAuth(): Boolean {
         return pref.getBoolean(KEY_AUTH, false)
     }
 

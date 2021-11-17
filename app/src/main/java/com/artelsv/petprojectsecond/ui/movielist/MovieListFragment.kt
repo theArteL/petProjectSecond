@@ -11,9 +11,7 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.FragmentMovieListBinding
-import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
-import com.github.terrakok.cicerone.Router
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -24,20 +22,17 @@ class MovieListFragment : DaggerFragment() {
     @Inject
     lateinit var viewModel: MovieListViewModel
 
-    @Inject
-    lateinit var router: Router
-
     private val binding: FragmentMovieListBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
     private val nowPlayingAdapter: MovieAdapter = MovieAdapter {
         it?.let {
-            router.navigateTo(Screens.movieDetail(it.id))
+            viewModel.navigateToMovieDetail(it.id)
         }
     }
 
     private val popularAdapter: MovieAdapter = MovieAdapter {
         it?.let {
-            router.navigateTo(Screens.movieDetail(it.id))
+            viewModel.navigateToMovieDetail(it.id)
         }
     }
 
@@ -56,44 +51,13 @@ class MovieListFragment : DaggerFragment() {
 
         setMoviesNowPlayingRv()
         setMoviesPopularRv()
-        setSortPopup()
         setListeners()
         setObservers()
     }
 
-    private fun setSortPopup() {
-//        val popupMenu = PopupMenu(requireContext(), binding.tvSort)
-//        popupMenu.inflate(R.menu.menu_sort)
-//        popupMenu.setOnMenuItemClickListener {
-//            when (it.itemId) {
-//                R.id.menu_no -> {
-//                    viewModel.getNowPlayingMovies(MovieSortType.NO)
-//                    true
-//                }
-//                R.id.menu_asc -> {
-//                    viewModel.getNowPlayingMovies(MovieSortType.ASC)
-//                    true
-//                }
-//                R.id.menu_desc -> {
-//                    viewModel.getNowPlayingMovies(MovieSortType.DESC)
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
-//
-//        binding.tvSort.setOnClickListener {
-//            popupMenu.show()
-//        }
-    }
-
     private fun setListeners() {
-//        binding.btnError.setOnClickListener {
-//            viewModel.getNowPlayingMovies(MovieSortType.NO)
-//        }
-
         binding.tvUser.setOnClickListener {
-            router.navigateTo(Screens.profile())
+            viewModel.navigateToProfile()
         }
     }
 

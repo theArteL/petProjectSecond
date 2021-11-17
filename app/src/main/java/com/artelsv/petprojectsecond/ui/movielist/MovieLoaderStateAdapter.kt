@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.artelsv.petprojectsecond.databinding.ItemErrorBinding
-import com.artelsv.petprojectsecond.databinding.ItemProgressBinding
+import com.artelsv.petprojectsecond.ui.movielist.viewholder.ErrorViewHolder
+import com.artelsv.petprojectsecond.ui.movielist.viewholder.ProgressViewHolder
 
 class MovieLoaderStateAdapter : LoadStateAdapter<MovieLoaderStateAdapter.ItemViewHolder>() {
 
@@ -38,56 +38,5 @@ class MovieLoaderStateAdapter : LoadStateAdapter<MovieLoaderStateAdapter.ItemVie
     abstract class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         abstract fun bind(loadState: LoadState)
-    }
-
-    class ProgressViewHolder internal constructor(
-        binding: ItemProgressBinding
-    ) : ItemViewHolder(binding.root) {
-
-        override fun bind(loadState: LoadState) = Unit
-
-        companion object {
-
-            operator fun invoke(
-                layoutInflater: LayoutInflater,
-                parent: ViewGroup? = null,
-                attachToRoot: Boolean = false
-            ): ProgressViewHolder {
-                return ProgressViewHolder(
-                    ItemProgressBinding.inflate(
-                        layoutInflater,
-                        parent,
-                        attachToRoot
-                    )
-                )
-            }
-        }
-    }
-
-    class ErrorViewHolder internal constructor(
-        private val binding: ItemErrorBinding
-    ) : ItemViewHolder(binding.root) {
-
-        override fun bind(loadState: LoadState) {
-            require(loadState is LoadState.Error)
-            binding.errorMessage.text = loadState.error.localizedMessage
-        }
-
-        companion object {
-
-            operator fun invoke(
-                layoutInflater: LayoutInflater,
-                parent: ViewGroup? = null,
-                attachToRoot: Boolean = false
-            ): ErrorViewHolder {
-                return ErrorViewHolder(
-                    ItemErrorBinding.inflate(
-                        layoutInflater,
-                        parent,
-                        attachToRoot
-                    )
-                )
-            }
-        }
     }
 }
