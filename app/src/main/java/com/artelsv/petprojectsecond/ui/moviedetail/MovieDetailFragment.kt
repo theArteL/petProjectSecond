@@ -5,29 +5,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import coil.load
+import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.databinding.FragmentMovieDetailBinding
-import com.artelsv.petprojectsecond.domain.model.MovieDetail
-import com.artelsv.petprojectsecond.ui.Screens
-import com.github.terrakok.cicerone.Router
+import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
 import dagger.android.support.DaggerFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class MovieDetailFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModel: MovieDetailViewModel
 
-    @Inject
-    lateinit var router: Router
-
     private val binding: FragmentMovieDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+
+    private val castAdapter = MovieCastAdapter {
+        viewModel.navigateToPersonCast(it)
+    }
+
+    private val crewAdapter = MovieCrewAdapter {
+        viewModel.navigateToPersonCrew(it)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -39,50 +46,76 @@ class MovieDetailFragment : DaggerFragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            viewModel.setMovieValue(it[MOVIE_ID] as Int)
+            viewModel.getMovieDetail(it.getInt(MOVIE_ID))
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setListeners()
         setObservers()
+        setLists()
+    }
+
+    private fun setLists() {
+        binding.rvCast.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = castAdapter
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    requireContext().resources.getDimension(
+                        R.dimen.viewpager_current_item_horizontal_margin
+                    ).toInt()
+                )
+            )
+        }
+
+        binding.rvCrew.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = crewAdapter
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    requireContext().resources.getDimension(
+                        R.dimen.viewpager_current_item_horizontal_margin
+                    ).toInt()
+                )
+            )
+        }
+    }
+
+    private fun setListeners() {
+        binding.rbRate.setOnRatingBarChangeListener { _, fl, _ ->
+            viewModel.rateMovie(fl)
+        }
     }
 
     private fun setObservers() {
-        viewModel.movie.observe(viewLifecycleOwner, {
-            if (it != null) {
-                setData(it)
-            }
-        })
-
         viewModel.error.observe(viewLifecycleOwner, {
-            if (it != null && it) {
+            if (it) {
                 Toast.makeText(requireContext(), ERROR, Toast.LENGTH_LONG).show()
-                router.backTo(Screens.movieList())
+                viewModel.navigateBack()
             }
         })
-    }
 
-    private fun setData(movie: MovieDetail) {
-
-        binding.ivPoster.load(viewModel.getImageUrl(movie))
-
-        binding.tvVote.text = viewModel.getVoteAsString(movie)
-        binding.tvVote.setTextColor(binding.root.resources.getColor(viewModel.getVoteColor(movie), binding.root.resources.newTheme()))
-
-        binding.tvTitle.text = viewModel.getMovieName(resources)
-        binding.tvGenres.text = viewModel.getGenresAsString(resources)
+        viewModel.credits.observe(viewLifecycleOwner, {
+            it?.let {
+                castAdapter.submitList(it.cast.filter { cast -> cast.knownForDepartment == getString(R.string.system_person_work) })
+                crewAdapter.submitList(it.crew.filter { crew -> crew.knownForDepartment != getString(R.string.system_person_work) })
+            }
+        })
     }
 
     companion object {
         private const val MOVIE_ID = "movieId"
-        private const val ERROR = "Ошибка, повторите попытку" // пока тут
+        private const val ERROR = R.string.movie_detail_error
 
         fun newInstance(movieId: Int) = MovieDetailFragment().apply {
-            arguments = Bundle().apply {
-                putInt(MOVIE_ID, movieId)
-            }
+            arguments = bundleOf(
+                MOVIE_ID to movieId
+            )
         }
     }
 }

@@ -1,29 +1,39 @@
 package com.artelsv.petprojectsecond.data.repository
 
-import com.artelsv.petprojectsecond.data.network.UserService
-import com.artelsv.petprojectsecond.data.network.model.RequestTokenResponse
-import com.artelsv.petprojectsecond.data.network.model.SessionResponse
-import com.artelsv.petprojectsecond.domain.UserRepository
+import com.artelsv.petprojectsecond.data.datasource.UserDataSource
+import com.artelsv.petprojectsecond.data.datasource.UserLocalDataSource
+import com.artelsv.petprojectsecond.data.mappers.UserMapper
+import com.artelsv.petprojectsecond.domain.model.User
+import com.artelsv.petprojectsecond.domain.repository.UserRepository
+import com.artelsv.petprojectsecond.utils.SharedPreferenceManager
 import io.reactivex.Single
 import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(private val userService: UserService) :
-    UserRepository {
-    override fun createRequestToken(): Single<RequestTokenResponse> {
-        return userService.createRequestToken()
+class UserRepositoryImpl @Inject constructor(
+    private val userRemoteDataSource: UserDataSource,
+    private val userLocalDataSource: UserLocalDataSource,
+    private val preferenceManager: SharedPreferenceManager,
+) : UserRepository {
+
+    override fun getUser(): Single<User> {
+        return if (preferenceManager.isAuth()) {
+            userRemoteDataSource.getUser(
+                preferenceManager.getSession()
+            ).map {
+                userLocalDataSource.addUser(user = UserMapper.userResponseToUser(it))
+            }
+        } else {
+            Single.error(Throwable("Not auth"))
+        }
     }
 
-    override fun createSession(requestToken: String): Single<SessionResponse> {
-        return userService.createSession(hashMapOf(
-            "request_token" to requestToken
-        ))
+    override fun getLocalUser(): User {
+        return userLocalDataSource.getUser()
     }
 
-    override fun createSessionWithUser(requestToken: String, login: String, password: String): Single<SessionResponse> {
-        return userService.createSession(hashMapOf(
-            "request_token" to requestToken,
-            "username" to login,
-            "password" to login
-        ))
+    override fun exit() {
+        preferenceManager.removeAuth()
+        preferenceManager.removeGuestSession()
+        preferenceManager.removeSession()
     }
 }

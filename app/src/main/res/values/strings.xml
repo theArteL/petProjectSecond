@@ -1,17 +1,9 @@
 <resources>
     <string name="app_name">petStudyApp</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="movies_popular">Popular</string>
     <string name="movies_new">New</string>
+    <string name="user">User</string>
 
     <string name="movies_list_error_title">Упс… Попробуй снова</string>
     <string name="movies_list_error_button">Снова?</string>
@@ -21,8 +13,50 @@
 
     <string name="movie_detail_separator">\u00A0&#8226;\u00A0</string>
     <string name="movie_detail_title_overview">Обзор</string>
+    <string name="movie_detail_rate">Оценок: %d | Средняя: %2$.2f</string>
+    <string name="movie_detail_rate_user">Вы оценили на %.2f</string>
+    <string name="movie_detail_cast">Актеры</string>
+    <string name="movie_detail_crew">Команда</string>
 
     <string name="menu_no">Без сортировки</string>
     <string name="menu_acs">По убыванию рейтинга</string>
     <string name="menu_desc">По возрастанию рейтинга</string>
+
+    <string name="auth_login">Войти</string>
+    <string name="auth_login_guest">Войти как гость</string>
+    <string name="auth_login_hint">Логин</string>
+    <string name="auth_password_hint">Пароль</string>
+    <string name="auth_title">Авторизация</string>
+
+    <string name="button_profile_update">Обновить профиль</string>
+    <string name="profile_username_hint">Логин</string>
+    <string name="profile_name_hint">Имя</string>
+    <string name="profile_movie_list_pattern">%s (%d)</string>
+    <string name="profile_user_lists">Пользовательские списки</string>
+    <string name="profile_setting_theme">Темная тема</string>
+    <string name="profile_movie_list_favorite_movies">Избранные фильмы</string>
+    <string name="profile_movie_list_favorite_tv_shows">Избранные сериалы</string>
+    <string name="profile_movie_list_rated_movies">Оцененные фильмы</string>
+    <string name="profile_movie_list_rated_tv_shows">Оцененные сериалы</string>
+
+    <string name="item_person_name">%s / %s</string>
+    <string name="person_detail_cast">Актер</string>
+    <string name="person_detail_crew">Съемочная команда</string>
+    <string name="person_detail_error">Упс… Произошла ошибка</string>
+    <string name="person_detail_button_error_back">Вернуться обратно</string>
+    <string name="person_detail_movies">Фильмы</string>
+
+    <!--  Content descriptions  -->
+    <string name="back_button">Назад</string>
+    <string name="exit_button">Выйти из аккаунта</string>
+    <string name="profile_image">Фото профиля</string>
+    <string name="person_image">Фото персоны</string>
+
+    <!--  app vars  -->
+    <string name="system_person_work">Acting</string>
+
+    <!--  errors  -->
+    <string name="movie_detail_error">Ошибка, повторите попытку</string>
+    <string name="system_login_validate_error">Минимум 6 символов</string>
+    <string name="system_password_validate_error">Минимум 6 символов</string>
 </resources>

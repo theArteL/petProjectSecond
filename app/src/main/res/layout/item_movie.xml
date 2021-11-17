@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="com.artelsv.petprojectsecond.domain.model.Movie" />
+            type="com.artelsv.petprojectsecond.domain.model.movie.Movie" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +17,7 @@
             android:id="@+id/mcv_movie"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="@dimen/medium_radius"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="H, 16:9"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,8 +43,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|top"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="@dimen/tiny_margin"
+                    android:layout_marginTop="@dimen/tiny_margin"
                     android:text="@{item.title}"
                     android:textColor="@android:color/white" />
 
@@ -52,8 +52,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|bottom"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="@dimen/tiny_margin"
+                    android:layout_marginBottom="@dimen/tiny_margin"
                     android:maxLines="3"
                     android:text="@{item.overview}"
                     android:textColor="@android:color/white" />
@@ -64,8 +64,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|top"
                     android:background="@drawable/background_vote"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
+                    android:paddingHorizontal="@dimen/default_padding"
+                    android:paddingVertical="@dimen/small_padding"
                     android:singleLine="true" />
 
             </FrameLayout>

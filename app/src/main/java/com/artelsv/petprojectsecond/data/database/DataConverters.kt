@@ -1,14 +1,15 @@
 package com.artelsv.petprojectsecond.data.database
 
 import androidx.room.TypeConverter
-import com.artelsv.petprojectsecond.domain.model.*
+import com.artelsv.petprojectsecond.domain.model.Avatar
+import com.artelsv.petprojectsecond.domain.model.movie.*
 import com.google.gson.reflect.TypeToken
 
 import com.google.gson.Gson
 import java.lang.reflect.Type
 
-
 class DataConverter {
+
     @TypeConverter
     fun fromCountryList(countryLang: List<Country>?): String? {
         if (countryLang == null) {
@@ -134,4 +135,18 @@ class DataConverter {
 
     @TypeConverter
     fun fromMovieType(value: MovieType) = value.ordinal
+
+    @TypeConverter
+    fun fromAvatar(avatar: Avatar): String {
+        val gson = Gson()
+        val type: Type = object : TypeToken<Avatar>() {}.type
+        return gson.toJson(avatar, type)
+    }
+
+    @TypeConverter
+    fun toAvatar(avatar: String): Avatar {
+        val gson = Gson()
+        val type: Type = object : TypeToken<Avatar>() {}.type
+        return gson.fromJson(avatar, type)
+    }
 }

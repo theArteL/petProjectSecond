@@ -1,6 +1,8 @@
 package com.artelsv.petprojectsecond.di.module
 
+import com.artelsv.petprojectsecond.data.network.AuthService
 import com.artelsv.petprojectsecond.data.network.MoviesService
+import com.artelsv.petprojectsecond.data.network.UserMoviesService
 import com.artelsv.petprojectsecond.data.network.UserService
 import com.artelsv.petprojectsecond.domain.interceptor.DefaultInterceptor
 import com.artelsv.petprojectsecond.utils.Constants.BASE_URL
@@ -37,4 +39,10 @@ class NetworkModule {
 
     @Provides
     fun provideUserService(retrofit: Retrofit): UserService = retrofit.create(UserService::class.java)
+
+    @Provides
+    fun provideAuthService(retrofit: Retrofit): AuthService = retrofit.create(AuthService::class.java)
+
+    @Provides
+    fun provideUserMoviesService(retrofit: Retrofit): UserMoviesService = retrofit.create(UserMoviesService::class.java)
 }
