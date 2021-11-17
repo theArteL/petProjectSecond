@@ -8,6 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.artelsv.petprojectsecond.App
 import com.artelsv.petprojectsecond.data.database.MoviesDatabase
 import com.artelsv.petprojectsecond.data.database.dao.MovieDao
+import com.artelsv.petprojectsecond.data.database.dao.UserDao
 import com.artelsv.petprojectsecond.data.database.dao.UserMovieDao
 import com.artelsv.petprojectsecond.data.datasource.*
 import com.artelsv.petprojectsecond.data.datasource.impl.movies.NowPlayingMoviePagingSource
@@ -87,6 +88,9 @@ class AppModule {
     @Provides
     fun providesUserMovieDao(db: MoviesDatabase): UserMovieDao = db.getUserMovieDao()
 
+    @Provides
+    fun providesUserDao(db: MoviesDatabase): UserDao = db.getUserDao()
+
     @ExperimentalCoroutinesApi
     @Provides
     fun providesMoviesRepository(
@@ -106,9 +110,10 @@ class AppModule {
     @Provides
     fun providesUserRepository(
         @Named("userRemoteDataSource") userRemoteDataSource: UserDataSource,
+        @Named("userLocalDataSource") userLocalDataSource: UserLocalDataSource,
         pref: ObscuredSharedPreferences,
     ): UserRepository =
-        UserRepositoryImpl(userRemoteDataSource, SharedPreferenceManager(pref))
+        UserRepositoryImpl(userRemoteDataSource, userLocalDataSource, SharedPreferenceManager(pref))
 
     @Provides
     fun providesAuthRepository(

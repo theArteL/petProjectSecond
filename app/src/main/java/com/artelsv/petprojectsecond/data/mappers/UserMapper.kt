@@ -1,5 +1,6 @@
 package com.artelsv.petprojectsecond.data.mappers
 
+import com.artelsv.petprojectsecond.data.entity.UserEntity
 import com.artelsv.petprojectsecond.data.network.model.auth.AvatarResponse
 import com.artelsv.petprojectsecond.data.network.model.auth.UserResponse
 import com.artelsv.petprojectsecond.domain.model.Avatar
@@ -11,6 +12,27 @@ object UserMapper {
 
     fun userResponseToUser(user: UserResponse) = User(
         avatarResponseToAvatar(user.avatar),
+        user.id,
+        user.isoLang,
+        user.isoCountry,
+        user.name,
+        user.includeAdult,
+        user.username
+    )
+
+    fun userToEntity(user: User) = UserEntity(
+        uid = 0,
+        user.id,
+        user.avatar,
+        user.isoLang,
+        user.isoCountry,
+        user.name,
+        user.includeAdult,
+        user.username
+    )
+
+    fun entityToUser(user: UserEntity) = User(
+        user.avatar,
         user.id,
         user.isoLang,
         user.isoCountry,
