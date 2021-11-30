@@ -13,5 +13,5 @@ interface UserLocalDataSource {
     fun get(id: Int): UserMovieEntity?
 
     fun addUser(user: User): User
-    fun getUser(): User
+    fun getUser(): User?
 }

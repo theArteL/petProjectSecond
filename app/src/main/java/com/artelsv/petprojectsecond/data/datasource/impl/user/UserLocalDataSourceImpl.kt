@@ -37,14 +37,18 @@ class UserLocalDataSourceImpl @Inject constructor(
     override fun get(id: Int) = userListDao.get(id)
 
     override fun addUser(user: User): User {
-        if (getUser().id != user.id) {
+        if (getUser()?.id ?: EMPTY_USER_TABLE != user.id) {
             userDao.add(UserMapper.userToEntity(user))
         }
 
         return user
     }
 
-    override fun getUser(): User {
+    override fun getUser(): User? {
         return UserMapper.entityToUser(userDao.get())
+    }
+
+    companion object {
+        private const val EMPTY_USER_TABLE = -1
     }
 }

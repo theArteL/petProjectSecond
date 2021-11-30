@@ -14,5 +14,5 @@ interface UserDao {
     fun add(user: UserEntity)
 
     @Query("SELECT * FROM users ORDER BY users.uid DESC LIMIT 1")
-    fun get(): UserEntity
+    fun get(): UserEntity?
 }

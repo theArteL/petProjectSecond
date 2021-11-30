@@ -59,6 +59,7 @@
 
                     <ImageView
                         android:id="@+id/iv_profile_image"
+                        avatarUrl="@{viewModel.user.avatar.tmdb.avatarPath}"
                         android:layout_width="96dp"
                         android:layout_height="96dp"
                         android:contentDescription="@string/profile_image"
@@ -133,11 +134,15 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_list"
+                    adapter="@{viewModel.userListAdapter}"
+                    items="@{viewModel.userLists}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/tiny_margin"
                     android:layout_marginEnd="@dimen/tiny_margin"
+                    android:orientation="vertical"
                     android:visibility="@{viewModel.listOpen ? View.VISIBLE : View.GONE}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_list" />

@@ -48,15 +48,6 @@ class ProfileFragment : DaggerFragment() {
             }
         }
 
-    private val userListAdapter = UserListAdapter {
-        val addProductDialogFragment = UserListFragment.newInstance(it)
-
-        addProductDialogFragment.show(
-            childFragmentManager,
-            UserListFragment::class.java.simpleName
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -78,19 +69,6 @@ class ProfileFragment : DaggerFragment() {
 
         setListeners()
         setObservers()
-
-        setUserLists()
-
-        viewModel.userLists.observe(viewLifecycleOwner, {
-            if (!it.isNullOrEmpty()) {
-                userListAdapter.submitList(it.toMutableList())
-            }
-        })
-    }
-
-    private fun setUserLists() {
-        binding.rvList.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvList.adapter = userListAdapter
     }
 
     private fun setObservers() {

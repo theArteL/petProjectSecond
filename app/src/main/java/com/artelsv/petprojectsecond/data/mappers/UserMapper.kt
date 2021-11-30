@@ -31,7 +31,7 @@ object UserMapper {
         user.username
     )
 
-    fun entityToUser(user: UserEntity) = User(
+    fun entityToUser(user: UserEntity?) = if (user != null) User(
         user.avatar,
         user.id,
         user.isoLang,
@@ -39,7 +39,7 @@ object UserMapper {
         user.name,
         user.includeAdult,
         user.username
-    )
+    ) else null
 
     private fun avatarResponseToAvatar(avatar: AvatarResponse) = Avatar(Gravatar(avatar.gravatar.hash), Tmdb(avatar.tmdb.avatarPath))
 }

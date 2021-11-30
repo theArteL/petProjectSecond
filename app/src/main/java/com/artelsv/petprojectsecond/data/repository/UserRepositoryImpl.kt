@@ -27,7 +27,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getLocalUser(): User {
+    override fun getLocalUser(): User? {
         return userLocalDataSource.getUser()
     }
 

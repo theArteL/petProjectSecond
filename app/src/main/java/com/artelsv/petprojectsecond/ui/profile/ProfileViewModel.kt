@@ -2,7 +2,9 @@ package com.artelsv.petprojectsecond.ui.profile
 
 import android.content.Context
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
+import com.artelsv.petprojectsecond.App
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.domain.model.movie.MovieList
 import com.artelsv.petprojectsecond.domain.model.User
@@ -13,6 +15,7 @@ import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.GetRatedMovi
 import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.GetRatedTvShowsUseCase
 import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
+import com.artelsv.petprojectsecond.ui.userlist.UserListFragment
 import com.github.terrakok.cicerone.Router
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -28,6 +31,7 @@ class ProfileViewModel @Inject constructor(
     private val getRatedMoviesUseCase: GetRatedMoviesUseCase,
     private val getRatedTvShowsUseCase: GetRatedTvShowsUseCase,
 
+    private val context: Context,
     private val router: Router,
 ) : BaseViewModel() {
     val loading = MutableLiveData(true)
@@ -68,6 +72,15 @@ class ProfileViewModel @Inject constructor(
 
     fun navigationBack() {
         router.exit()
+    }
+
+    val userListAdapter = UserListAdapter {
+        val addProductDialogFragment = UserListFragment.newInstance(it)
+
+        addProductDialogFragment.show(
+            (context as AppCompatActivity).supportFragmentManager,
+            UserListFragment::class.java.simpleName
+        )
     }
 
     private fun getUserLists(id: Int) {
