@@ -12,12 +12,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.artelsv.petprojectsecond.databinding.FragmentProfileBinding
-import com.artelsv.petprojectsecond.ui.userlist.UserListFragment
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -35,11 +33,12 @@ class ProfileFragment : DaggerFragment() {
 
     private val binding: FragmentProfileBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
-    private val requestMultiplePermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
-        resultsMap.forEach {
-            Timber.tag("profile").i("Permission: ${it.key}, granted: ${it.value}")
+    private val requestMultiplePermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
+            resultsMap.forEach {
+                Timber.tag("profile").i("Permission: ${it.key}, granted: ${it.value}")
+            }
         }
-    }
 
     private val getCameraImage =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
@@ -61,13 +60,14 @@ class ProfileFragment : DaggerFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
+        viewModel.setup(childFragmentManager)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setListeners()
         setObservers()
     }
 
@@ -78,28 +78,18 @@ class ProfileFragment : DaggerFragment() {
                 viewModel.error.postValue(null)
             }
         })
-    }
 
-    private fun setListeners() {
-        binding.ivBack.setOnClickListener {
-            viewModel.navigationBack()
-        }
-
-        binding.ivExit.setOnClickListener {
-            exit()
-        }
-
-        binding.mcvImageContainer.setOnClickListener {
+        viewModel.isTakePicture.observe(viewLifecycleOwner, {
             takePicture()
-        }
+        })
     }
 
-    private fun exit() {
-        viewModel.exit(requireActivity())
-    }
+    private fun hasCameraPermission() = ContextCompat.checkSelfPermission(requireContext(),
+        Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
 
-    private fun hasCameraPermission() = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-    private fun hasWriteExternalStoragePermission() = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    private fun hasWriteExternalStoragePermission() = ContextCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
     private fun createImageFile(): File {
         val timeStamp = SimpleDateFormat.getDateTimeInstance().format(Date())
@@ -115,18 +105,22 @@ class ProfileFragment : DaggerFragment() {
     }
 
     private fun prepareToTakePicture() {
-        requestMultiplePermissionLauncher.launch(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        requestMultiplePermissionLauncher.launch(arrayOf(Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE))
     }
 
     private fun takePicture() {
         if (hasCameraPermission() && hasWriteExternalStoragePermission()) {
             val uri =
-                FileProvider.getUriForFile(requireContext(), FILEPROVIDER_AUTHORITY, createImageFile())
+                FileProvider.getUriForFile(requireContext(),
+                    FILEPROVIDER_AUTHORITY,
+                    createImageFile())
 
             getCameraImage.launch(uri)
             viewModel.saveUri(uri)
         } else {
-            requestMultiplePermissionLauncher.launch(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            requestMultiplePermissionLauncher.launch(arrayOf(Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE))
         }
     }
 

@@ -30,6 +30,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:contentDescription="@string/back_button"
+                    android:onClick="@{() -> viewModel.navigationBack()}"
                     android:padding="@dimen/icons_padding"
                     android:src="@drawable/ic_baseline_arrow_back_24"
                     app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:contentDescription="@string/exit_button"
+                    android:onClick="@{() -> viewModel.exit()}"
                     android:padding="@dimen/icons_padding"
                     android:src="@drawable/ic_logout_black_24dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -63,6 +65,7 @@
                         android:layout_width="96dp"
                         android:layout_height="96dp"
                         android:contentDescription="@string/profile_image"
+                        android:onClick="@{() -> viewModel.takePicture()}"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_no_photography_96dp" />
 
