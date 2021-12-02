@@ -42,6 +42,7 @@
                 android:layout_marginTop="@dimen/tiny_margin"
                 android:layout_marginEnd="@dimen/tiny_margin"
                 android:gravity="end"
+                android:onClick="@{() -> viewModel.navigateToProfile()}"
                 android:text="@{viewModel.user.username}"
                 android:textColor="@color/purple_500"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -49,6 +50,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_movies_popular"
+                adapter="@{viewModel.popularAdapter}"
+                items="@{viewModel.popularPagingLiveData}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="true"
@@ -77,6 +80,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_movies_now_playing"
+                adapter="@{viewModel.popularAdapter}"
+                items="@{viewModel.popularPagingLiveData}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/tiny_margin"

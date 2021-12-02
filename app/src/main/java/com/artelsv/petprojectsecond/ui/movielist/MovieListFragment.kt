@@ -24,18 +24,6 @@ class MovieListFragment : DaggerFragment() {
 
     private val binding: FragmentMovieListBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
-    private val nowPlayingAdapter: MovieAdapter = MovieAdapter {
-        it?.let {
-            viewModel.navigateToMovieDetail(it.id)
-        }
-    }
-
-    private val popularAdapter: MovieAdapter = MovieAdapter {
-        it?.let {
-            viewModel.navigateToMovieDetail(it.id)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -51,14 +39,7 @@ class MovieListFragment : DaggerFragment() {
 
         setMoviesNowPlayingRv()
         setMoviesPopularRv()
-        setListeners()
         setObservers()
-    }
-
-    private fun setListeners() {
-        binding.tvUser.setOnClickListener {
-            viewModel.navigateToProfile()
-        }
     }
 
     private fun setObservers() {
@@ -90,11 +71,6 @@ class MovieListFragment : DaggerFragment() {
 
     private fun setMoviesNowPlayingRv() {
         binding.rvMoviesNowPlaying.apply {
-            nowPlayingAdapter.withLoadStateHeaderAndFooter(
-                header = MovieLoaderStateAdapter(),
-                footer = MovieLoaderStateAdapter()
-            )
-
             nowPlayingAdapter.addLoadStateListener { state ->
                 viewModel.loadingNowPlaying.postValue(state.refresh != LoadState.Loading)
             }
@@ -113,11 +89,6 @@ class MovieListFragment : DaggerFragment() {
 
     private fun setMoviesPopularRv() {
         binding.rvMoviesPopular.apply {
-            popularAdapter.withLoadStateHeaderAndFooter(
-                header = MovieLoaderStateAdapter(),
-                footer = MovieLoaderStateAdapter()
-            )
-
             popularAdapter.addLoadStateListener { state ->
                 viewModel.loadingPopular.postValue(state.refresh != LoadState.Loading)
             }

@@ -15,6 +15,7 @@ import com.artelsv.petprojectsecond.domain.usecases.user.usermovies.SyncLocalUse
 import com.artelsv.petprojectsecond.ui.Screens
 import com.artelsv.petprojectsecond.ui.base.BaseViewModel
 import com.github.terrakok.cicerone.Router
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,6 +43,22 @@ class MovieListViewModel @Inject constructor(
     private val mPopularPagingLiveData = MutableLiveData<PagingData<Movie>>(null)
     val popularPagingLiveData: LiveData<PagingData<Movie>> = mPopularPagingLiveData
 
+    val nowPlayingAdapter: MovieAdapter = MovieAdapter {
+        it?.let {
+            navigateToMovieDetail(it.id)
+        }
+    }.apply {
+        withLoadStateHeaderAndFooter(header = MovieLoaderStateAdapter(), footer = MovieLoaderStateAdapter())
+    }
+
+    val popularAdapter: MovieAdapter = MovieAdapter {
+        it?.let {
+            navigateToMovieDetail(it.id)
+        }
+    }.apply {
+        withLoadStateHeaderAndFooter(header = MovieLoaderStateAdapter(), footer = MovieLoaderStateAdapter())
+    }
+
     init {
         setup()
     }
@@ -57,21 +74,30 @@ class MovieListViewModel @Inject constructor(
     private fun setup() {
         getUser()
 
-        getNowPlayingMoviesUseCase(MovieSortType.NO)
-            .cachedIn(viewModelScope)
-            .subscribe({
-                mNowPlayingPagingLiveData.postValue(it)
-            }, {
+        Flowable.zip(getNowPlayingMoviesUseCase(MovieSortType.NO), getPopularMoviesUseCase(MovieSortType.NO), { nowPlaying, popular ->
+            mNowPlayingPagingLiveData.postValue(nowPlaying)
+            mPopularPagingLiveData.postValue(popular)
+        }).subscribe({
 
-            }).addToComposite()
+        }, {
 
-        getPopularMoviesUseCase(MovieSortType.NO)
-            .cachedIn(viewModelScope)
-            .subscribe({
-                mPopularPagingLiveData.postValue(it)
-            }, {
+        }).addToComposite()
 
-            }).addToComposite()
+//        getNowPlayingMoviesUseCase(MovieSortType.NO)
+//            .cachedIn(viewModelScope)
+//            .subscribe({
+//                mNowPlayingPagingLiveData.postValue(it)
+//            }, {
+//
+//            }).addToComposite()
+//
+//        getPopularMoviesUseCase(MovieSortType.NO)
+//            .cachedIn(viewModelScope)
+//            .subscribe({
+//                mPopularPagingLiveData.postValue(it)
+//            }, {
+//
+//            }).addToComposite()
     }
 
     private fun getUser() {

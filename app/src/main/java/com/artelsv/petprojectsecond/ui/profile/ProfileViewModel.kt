@@ -1,7 +1,9 @@
 package com.artelsv.petprojectsecond.ui.profile
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
+import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import com.artelsv.petprojectsecond.R
@@ -24,6 +26,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 import javax.inject.Inject
 
+@SuppressLint("StaticFieldLeak")
 @ExperimentalCoroutinesApi
 class ProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
@@ -32,6 +35,7 @@ class ProfileViewModel @Inject constructor(
     private val getRatedMoviesUseCase: GetRatedMoviesUseCase,
     private val getRatedTvShowsUseCase: GetRatedTvShowsUseCase,
 
+    private val context: Context,
     private val router: Router,
 ) : BaseViewModel() {
     val loading = MutableLiveData(true)
@@ -61,7 +65,7 @@ class ProfileViewModel @Inject constructor(
         this.fragmentManager = fragmentManager
     }
 
-    fun exit(context: Context) {
+    fun exit() {
         getUserUseCase.exit()
         router.newRootScreen(Screens.authActivity(context))
     }
