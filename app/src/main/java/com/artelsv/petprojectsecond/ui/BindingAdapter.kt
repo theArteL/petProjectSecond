@@ -1,5 +1,6 @@
 package com.artelsv.petprojectsecond.ui
 
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -13,6 +14,7 @@ import coil.load
 import com.artelsv.petprojectsecond.R
 import com.artelsv.petprojectsecond.domain.model.movie.Movie
 import com.artelsv.petprojectsecond.domain.model.movie.MovieList
+import com.artelsv.petprojectsecond.ui.moviedetail.MovieCastAdapter
 import com.artelsv.petprojectsecond.ui.movielist.MovieAdapter
 import com.artelsv.petprojectsecond.ui.profile.UserListAdapter
 import com.artelsv.petprojectsecond.ui.utils.HorizontalMarginItemDecoration
@@ -43,23 +45,34 @@ fun bindUserListAdapter(rv: RecyclerView?, adapter: UserListAdapter?, items: Mut
     }
 }
 
-@BindingAdapter("adapter", "items", requireAll = true)
-fun bindMovieAdapter(rv: RecyclerView?, adapter: MovieAdapter?, items: LiveData<PagingData<Movie>?>, listener: (CombinedLoadStates) -> Unit) {
-    safeLet(rv, adapter, items.value, { _rv, _adapter, _items ->
-//        _adapter.addLoadStateListener { state ->
-//            viewModel.loadingNowPlaying.postValue(state.refresh != LoadState.Loading)
-//        }
-
-        _adapter.addLoadStateListener(listener)
-
-        adapter = nowPlayingAdapter
-        layoutManager = LinearLayoutManager(requireContext())
-        addItemDecoration(
-            HorizontalMarginItemDecoration(
-                requireContext().resources.getDimension(
-                    R.dimen.viewpager_current_item_horizontal_margin
-                ).toInt(), horizontal = false
+@BindingAdapter("adapterMovie")
+fun bindMovieAdapter(rv: RecyclerView?, adapter: MovieAdapter?) {
+    safeLet(rv, adapter, { _rv, _adapter ->
+        _rv.apply {
+            this.adapter = _adapter
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    _rv.context.resources.getDimension(
+                        R.dimen.viewpager_current_item_horizontal_margin
+                    ).toInt(), horizontal = false
+                )
             )
-        )
+        }
+    })
+}
+
+@BindingAdapter("adapterPerson")
+fun bindPersonAdapter(rv: RecyclerView?, adapter: MovieCastAdapter?) {
+    safeLet(rv, adapter, { _rv, _adapter ->
+        _rv.apply {
+            this.adapter = _adapter
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    _rv.context.resources.getDimension(
+                        R.dimen.viewpager_current_item_horizontal_margin
+                    ).toInt(), horizontal = false
+                )
+            )
+        }
     })
 }

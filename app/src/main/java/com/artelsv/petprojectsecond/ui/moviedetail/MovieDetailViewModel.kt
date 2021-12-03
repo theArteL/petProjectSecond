@@ -70,6 +70,15 @@ class MovieDetailViewModel @Inject constructor(
     val rateIt = MutableLiveData(false)
     val rating = MutableLiveData(0f)
 
+    // адаптеры
+    val castAdapter = MovieCastAdapter {
+        navigateToPersonCast(it)
+    }
+
+    val crewAdapter = MovieCrewAdapter {
+        navigateToPersonCrew(it)
+    }
+
     fun getMovieDetail(movieId: Int) {
         getMovieDetailsUseCase(movieId)
             .subscribeOn(Schedulers.io())
@@ -180,7 +189,8 @@ class MovieDetailViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                credits.postValue(it)
+                castAdapter.submitList(it.cast.filter { cast -> cast.knownForDepartment == context.getString(R.string.system_person_work) })
+                crewAdapter.submitList(it.crew.filter { crew -> crew.knownForDepartment != context.getString(R.string.system_person_work) })
             }, {
 
             })

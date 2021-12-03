@@ -196,9 +196,12 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_cast"
+                    adapterPerson="@{viewModel.castAdapter}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/tiny_margin"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_cast" />
@@ -217,9 +220,12 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_crew"
+                    adapterPerson="@{viewModel.castAdapter}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/tiny_margin"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_crew" />

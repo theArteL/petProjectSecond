@@ -24,14 +24,6 @@ class MovieDetailFragment : DaggerFragment() {
 
     private val binding: FragmentMovieDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
-    private val castAdapter = MovieCastAdapter {
-        viewModel.navigateToPersonCast(it)
-    }
-
-    private val crewAdapter = MovieCrewAdapter {
-        viewModel.navigateToPersonCrew(it)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -55,36 +47,36 @@ class MovieDetailFragment : DaggerFragment() {
 
         setListeners()
         setObservers()
-        setLists()
+//        setLists()
     }
 
-    private fun setLists() {
-        binding.rvCast.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = castAdapter
-            addItemDecoration(
-                HorizontalMarginItemDecoration(
-                    requireContext().resources.getDimension(
-                        R.dimen.viewpager_current_item_horizontal_margin
-                    ).toInt()
-                )
-            )
-        }
-
-        binding.rvCrew.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = crewAdapter
-            addItemDecoration(
-                HorizontalMarginItemDecoration(
-                    requireContext().resources.getDimension(
-                        R.dimen.viewpager_current_item_horizontal_margin
-                    ).toInt()
-                )
-            )
-        }
-    }
+//    private fun setLists() {
+//        binding.rvCast.apply {
+//            layoutManager =
+//                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//            adapter = castAdapter
+//            addItemDecoration(
+//                HorizontalMarginItemDecoration(
+//                    requireContext().resources.getDimension(
+//                        R.dimen.viewpager_current_item_horizontal_margin
+//                    ).toInt()
+//                )
+//            )
+//        }
+//
+//        binding.rvCrew.apply {
+//            layoutManager =
+//                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//            adapter = crewAdapter
+//            addItemDecoration(
+//                HorizontalMarginItemDecoration(
+//                    requireContext().resources.getDimension(
+//                        R.dimen.viewpager_current_item_horizontal_margin
+//                    ).toInt()
+//                )
+//            )
+//        }
+//    }
 
     private fun setListeners() {
         binding.rbRate.setOnRatingBarChangeListener { _, fl, _ ->
@@ -100,12 +92,12 @@ class MovieDetailFragment : DaggerFragment() {
             }
         })
 
-        viewModel.credits.observe(viewLifecycleOwner, {
-            it?.let {
-                castAdapter.submitList(it.cast.filter { cast -> cast.knownForDepartment == getString(R.string.system_person_work) })
-                crewAdapter.submitList(it.crew.filter { crew -> crew.knownForDepartment != getString(R.string.system_person_work) })
-            }
-        })
+//        viewModel.credits.observe(viewLifecycleOwner, {
+//            it?.let {
+//                castAdapter.submitList(it.cast.filter { cast -> cast.knownForDepartment == getString(R.string.system_person_work) })
+//                crewAdapter.submitList(it.crew.filter { crew -> crew.knownForDepartment != getString(R.string.system_person_work) })
+//            }
+//        })
     }
 
     companion object {

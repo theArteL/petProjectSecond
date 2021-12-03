@@ -50,8 +50,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_movies_popular"
-                adapter="@{viewModel.popularAdapter}"
-                items="@{viewModel.popularPagingLiveData}"
+                adapterMovie="@{viewModel.popularAdapter}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="true"
@@ -80,8 +80,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_movies_now_playing"
-                adapter="@{viewModel.popularAdapter}"
-                items="@{viewModel.popularPagingLiveData}"
+                adapterMovie="@{viewModel.popularAdapter}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/tiny_margin"

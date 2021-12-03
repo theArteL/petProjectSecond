@@ -3,6 +3,8 @@ package com.artelsv.petprojectsecond.ui.movielist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.cachedIn
 import com.artelsv.petprojectsecond.domain.model.movie.Movie
@@ -18,7 +20,9 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -49,6 +53,9 @@ class MovieListViewModel @Inject constructor(
         }
     }.apply {
         withLoadStateHeaderAndFooter(header = MovieLoaderStateAdapter(), footer = MovieLoaderStateAdapter())
+        addLoadStateListener { state ->
+            loadingNowPlaying.postValue(state.refresh != LoadState.Loading)
+        }
     }
 
     val popularAdapter: MovieAdapter = MovieAdapter {
@@ -57,10 +64,21 @@ class MovieListViewModel @Inject constructor(
         }
     }.apply {
         withLoadStateHeaderAndFooter(header = MovieLoaderStateAdapter(), footer = MovieLoaderStateAdapter())
+        addLoadStateListener { state ->
+            loadingPopular.postValue(state.refresh != LoadState.Loading)
+        }
     }
 
     init {
         setup()
+    }
+
+    fun processNowPlayingLoading() {
+        loadingNowPlaying.postValue(true)
+    }
+
+    fun processPopularLoading() {
+        loadingPopular.postValue(true)
     }
 
     fun navigateToProfile() {
@@ -75,29 +93,14 @@ class MovieListViewModel @Inject constructor(
         getUser()
 
         Flowable.zip(getNowPlayingMoviesUseCase(MovieSortType.NO), getPopularMoviesUseCase(MovieSortType.NO), { nowPlaying, popular ->
-            mNowPlayingPagingLiveData.postValue(nowPlaying)
-            mPopularPagingLiveData.postValue(popular)
+            nowPlayingAdapter.run { viewModelScope.launch(Dispatchers.Main) { submitData(nowPlaying) } }
+            popularAdapter.run { viewModelScope.launch(Dispatchers.Main) { submitData(popular) } }
+//            mPopularPagingLiveData.postValue(popular)
         }).subscribe({
 
         }, {
 
         }).addToComposite()
-
-//        getNowPlayingMoviesUseCase(MovieSortType.NO)
-//            .cachedIn(viewModelScope)
-//            .subscribe({
-//                mNowPlayingPagingLiveData.postValue(it)
-//            }, {
-//
-//            }).addToComposite()
-//
-//        getPopularMoviesUseCase(MovieSortType.NO)
-//            .cachedIn(viewModelScope)
-//            .subscribe({
-//                mPopularPagingLiveData.postValue(it)
-//            }, {
-//
-//            }).addToComposite()
     }
 
     private fun getUser() {
